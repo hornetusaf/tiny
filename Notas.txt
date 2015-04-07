@@ -12,9 +12,72 @@ Ejemplos:
 int a;
 int a,b,c,d,e,f;
 
+Funciones y Procedimientos:
 Tipo_dato nombre ( parámetro(s) )
 Ejemplos:
-o void procedimiento()
-o void procedimiento(int a, boolean b)
-o boolean funcion() //debe incluir return
-o boolean funcion(int a, boolean b) //debe incluir return
+void procedimiento()
+void procedimiento(int a, boolean b)
+boolean funcion() //debe incluir return
+boolean funcion(int a, boolean b) //debe incluir return
+
+Los procedimientos o funciones poseen una lista de sentencias
+limitadas entre las palabras claves begin y end.
+Tipos de datos: boolean, int y void (procedimiento), en caso de
+ser int o boolean el tipo de dato, la función debe poseer en su
+interior al menos una instrucción return variable o expresión
+donde se retornara el valor resultante de la función.
+Nombre: sigue el mismo estándar de nombre que los
+identificadores en tiny
+Parámetros: pueden ser cero o más parámetros separados por
+comas en donde cada parámetro posee la estructura tipo_dato
+nombre. POR SIMPLIFICACION NO SE ACEPTARAN VECTORES
+COMO PARAMETROS DE LAS FUNCIONES/PROCEDIMIENTOS
+
+llamadas a una funcion Ejemplos:
+x=función_retorna_int(p1,p2…) donde x es int;
+procedimiento(p1,p2);
+x= función_retorna_int(p1,p2+funcion2(a,b),4…)
+
+Estructura del programa tiny
+Ejemplo:
+
+void procedimiento()
+begin
+	sentencia(s)
+	…
+end
+
+boolean funcion(int a, boolean b)
+begin
+	sentencia(s)
+	… 
+	return …;
+end
+
+begin
+	sentencia(s)
+end
+
+Arrays:
+Ejemplos:
+int x[5]; //ocupa 5 posiciones de la 0-4
+int y[6]; //ocupa 6 posiciones de la 0-5
+
+Ciclo For
+for ( inicialización ; comprobación ; paso)
+…
+end
+Donde cada parte es una expresión valida de acuerdo a su tipo
+Inicialización es una asignación
+Comprobación debe ser boolean
+Paso debe ser una asignación
+Ejemplo
+for( x=0 ; x<10 ; x=x+1)
+…
+end
+
+Debe añadir los operadores relacionales and y or con su prioridad correspondiente a las
+expresiones generables en tiny, así como también los operadores faltantes: != (diferente),
+>, >=, <=.
+
+Debe permitir que el analizador léxico acepte números negativos.
