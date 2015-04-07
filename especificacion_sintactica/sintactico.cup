@@ -67,9 +67,20 @@ non terminal NodoBase term;
 non terminal NodoBase factor;
 
 /* Precedencia de operadores */
+precedence left OR;
+precedence left AND;
+
+precedence left NEQUAL;
+precedence left GE;
+precedence left LE;
+precedence left GT;
+precedence left LT;
+precedence left EQ;
+
 precedence left PLUS;
 precedence left MINUS;
 precedence left TIMES;
+precedence left OVER;
 
 
 /* REGLAS GRAMATICALES */
