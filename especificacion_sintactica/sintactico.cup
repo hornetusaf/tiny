@@ -36,6 +36,7 @@ terminal OVER;
 terminal LPAREN;
 terminal RPAREN;
 terminal SEMI;
+terminal INT;
 
 /* Simbolos No Terminales */
 non terminal program;

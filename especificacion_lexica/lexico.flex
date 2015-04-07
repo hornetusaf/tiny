@@ -34,7 +34,7 @@ import java_cup.runtime.*;
 
 
 digito		= [0-9]
-numero		= {digito}+
+numero		= -?{digito}+
 letra			= [a-zA-Z]
 identificador	= {letra}+
 nuevalinea		= \n | \n\r | \r\n
@@ -93,6 +93,9 @@ espacio		= [ \t]+
 			}
 ";"             {	if(debug) System.out.println("token SEMI");
 			return sf.newSymbol("SEMI",sym.SEMI);
+			}
+"int"             {	if(debug) System.out.println("token INT");
+			return sf.newSymbol("INT",sym.INT);
 			}
 {numero}        {	if(debug) System.out.println("token NUM");
 			return sf.newSymbol("NUM",sym.NUM,new Integer(yytext()));
