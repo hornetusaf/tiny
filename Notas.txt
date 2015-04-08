@@ -1,19 +1,19 @@
 Actualmente las listas de sentencias en tiny se encuentran separadas por punto y coma,
-convertir dicha acción a finalizadas en punto en coma (si revisan las clases allí incluso se
-les enseño la solución a ese detalle)
+convertir dicha acciï¿½n a finalizadas en punto en coma (si revisan las clases allï¿½ incluso se
+les enseï¿½o la soluciï¿½n a ese detalle)
 
-Se debe añadir declaraciones de variables estilo lenguaje C: tipo_dato variable(s)
-separadas por coma en caso de ser más de una. Los tipos de datos aceptados serán
-boolean e int. Se pueden declarar variables en cualquier posición pero deben ser
-declaradas antes de su uso y estarán atadas a las reglas de ámbito explicadas
-posteriormente en este documento. No se podrán inicializar las mismas en el mismo
+Se debe aï¿½adir declaraciones de variables estilo lenguaje C: tipo_dato variable(s)
+separadas por coma en caso de ser mï¿½s de una. Los tipos de datos aceptados serï¿½n
+boolean e int. Se pueden declarar variables en cualquier posiciï¿½n pero deben ser
+declaradas antes de su uso y estarï¿½n atadas a las reglas de ï¿½mbito explicadas
+posteriormente en este documento. No se podrï¿½n inicializar las mismas en el mismo
 momento de declararlas sino posteriormente.
 Ejemplos:
 int a;
 int a,b,c,d,e,f;
 
 Funciones y Procedimientos:
-Tipo_dato nombre ( parámetro(s) )
+Tipo_dato nombre ( parï¿½metro(s) )
 Ejemplos:
 void procedimiento()
 void procedimiento(int a, boolean b)
@@ -23,20 +23,20 @@ boolean funcion(int a, boolean b) //debe incluir return
 Los procedimientos o funciones poseen una lista de sentencias
 limitadas entre las palabras claves begin y end.
 Tipos de datos: boolean, int y void (procedimiento), en caso de
-ser int o boolean el tipo de dato, la función debe poseer en su
-interior al menos una instrucción return variable o expresión
-donde se retornara el valor resultante de la función.
-Nombre: sigue el mismo estándar de nombre que los
+ser int o boolean el tipo de dato, la funciï¿½n debe poseer en su
+interior al menos una instrucciï¿½n return variable o expresiï¿½n
+donde se retornara el valor resultante de la funciï¿½n.
+Nombre: sigue el mismo estï¿½ndar de nombre que los
 identificadores en tiny
-Parámetros: pueden ser cero o más parámetros separados por
-comas en donde cada parámetro posee la estructura tipo_dato
+Parï¿½metros: pueden ser cero o mï¿½s parï¿½metros separados por
+comas en donde cada parï¿½metro posee la estructura tipo_dato
 nombre. POR SIMPLIFICACION NO SE ACEPTARAN VECTORES
 COMO PARAMETROS DE LAS FUNCIONES/PROCEDIMIENTOS
 
 llamadas a una funcion Ejemplos:
-x=función_retorna_int(p1,p2…) donde x es int;
+x=funciï¿½n_retorna_int(p1,p2ï¿½) donde x es int;
 procedimiento(p1,p2);
-x= función_retorna_int(p1,p2+funcion2(a,b),4…)
+x= funciï¿½n_retorna_int(p1,p2+funcion2(a,b),4ï¿½)
 
 Estructura del programa tiny
 Ejemplo:
@@ -44,14 +44,14 @@ Ejemplo:
 void procedimiento()
 begin
 	sentencia(s)
-	…
+	ï¿½
 end
 
 boolean funcion(int a, boolean b)
 begin
 	sentencia(s)
-	… 
-	return …;
+	ï¿½ 
+	return ï¿½;
 end
 
 begin
@@ -64,21 +64,22 @@ int x[5]; //ocupa 5 posiciones de la 0-4
 int y[6]; //ocupa 6 posiciones de la 0-5
 
 Ciclo For
-for ( inicialización ; comprobación ; paso)
-…
+for ( inicializaciï¿½n ; comprobaciï¿½n ; paso)
+ï¿½
 end
-Donde cada parte es una expresión valida de acuerdo a su tipo
-Inicialización es una asignación
-Comprobación debe ser boolean
-Paso debe ser una asignación
+Donde cada parte es una expresiï¿½n valida de acuerdo a su tipo
+Inicializaciï¿½n es una asignaciï¿½n
+Comprobaciï¿½n debe ser boolean
+Paso debe ser una asignaciï¿½n
 Ejemplo
 for( x=0 ; x<10 ; x=x+1)
-…
+ï¿½
 end
 
-Debe añadir los operadores relacionales and y or con su prioridad correspondiente a las
-expresiones generables en tiny, así como también los operadores faltantes: != (diferente),
+Debe aï¿½adir los operadores relacionales and y or con su prioridad correspondiente a las
+expresiones generables en tiny, asï¿½ como tambiï¿½n los operadores faltantes: != (diferente),
 >, >=, <=.
 
-Debe permitir que el analizador léxico acepte números negativos.
+Debe permitir que el analizador lï¿½xico acepte nï¿½meros negativos.
 prueba twitter
+probando...
