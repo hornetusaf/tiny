@@ -72,7 +72,7 @@ precedence left AND;
 precedence left GE,LE,GT,LT,EQ,NEQUAL;
 precedence left PLUS, MINUS;
 precedence left TIMES, OVER;
-
+precedence left LPAREN,RPAREN;
 
 /* REGLAS GRAMATICALES */
 program     ::= BEGIN stmt_seq:s END	{: if(modoDepuracion) System.out.println("\t regla 1"); 
