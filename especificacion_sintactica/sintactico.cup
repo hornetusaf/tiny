@@ -69,22 +69,13 @@ non terminal NodoBase factor;
 /* Precedencia de operadores */
 precedence left OR;
 precedence left AND;
-
-precedence left NEQUAL;
-precedence left GE;
-precedence left LE;
-precedence left GT;
-precedence left LT;
-precedence left EQ;
-
-precedence left PLUS;
-precedence left MINUS;
-precedence left TIMES;
-precedence left OVER;
+precedence left GE,LE,GT,LT,EQ,NEQUAL;
+precedence left PLUS, MINUS;
+precedence left TIMES, OVER;
 
 
 /* REGLAS GRAMATICALES */
-program     ::= stmt_seq:s	{: if(modoDepuracion) System.out.println("\t regla 1"); 
+program     ::= BEGIN stmt_seq:s END	{: if(modoDepuracion) System.out.println("\t regla 1"); 
 					ast = s;
 					:}
 		;
