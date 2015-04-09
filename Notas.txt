@@ -1,4 +1,4 @@
-Actualmente las listas de sentencias en tiny se encuentran separadas por punto y coma,
+﻿Actualmente las listas de sentencias en tiny se encuentran separadas por punto y coma,
 convertir dicha acci�n a finalizadas en punto en coma (si revisan las clases all� incluso se
 les ense�o la soluci�n a ese detalle)
 
@@ -84,3 +84,7 @@ Debe permitir que el analizador l�xico acepte n�meros negativos.
 prueba twitter
 aa
 probando...
+
+
+
+Noel
