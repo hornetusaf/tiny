@@ -65,6 +65,8 @@ non terminal NodoBase exp;
 non terminal NodoBase simple_exp;
 non terminal NodoBase term;
 non terminal NodoBase factor;
+non terminal NodoBase var_stmt;
+non terminal NodoBase variable_stmt ;
 
 /* Precedencia de operadores */
 precedence left OR;
@@ -80,7 +82,7 @@ program     ::= BEGIN stmt_seq:s END	{: if(modoDepuracion) System.out.println("\
 					:}
 		;
 
-stmt_seq    ::= stmt_seq:ini SEMI stmt:sent	{: if(modoDepuracion) System.out.println("\t regla 2a"); 
+stmt_seq    ::= stmt_seq:ini stmt:sent SEMI {: if(modoDepuracion) System.out.println("\t regla 2a"); 
 						NodoBase hijoActual = ini;
 						if(hijoActual !=null){
 							while(hijoActual.TieneHermano()){
@@ -92,8 +94,8 @@ stmt_seq    ::= stmt_seq:ini SEMI stmt:sent	{: if(modoDepuracion) System.out.pri
 							RESULT=sent;
 						}
 						:}
-            | stmt:sent	{: if(modoDepuracion) System.out.println("\t regla 2b"); 
-				RESULT=sent;				
+            | stmt:sent SEMI{: if(modoDepuracion) System.out.println("\t regla 2b"); 
+				RESULT=sent;
 				:}
 		;
 
@@ -112,19 +114,39 @@ stmt        ::= if_stmt:sif	{: if(modoDepuracion) System.out.println("\t regla 3
             | write_stmt:sesc	{: if(modoDepuracion) System.out.println("\t regla 3e"); 
 					RESULT=sesc;
 					:}
-            | error	{: if(modoDepuracion) System.out.println("\t regla 3f"); 
+            | variable_stmt:svar	{: if(modoDepuracion) System.out.println("\t regla 3f yr"); 
+					RESULT=svar;
+					:} 
+            | error	{: if(modoDepuracion) System.out.println("\t regla 3g"); 
 				System.out.println("Ocurrio error en cup # 0004");
 				RESULT=null;
-				:}
+				:}            
             ;
 
-if_stmt     ::= IF exp:ex THEN stmt_seq:pthen END	{: if(modoDepuracion) System.out.println("\t regla 4a"); 
+if_stmt     ::= IF exp:ex THEN stmt_seq:pthen END SEMI	{: if(modoDepuracion) System.out.println("\t regla 4a"); 
 		RESULT = new NodoIf(ex,pthen);
 		:}
 		| IF exp:ex THEN stmt_seq:pthen ELSE stmt_seq:pelse END	{: if(modoDepuracion) System.out.println("\t regla 4b"); 
 		RESULT = new NodoIf(ex,pthen,pelse);		
 		:}
 		;
+
+variable_stmt     ::= INT var_stmt:v SEMI {: if(modoDepuracion) System.out.println("\t regla 4a.1"); 
+			RESULT = new NodoVariable(v);
+		:}
+		| BOOLEAN var_stmt:v SEMI {: if(modoDepuracion) System.out.println("\t regla 4a.2"); 
+			RESULT = new NodoVariable(v);
+		:}		
+		;
+
+var_stmt     ::= ID:variable COMA var_stmt:v {: if(modoDepuracion) System.out.println("\t regla 4a.3"); 
+			RESULT = new NodoVariable(variable.toString(),v);
+		:}
+		| ID:variable {: if(modoDepuracion) System.out.println("\t regla 4a.4"); 
+		RESULT = new NodoVariable(variable.toString());
+		:}		
+		;
+	
 
 repeat_stmt ::= REPEAT stmt_seq:cuerpo UNTIL exp:prueba	{: if(modoDepuracion) System.out.println("\t regla 5"); 
 							RESULT = new NodoRepeat(cuerpo,prueba);

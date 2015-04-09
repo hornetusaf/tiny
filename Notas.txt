@@ -1,4 +1,4 @@
-Actualmente las listas de sentencias en tiny se encuentran separadas por punto y coma,
+﻿Actualmente las listas de sentencias en tiny se encuentran separadas por punto y coma,
 convertir dicha acci�n a finalizadas en punto en coma (si revisan las clases all� incluso se
 les ense�o la soluci�n a ese detalle)
 
@@ -82,6 +82,18 @@ expresiones generables en tiny, as� como tambi�n los operadores faltantes: !
 
 Debe permitir que el analizador l�xico acepte n�meros negativos.
 prueba twitter
+<<<<<<< HEAD
+
+
+Yoel
+=======
 aa
 probando...
+<<<<<<< HEAD
 Rafael
+=======
+noel es el mejor
+
+
+>>>>>>> origin/Noel
+>>>>>>> origin/yoel
