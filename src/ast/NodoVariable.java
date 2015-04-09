@@ -10,6 +10,11 @@ public class NodoVariable extends NodoBase{
 		this.id = id;
 		this.partev = null;
 	}
+	public NodoVariable(NodoBase partev) {
+		super();
+		this.id = null;
+		this.partev = partev;
+	}
 	
 	public NodoVariable(String id, NodoBase partev) {
 		super();
