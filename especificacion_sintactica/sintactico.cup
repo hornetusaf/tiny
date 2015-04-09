@@ -65,6 +65,9 @@ non terminal NodoBase exp;
 non terminal NodoBase simple_exp;
 non terminal NodoBase term;
 non terminal NodoBase factor;
+non terminal NodoBase variable_stmt;
+non terminal NodoBase tipo_dato;
+non terminal NodoBase var;
 
 /* Precedencia de operadores */
 precedence left OR;
@@ -128,6 +131,23 @@ if_stmt     ::= IF exp:ex THEN stmt_seq:pthen END SEMI	{: if(modoDepuracion) Sys
 		RESULT = new NodoIf(ex,pthen,pelse);		
 		:}
 		;
+
+variable_stmt     ::= INT ID:variable var_stmt:v {: if(modoDepuracion) System.out.println("\t regla 4a.1"); 
+			RESULT = new NodoVariable(variable.toString(),v)
+		:}
+		| BOOLEAN ID:variable var_stmt:v {: if(modoDepuracion) System.out.println("\t regla 4a.2"); 
+			RESULT = new NodoVariable(variable.toString(),v)
+		:}		
+		;
+
+var_stmt     ::= ID:variable COMA, var_stmt:v {: if(modoDepuracion) System.out.println("\t regla 4a.3"); 
+			RESULT = new NodoVariable(variable.toString(),v);
+		:}
+		| ID:variable SEMI	{: if(modoDepuracion) System.out.println("\t regla 4a.4"); 
+		RESULT = new NodoVariable(variable.toString());
+		:}
+		;
+	
 
 repeat_stmt ::= REPEAT stmt_seq:cuerpo UNTIL exp:prueba	{: if(modoDepuracion) System.out.println("\t regla 5"); 
 							RESULT = new NodoRepeat(cuerpo,prueba);
