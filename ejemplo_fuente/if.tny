@@ -1,3 +1,9 @@
 begin	
-int a,b,c,d,f;
+read x;
+int a,b,c;
+if 10 < x then
+   write 1;
+else
+   write 2;
+end;
 end
