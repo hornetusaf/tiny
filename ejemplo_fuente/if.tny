@@ -1,8 +1,6 @@
-begin	
 read x;
 if 10 < x then
-   write 1;
+   write 1
 else
-   write 2;
- end;
+   write 2
  end
