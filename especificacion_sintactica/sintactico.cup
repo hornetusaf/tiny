@@ -70,6 +70,7 @@ non terminal NodoBase factor;
 non terminal NodoBase var_stmt;
 non terminal NodoBase variable_stmt;
 non terminal NodoBase vector_stmt;
+non terminal NodoBase for_stmt;
 
 /* Precedencia de operadores */
 precedence left OR;
@@ -150,12 +151,17 @@ var_stmt     ::= ID:variable COMA var_stmt:v {: if(modoDepuracion) System.out.pr
 		:}		
 		;
 		
-vector_stmt ::= INT:tipo ID:variable OBRACKET NUM:tamaño CBRACKET {: if(modoDepuracion) System.out.println("\t regla 4b.1"); 
-			RESULT = new NodoVector(variable.toString(),tipo.toString(),tamaño);
+vector_stmt ::= INT:tipo ID:variable OBRACKET NUM:tam CBRACKET {: if(modoDepuracion) System.out.println("\t regla 4b.1"); 
+			RESULT = new NodoVector(variable.toString(),tipo.toString(),tam);
 		:}
-		| BOOLEAN:tipo ID:variable OBRACKET NUM:tamaño CBRACKET {: if(modoDepuracion) System.out.println("\t regla 4b.2"); 
-			RESULT = new NodoVector(variable.toString(),tipo.toString(),tamaño);
-		:}		
+		| BOOLEAN:tipo ID:variable OBRACKET NUM:tam CBRACKET {: if(modoDepuracion) System.out.println("\t regla 4b.2"); 
+			RESULT = new NodoVector(variable.toString(),tipo.toString(),tam);
+		:}	
+		;
+		
+for_stmt     ::= FOR LPAREN assign_stmt:asi SEMI exp:ex SEMI assign_stmt:asf RPAREN stmt_seq:cuerpo END {: if(modoDepuracion) System.out.println("\t regla for"); 
+			RESULT = new NodoFor(asi,ex,asf,cuerpo);
+		:}
 		;
 		
 repeat_stmt ::= REPEAT stmt_seq:cuerpo UNTIL exp:prueba	{: if(modoDepuracion) System.out.println("\t regla 5"); 
@@ -193,16 +199,28 @@ write_stmt  ::= WRITE exp:ex	{: if(modoDepuracion) System.out.println("\t regla 
 					:}
 		;
 
-exp         ::= simple_exp:exI LT simple_exp:exD	{: if(modoDepuracion) System.out.println("\t regla 9a"); 
+exp     ::= simple_exp:exI LT simple_exp:exD	{: if(modoDepuracion) System.out.println("\t regla 9a"); 
 								RESULT = new NodoOperacion(exI,tipoOp.menor,exD);
 								:} 
-		| simple_exp:exI EQ simple_exp:exD	{: if(modoDepuracion) System.out.println("\t regla 9b"); 
-							RESULT = new NodoOperacion(exI,tipoOp.igual,exD);
+		| simple_exp:exI GT simple_exp:exD	{: if(modoDepuracion) System.out.println("\t regla 9b"); 
+							RESULT = new NodoOperacion(exI,tipoOp.mayor,exD);
 							:}
+		| simple_exp:exI LE simple_exp:exD	{: if(modoDepuracion) System.out.println("\t regla 9c"); 
+							RESULT = new NodoOperacion(exI,tipoOp.menor_igual,exD);	
+							:}
+		| simple_exp:exI GE simple_exp:exD	{: if(modoDepuracion) System.out.println("\t regla 9d"); 
+							RESULT = new NodoOperacion(exI,tipoOp.mayor_igual,exD);
+					:}						
+		| simple_exp:exI EQ simple_exp:exD	{: if(modoDepuracion) System.out.println("\t regla 9e"); 
+							RESULT = new NodoOperacion(exI,tipoOp.igual,exD);
+							:}	
+		| simple_exp:exI NEQUAL simple_exp:exD	{: if(modoDepuracion) System.out.println("\t regla 9f"); 
+							RESULT = new NodoOperacion(exI,tipoOp.diferente,exD);
+							:}	
 		| simple_exp:ex	{: if(modoDepuracion) System.out.println("\t regla 9c"); 
 					RESULT = ex;
 					:}
-		;
+		;		
 
 simple_exp  ::= simple_exp:exI PLUS term:exD	{: if(modoDepuracion) System.out.println("\t regla 10a"); 
 							RESULT = new NodoOperacion(exI,tipoOp.mas,exD);

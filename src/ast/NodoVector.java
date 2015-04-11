@@ -4,20 +4,20 @@ public class NodoVector extends NodoBase{
 
 	private String id;
 	private String tipo;
-	private Integer tamaño;
+	private Integer tam;
 	
 	public NodoVector()	{
 		super();
 		this.id = null;
 		this.tipo = null;
-		this.tamaño = 0;		
+		this.tam = 0;		
 	}
 	
-	public NodoVector(String id, String tipo, Integer tamaño)	{
+	public NodoVector(String id, String tipo, Integer tam)	{
 		super();
 		this.id = id;
 		this.tipo = tipo;
-		this.tamaño = tamaño;		
+		this.tam = tam;		
 	}
 
 	public String getId() {
@@ -36,11 +36,11 @@ public class NodoVector extends NodoBase{
 		this.tipo = tipo;
 	}
 
-	public int getTamaño() {
-		return tamaño;
+	public int getTam() {
+		return tam;
 	}
 
-	public void setTamaño(Integer tamaño) {
-		this.tamaño = tamaño;
+	public void setTam(Integer tamaño) {
+		this.tam = tam;
 	}	
 }
