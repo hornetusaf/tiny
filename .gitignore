@@ -1,1 +1,3 @@
 bin
+src/compilador/parser.java
+src/compilador/sym.java
