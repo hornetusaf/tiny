@@ -1,3 +1,8 @@
 bin
+<<<<<<< HEAD
+=======
+
+# ignorar parser y sym #
+>>>>>>> origin/Noel
 src/compilador/parser.java
 src/compilador/sym.java
