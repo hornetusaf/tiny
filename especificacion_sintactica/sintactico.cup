@@ -121,7 +121,13 @@ stmt        ::= if_stmt:sif	{: if(modoDepuracion) System.out.println("\t regla 3
 					:}
             | variable_stmt:svar	{: if(modoDepuracion) System.out.println("\t regla 3f yr"); 
 					RESULT=svar;
-					:} 
+					:}
+			| vector_stmt:svect	{: if(modoDepuracion) System.out.println("\t regla 3f.1 yr"); 
+					RESULT=svect;
+					:}
+			| for_stmt:sfor	{: if(modoDepuracion) System.out.println("\t regla 3f.2 yr"); 
+					RESULT=sfor;
+					:}    
             | error	{: if(modoDepuracion) System.out.println("\t regla 3g"); 
 				System.out.println("Ocurrio error en cup # 0004");
 				RESULT=null;
@@ -152,10 +158,10 @@ var_stmt     ::= ID:variable COMA var_stmt:v {: if(modoDepuracion) System.out.pr
 		:}		
 		;
 		
-vector_stmt ::= INT:tipo ID:variable OBRACKET NUM:tam CBRACKET {: if(modoDepuracion) System.out.println("\t regla 4b.1"); 
+vector_stmt ::= INT:tipo ID:variable OBRACKET NUM:tam CBRACKET {: if(modoDepuracion) System.out.println("\t regla 4y.1"); 
 			RESULT = new NodoVector(variable.toString(),tipo.toString(),tam);
 		:}
-		| BOOLEAN:tipo ID:variable OBRACKET NUM:tamaño CBRACKET {: if(modoDepuracion) System.out.println("\t regla 4b.2"); 
+		| BOOLEAN:tipo ID:variable OBRACKET NUM:tam CBRACKET {: if(modoDepuracion) System.out.println("\t regla 4y.2"); 
 			RESULT = new NodoVector(variable.toString(),tipo.toString(),tam);
 		:}		
 		;
