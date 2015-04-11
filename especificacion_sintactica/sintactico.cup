@@ -150,14 +150,6 @@ var_stmt     ::= ID:variable COMA var_stmt:v {: if(modoDepuracion) System.out.pr
 		:}		
 		;
 		
-vector_stmt ::= INT:tipo ID:variable OBRACKET NUM:tamaño CBRACKET {: if(modoDepuracion) System.out.println("\t regla 4b.1"); 
-			RESULT = new NodoVector(variable.toString(),tipo.toString(),tamaño);
-		:}
-		| BOOLEAN:tipo ID:variable OBRACKET NUM:tamaño CBRACKET {: if(modoDepuracion) System.out.println("\t regla 4b.2"); 
-			RESULT = new NodoVector(variable.toString(),tipo.toString(),tamaño);
-		:}		
-		;	
-
 repeat_stmt ::= REPEAT stmt_seq:cuerpo UNTIL exp:prueba	{: if(modoDepuracion) System.out.println("\t regla 5"); 
 							RESULT = new NodoRepeat(cuerpo,prueba);
 							:}

@@ -1,6 +1,5 @@
 bin
 
 # ignorar parser y sym #
-sym.java
-parser.java
-
+src/compilador/parser.java
+src/compilador/sym.java
