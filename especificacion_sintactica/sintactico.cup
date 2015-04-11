@@ -51,6 +51,8 @@ terminal GE;
 terminal RETURN;
 terminal BOOLEAN;
 terminal BEGIN;
+terminal TRUE;
+terminal FALSE;
 
 /* Simbolos No Terminales */
 non terminal program;
