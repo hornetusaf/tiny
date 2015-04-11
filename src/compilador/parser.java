@@ -10,7 +10,19 @@ import java_cup.runtime.*;
 import ast.*;
 
 /** CUP v0.11a beta 20060608 generated parser.
+<<<<<<< HEAD
   * @version Sat Apr 11 11:09:50 VET 2015
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+  * @version Sat Apr 11 02:19:19 VET 2015
+=======
+  * @version Sat Apr 11 09:45:30 VET 2015
+>>>>>>> origin/master
+=======
+  * @version Sat Apr 11 10:43:40 VET 2015
+>>>>>>> origin/master
+>>>>>>> dccb370bc292a0fb0d593a2dc4a89127b408e467
   */
 public class parser extends java_cup.runtime.lr_parser {
 
