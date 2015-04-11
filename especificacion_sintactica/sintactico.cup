@@ -72,6 +72,8 @@ non terminal NodoBase variable_stmt ;
 non terminal NodoBase for_stmt;
 non terminal NodoBase vector_stmt;
 non terminal NodoBase for_stmt;
+non terminal NodoBase funcion_stmt;
+non terminal NodoBase encabezado_stmt;
 
 /* Precedencia de operadores */
 precedence left OR;
@@ -84,9 +86,8 @@ precedence left LPAREN,RPAREN,OBRACKET,CBRACKET;
 /* REGLAS GRAMATICALES */
 program     ::= BEGIN stmt_seq:s END	{: if(modoDepuracion) System.out.println("\t regla 1"); 
 					ast = s;
-					:}
-
-		;
+			:}
+		    ;
 
 stmt_seq    ::= stmt_seq:ini stmt:sent SEMI {: if(modoDepuracion) System.out.println("\t regla 2a"); 
 						NodoBase hijoActual = ini;
@@ -159,27 +160,50 @@ var_stmt     ::= ID:variable COMA var_stmt:v {: if(modoDepuracion) System.out.pr
 		:}		
 		;
 		
-<<<<<<< HEAD
-vector_stmt ::= INT:tipo ID:variable OBRACKET NUM:tam CBRACKET {: if(modoDepuracion) System.out.println("\t regla 4b.1"); 
-			RESULT = new NodoVector(variable.toString(),tipo.toString(),tam);
-		:}
-		| BOOLEAN:tipo ID:variable OBRACKET NUM:tam CBRACKET {: if(modoDepuracion) System.out.println("\t regla 4b.2"); 
-			RESULT = new NodoVector(variable.toString(),tipo.toString(),tam);
-		:}	
-		;
-		
-for_stmt     ::= FOR LPAREN assign_stmt:asi SEMI exp:ex SEMI assign_stmt:asf RPAREN stmt_seq:cuerpo END {: if(modoDepuracion) System.out.println("\t regla for"); 
-			RESULT = new NodoFor(asi,ex,asf,cuerpo);
-		:}
-=======
 vector_stmt ::= INT:tipo ID:variable OBRACKET NUM:tam CBRACKET {: if(modoDepuracion) System.out.println("\t regla 4y.1"); 
 			RESULT = new NodoVector(variable.toString(),tipoDato.INT,tam);
 		:}
 		| BOOLEAN:tipo ID:variable OBRACKET NUM:tam CBRACKET {: if(modoDepuracion) System.out.println("\t regla 4y.2"); 
 			RESULT = new NodoVector(variable.toString(),tipoDato.BOOLEAN,tam);
 		:}		
->>>>>>> origin/master
 		;
+		
+funcion_stmt ::= return_stmt encabezado_stmt BEGIN stmt_seq:cuerpo END {: if(modoDepuracion) System.out.println("\t regla 4y.1"); 
+			RESULT = new NodoProcedimiento();
+		:}
+		;
+		
+encabezado_stmt ::= ID LPAREN parametro_stmt RPAREN {: if(modoDepuracion) System.out.println("\t regla 4y.1"); 
+			RESULT = new NodoProcedimiento();
+		:}
+		;
+		
+parametro_stmt ::= BOOLEAN exp {: if(modoDepuracion) System.out.println("\t regla 4y.1"); 
+			RESULT = new NodoProcedimiento();
+		  :}
+		  | INT exp {: if(modoDepuracion) System.out.println("\t regla 4y.2"); 
+			RESULT = new NodoVector(variable.toString(),tipoDato.BOOLEAN,tam);
+		  :}	
+		  ;
+
+return_stmt ::= VOID {: if(modoDepuracion) System.out.println("\t regla 4y.1"); 
+			RESULT = new NodoProcedimiento();
+		  :}
+		  | INT {: if(modoDepuracion) System.out.println("\t regla 4y.2"); 
+			RESULT = new NodoProcedimiento();
+		  :}	
+		  | BOOLEAN {: if(modoDepuracion) System.out.println("\t regla 4y.2"); 
+			RESULT = new NodoProcedimiento();
+		  :}
+		  ;		  
+		  
+exp_var := ID COMA parametro_stmt {: if(modoDepuracion) System.out.println("\t regla 4y.1"); 
+			RESULT = new NodoProcedimiento();
+		  :}
+		  | ID {: if(modoDepuracion) System.out.println("\t regla 4y.2"); 
+			RESULT = new NodoProcedimiento();
+		  :}	
+		  ;		
 		
 repeat_stmt ::= REPEAT stmt_seq:cuerpo UNTIL exp:prueba	{: if(modoDepuracion) System.out.println("\t regla 5"); 
 							RESULT = new NodoRepeat(cuerpo,prueba);
