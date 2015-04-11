@@ -1,9 +1,10 @@
 begin	
 read x;
 int a,b,c;
-if 10 < x then
+if 10 or x then
    write 1;
 else
-   write 2;
+	return true;
 end;
+int j[12];
 end

@@ -71,6 +71,7 @@ non terminal NodoBase var_stmt;
 non terminal NodoBase variable_stmt ;
 non terminal NodoBase for_stmt;
 non terminal NodoBase vector_stmt;
+non terminal NodoBase return_stmt;
 
 /* Precedencia de operadores */
 precedence left OR;
@@ -127,6 +128,9 @@ stmt        ::= if_stmt:sif	{: if(modoDepuracion) System.out.println("\t regla 3
 					:}
 			| for_stmt:sfor	{: if(modoDepuracion) System.out.println("\t regla 3f.2 yr"); 
 					RESULT=sfor;
+					:}
+			| return_stmt:sret	{: if(modoDepuracion) System.out.println("\t regla return"); 
+					RESULT=sret;
 					:}    
             | error	{: if(modoDepuracion) System.out.println("\t regla 3g"); 
 				System.out.println("Ocurrio error en cup # 0004");
@@ -134,12 +138,12 @@ stmt        ::= if_stmt:sif	{: if(modoDepuracion) System.out.println("\t regla 3
 				:}            
             ;
 
-if_stmt     ::= IF exp:ex THEN stmt_seq:pthen END SEMI	{: if(modoDepuracion) System.out.println("\t regla 4a"); 
+if_stmt     ::= IF exp:ex THEN stmt_seq:pthen END {: if(modoDepuracion) System.out.println("\t regla 4a"); 
 		RESULT = new NodoIf(ex,pthen);
 		:}
 		| IF exp:ex THEN stmt_seq:pthen ELSE stmt_seq:pelse END	{: if(modoDepuracion) System.out.println("\t regla 4b"); 
 		RESULT = new NodoIf(ex,pthen,pelse);		
-		:}
+		:}		
 		;
 
 variable_stmt     ::= INT var_stmt:v {: if(modoDepuracion) System.out.println("\t regla 4a.1"); 
@@ -169,6 +173,19 @@ vector_stmt ::= INT:tipo ID:variable OBRACKET NUM:tam CBRACKET {: if(modoDepurac
 repeat_stmt ::= REPEAT stmt_seq:cuerpo UNTIL exp:prueba	{: if(modoDepuracion) System.out.println("\t regla 5"); 
 							RESULT = new NodoRepeat(cuerpo,prueba);
 							:}
+		;
+return_stmt ::= RETURN ID:id {: if(modoDepuracion) System.out.println("\t regla return id 1"); 
+			RESULT = new NodoReturn(id.toString(),false);
+		:}
+		| RETURN TRUE {: if(modoDepuracion) System.out.println("\t regla return verdadero"); 
+			RESULT = new NodoReturn("",true);
+		:}
+		| RETURN FALSE {: if(modoDepuracion) System.out.println("\t regla return falso"); 
+			RESULT = new NodoReturn("",false);
+		:}
+		| RETURN {: if(modoDepuracion) System.out.println("\t regla return vacio"); 
+			RESULT = new NodoReturn();
+		:}
 		;
 
 assign_stmt ::= ID:variable 	{: if(modoDepuracion) System.out.println("\t regla 6 parte del medio"); 
@@ -218,10 +235,16 @@ exp         ::= simple_exp:exI LT simple_exp:exD	{: if(modoDepuracion) System.ou
 							:}	
 		| simple_exp:exI NEQUAL simple_exp:exD	{: if(modoDepuracion) System.out.println("\t regla 9f"); 
 							RESULT = new NodoOperacion(exI,tipoOp.diferente,exD);
+							:}
+		| simple_exp:exI AND simple_exp:exD	{: if(modoDepuracion) System.out.println("\t regla 9f and"); 
+							RESULT = new NodoOperacion(exI,tipoOp.and,exD);
+							:}
+		| simple_exp:exI OR simple_exp:exD	{: if(modoDepuracion) System.out.println("\t regla 9f or"); 
+							RESULT = new NodoOperacion(exI,tipoOp.or,exD);
 							:}	
 		| simple_exp:ex	{: if(modoDepuracion) System.out.println("\t regla 9c"); 
 					RESULT = ex;
-					:}
+					:}			
 		;
 
 simple_exp  ::= simple_exp:exI PLUS term:exD	{: if(modoDepuracion) System.out.println("\t regla 10a"); 
