@@ -67,6 +67,8 @@ non terminal NodoBase term;
 non terminal NodoBase factor;
 non terminal NodoBase var_stmt;
 non terminal NodoBase variable_stmt ;
+non terminal NodoBase for_stmt;
+
 
 /* Precedencia de operadores */
 precedence left OR;
@@ -80,6 +82,7 @@ precedence left LPAREN,RPAREN;
 program     ::= BEGIN stmt_seq:s END	{: if(modoDepuracion) System.out.println("\t regla 1"); 
 					ast = s;
 					:}
+
 		;
 
 stmt_seq    ::= stmt_seq:ini stmt:sent SEMI {: if(modoDepuracion) System.out.println("\t regla 2a"); 
@@ -186,12 +189,21 @@ write_stmt  ::= WRITE exp:ex	{: if(modoDepuracion) System.out.println("\t regla 
 exp         ::= simple_exp:exI LT simple_exp:exD	{: if(modoDepuracion) System.out.println("\t regla 9a"); 
 								RESULT = new NodoOperacion(exI,tipoOp.menor,exD);
 								:} 
-		| simple_exp:exI EQ simple_exp:exD	{: if(modoDepuracion) System.out.println("\t regla 9b"); 
-							RESULT = new NodoOperacion(exI,tipoOp.igual,exD);
+		| simple_exp:exI GT simple_exp:exD	{: if(modoDepuracion) System.out.println("\t regla 9b"); 
+							RESULT = new NodoOperacion(exI,tipoOp.mayor,exD);
 							:}
-		| simple_exp:ex	{: if(modoDepuracion) System.out.println("\t regla 9c"); 
-					RESULT = ex;
-					:}
+		| simple_exp:exI LE simple_exp:exD	{: if(modoDepuracion) System.out.println("\t regla 9c"); 
+							RESULT = new NodoOperacion(exI,tipoOp.menor_igual,exD);	
+							:}
+		| simple_exp:exI GE simple_exp:exD	{: if(modoDepuracion) System.out.println("\t regla 9d"); 
+							RESULT = new NodoOperacion(exI,tipoOp.mayor_igual,exD);
+					:}						
+		| simple_exp:exI EQ simple_exp:exD	{: if(modoDepuracion) System.out.println("\t regla 9e"); 
+							RESULT = new NodoOperacion(exI,tipoOp.igual,exD);
+							:}	
+		| simple_exp:exI NEQUAL simple_exp:exD	{: if(modoDepuracion) System.out.println("\t regla 9f"); 
+							RESULT = new NodoOperacion(exI,tipoOp.diferente,exD);
+							:}	
 		;
 
 simple_exp  ::= simple_exp:exI PLUS term:exD	{: if(modoDepuracion) System.out.println("\t regla 10a"); 
@@ -241,4 +253,9 @@ factor      ::= LPAREN exp:ex RPAREN	{: if(modoDepuracion) System.out.println("\
 				System.out.println("Ocurrio error en cup # 0003");
 				RESULT=null;
 				:}
+		;
+		
+for_stmt     ::= FOR LPAREN assign_stmt:asi SEMI exp:ex SEMI assign_stmt:asf RPAREN stmt_seq:cuerpo END {: if(modoDepuracion) System.out.println("\t regla for"); 
+			RESULT = new NodoFor(asi,ex,asf,cuerpo);
+		:}
 		;
