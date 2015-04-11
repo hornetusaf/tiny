@@ -1,1 +1,6 @@
 bin
+
+# ignorar parser y sym #
+sym.java
+parser.java
+
