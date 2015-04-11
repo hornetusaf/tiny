@@ -68,7 +68,8 @@ non terminal NodoBase simple_exp;
 non terminal NodoBase term;
 non terminal NodoBase factor;
 non terminal NodoBase var_stmt;
-non terminal NodoBase variable_stmt;
+non terminal NodoBase variable_stmt ;
+non terminal NodoBase for_stmt;
 non terminal NodoBase vector_stmt;
 non terminal NodoBase for_stmt;
 
@@ -84,6 +85,7 @@ precedence left LPAREN,RPAREN;
 program     ::= BEGIN stmt_seq:s END	{: if(modoDepuracion) System.out.println("\t regla 1"); 
 					ast = s;
 					:}
+
 		;
 
 stmt_seq    ::= stmt_seq:ini stmt:sent SEMI {: if(modoDepuracion) System.out.println("\t regla 2a"); 
@@ -120,7 +122,13 @@ stmt        ::= if_stmt:sif	{: if(modoDepuracion) System.out.println("\t regla 3
 					:}
             | variable_stmt:svar	{: if(modoDepuracion) System.out.println("\t regla 3f yr"); 
 					RESULT=svar;
-					:} 
+					:}
+			| vector_stmt:svect	{: if(modoDepuracion) System.out.println("\t regla 3f.1 yr"); 
+					RESULT=svect;
+					:}
+			| for_stmt:sfor	{: if(modoDepuracion) System.out.println("\t regla 3f.2 yr"); 
+					RESULT=sfor;
+					:}    
             | error	{: if(modoDepuracion) System.out.println("\t regla 3g"); 
 				System.out.println("Ocurrio error en cup # 0004");
 				RESULT=null;
@@ -151,6 +159,7 @@ var_stmt     ::= ID:variable COMA var_stmt:v {: if(modoDepuracion) System.out.pr
 		:}		
 		;
 		
+<<<<<<< HEAD
 vector_stmt ::= INT:tipo ID:variable OBRACKET NUM:tam CBRACKET {: if(modoDepuracion) System.out.println("\t regla 4b.1"); 
 			RESULT = new NodoVector(variable.toString(),tipo.toString(),tam);
 		:}
@@ -162,6 +171,14 @@ vector_stmt ::= INT:tipo ID:variable OBRACKET NUM:tam CBRACKET {: if(modoDepurac
 for_stmt     ::= FOR LPAREN assign_stmt:asi SEMI exp:ex SEMI assign_stmt:asf RPAREN stmt_seq:cuerpo END {: if(modoDepuracion) System.out.println("\t regla for"); 
 			RESULT = new NodoFor(asi,ex,asf,cuerpo);
 		:}
+=======
+vector_stmt ::= INT:tipo ID:variable OBRACKET NUM:tam CBRACKET {: if(modoDepuracion) System.out.println("\t regla 4y.1"); 
+			RESULT = new NodoVector(variable.toString(),tipo.toString(),tam);
+		:}
+		| BOOLEAN:tipo ID:variable OBRACKET NUM:tam CBRACKET {: if(modoDepuracion) System.out.println("\t regla 4y.2"); 
+			RESULT = new NodoVector(variable.toString(),tipo.toString(),tam);
+		:}		
+>>>>>>> origin/master
 		;
 		
 repeat_stmt ::= REPEAT stmt_seq:cuerpo UNTIL exp:prueba	{: if(modoDepuracion) System.out.println("\t regla 5"); 
@@ -269,4 +286,9 @@ factor      ::= LPAREN exp:ex RPAREN	{: if(modoDepuracion) System.out.println("\
 				System.out.println("Ocurrio error en cup # 0003");
 				RESULT=null;
 				:}
+		;
+		
+for_stmt     ::= FOR LPAREN assign_stmt:asi SEMI exp:ex SEMI assign_stmt:asf RPAREN stmt_seq:cuerpo END {: if(modoDepuracion) System.out.println("\t regla for"); 
+			RESULT = new NodoFor(asi,ex,asf,cuerpo);
+		:}
 		;

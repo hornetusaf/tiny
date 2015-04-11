@@ -40,7 +40,11 @@ public class NodoVector extends NodoBase{
 		return tam;
 	}
 
+<<<<<<< HEAD
 	public void setTam(Integer tamaño) {
+=======
+	public void setTam(Integer tam) {
+>>>>>>> origin/master
 		this.tam = tam;
 	}	
 }

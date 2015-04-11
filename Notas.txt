@@ -89,7 +89,11 @@ Yoel
 =======
 aa
 probando...
+<<<<<<< HEAD
+Rafael
+=======
 noel es el mejor
 
 
 >>>>>>> origin/Noel
+>>>>>>> origin/yoel
