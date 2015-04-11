@@ -78,7 +78,7 @@ precedence left AND;
 precedence left GE,LE,GT,LT,EQ,NEQUAL;
 precedence left PLUS, MINUS;
 precedence left TIMES, OVER;
-precedence left LPAREN,RPAREN;
+precedence left LPAREN,RPAREN,OBRACKET,CBRACKET;
 
 /* REGLAS GRAMATICALES */
 program     ::= BEGIN stmt_seq:s END	{: if(modoDepuracion) System.out.println("\t regla 1"); 
@@ -143,26 +143,26 @@ if_stmt     ::= IF exp:ex THEN stmt_seq:pthen END SEMI	{: if(modoDepuracion) Sys
 		;
 
 variable_stmt     ::= INT var_stmt:v {: if(modoDepuracion) System.out.println("\t regla 4a.1"); 
-			RESULT = new NodoVariable(v,"INT");
+			RESULT = new NodoVariable(v,tipoDato.INT);
 		:}
 		| BOOLEAN var_stmt:v {: if(modoDepuracion) System.out.println("\t regla 4a.2"); 
-			RESULT = new NodoVariable(v,"INT");
+			RESULT = new NodoVariable(v,tipoDato.BOOLEAN);
 		:}		
 		;
 
 var_stmt     ::= ID:variable COMA var_stmt:v {: if(modoDepuracion) System.out.println("\t regla 4a.3"); 
-			RESULT = new NodoVariable(variable.toString(),v,"INT");
+			RESULT = new NodoVariable(variable.toString(),v,tipoDato.INT);
 		:}
 		| ID:variable {: if(modoDepuracion) System.out.println("\t regla 4a.4"); 
-		RESULT = new NodoVariable(variable.toString(),"INT");
+		RESULT = new NodoVariable(variable.toString(),tipoDato.BOOLEAN);
 		:}		
 		;
 		
 vector_stmt ::= INT:tipo ID:variable OBRACKET NUM:tam CBRACKET {: if(modoDepuracion) System.out.println("\t regla 4y.1"); 
-			RESULT = new NodoVector(variable.toString(),tipo.toString(),tam);
+			RESULT = new NodoVector(variable.toString(),tipoDato.INT,tam);
 		:}
 		| BOOLEAN:tipo ID:variable OBRACKET NUM:tam CBRACKET {: if(modoDepuracion) System.out.println("\t regla 4y.2"); 
-			RESULT = new NodoVector(variable.toString(),tipo.toString(),tam);
+			RESULT = new NodoVector(variable.toString(),tipoDato.BOOLEAN,tam);
 		:}		
 		;
 		

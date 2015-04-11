@@ -4,22 +4,22 @@ public class NodoVariable extends NodoBase{
 	
 	private String id;
 	private NodoBase partev;
-	private String tipo;
+	private tipoDato tipo;
 
-	public NodoVariable(String id,String tipo) {
+	public NodoVariable(String id,tipoDato tipo) {
 		super();
 		this.id = id;
 		this.partev = null;
 		this.tipo= tipo;
 	}
-	public NodoVariable(NodoBase partev,String tipo) {
+	public NodoVariable(NodoBase partev,tipoDato tipo) {
 		super();
 		this.id = null;
 		this.partev = partev;
 		this.tipo = tipo;
 	}
 	
-	public NodoVariable(String id, NodoBase partev,String tipo) {
+	public NodoVariable(String id, NodoBase partev,tipoDato tipo) {
 		super();
 		this.id = id;
 		this.partev = partev;
@@ -41,11 +41,11 @@ public class NodoVariable extends NodoBase{
 		this.id = id;
 	}
 	
-	public String getTipo() {
+	public tipoDato getTipo() {
 		return tipo;
 	}
 
-	public void setTipo(String tipo) {
+	public void setTipo(tipoDato tipo) {
 		this.tipo = tipo;
 	}
 
