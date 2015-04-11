@@ -142,7 +142,7 @@ variable_stmt     ::= INT var_stmt:v {: if(modoDepuracion) System.out.println("\
 var_stmt     ::= ID:variable COMA var_stmt:v {: if(modoDepuracion) System.out.println("\t regla 4a.3"); 
 			RESULT = new NodoVariable(variable.toString(),v);
 		:}
-		| ID:variable SEMI {: if(modoDepuracion) System.out.println("\t regla 4a.4"); 
+		| ID:variable {: if(modoDepuracion) System.out.println("\t regla 4a.4"); 
 		RESULT = new NodoVariable(variable.toString());
 		:}		
 		;
