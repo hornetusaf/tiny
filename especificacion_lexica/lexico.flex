@@ -139,6 +139,12 @@ espacio		= [ \t]+
 "begin"             {	if(debug) System.out.println("token BEGIN");
 			return sf.newSymbol("BEGIN",sym.BEGIN);
 			}
+"true"             {	if(debug) System.out.println("token TRUE");
+			return sf.newSymbol("TRUE",sym.TRUE);
+			}
+"false"             {	if(debug) System.out.println("token FALSE");
+			return sf.newSymbol("FALSE",sym.FALSE);
+			}
 {numero}        {	if(debug) System.out.println("token NUM");
 			return sf.newSymbol("NUM",sym.NUM,new Integer(yytext()));
 			}
