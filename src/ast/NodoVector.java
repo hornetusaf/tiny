@@ -3,7 +3,7 @@ package ast;
 public class NodoVector extends NodoBase{
 
 	private String id;
-	private String tipo;
+	private tipoDato tipo;
 	private Integer tam;
 	
 	public NodoVector()	{
@@ -13,7 +13,7 @@ public class NodoVector extends NodoBase{
 		this.tam = 0;		
 	}
 	
-	public NodoVector(String id, String tipo, Integer tam)	{
+	public NodoVector(String id, tipoDato tipo, Integer tam)	{
 		super();
 		this.id = id;
 		this.tipo = tipo;
@@ -28,11 +28,11 @@ public class NodoVector extends NodoBase{
 		this.id = id;
 	}
 
-	public String getTipo() {
+	public tipoDato getTipo() {
 		return tipo;
 	}
 
-	public void setTipo(String tipo) {
+	public void setTipo(tipoDato tipo) {
 		this.tipo = tipo;
 	}
 
