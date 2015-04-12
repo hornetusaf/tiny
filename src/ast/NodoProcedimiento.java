@@ -2,11 +2,6 @@ package ast;
 
 public class NodoProcedimiento extends NodoBase {
 	
-<<<<<<< HEAD
-	public NodoProcedimiento()
-	{
-		
-=======
 	private String id;
 	private NodoBase partev;
 	private NodoBase cuerpo;
@@ -57,6 +52,5 @@ public class NodoProcedimiento extends NodoBase {
 	
 	public void setCuerpo(NodoBase cuerpo) {
 		this.cuerpo = cuerpo;
->>>>>>> Silverio
 	}
 }

@@ -87,14 +87,6 @@ precedence left TIMES, OVER;
 precedence left LPAREN,RPAREN,OBRACKET,CBRACKET;
 
 /* REGLAS GRAMATICALES */
-
-program     ::= BEGIN stmt_seq:s END	{: if(modoDepuracion) System.out.println("\t regla 1"); 
-					ast = s;
-			:}
-		    ;
-
-stmt_seq    ::= stmt_seq:ini stmt:sent SEMI {: if(modoDepuracion) System.out.println("\t regla 2a"); 
-
 program     ::= funcion_stmt:ini BEGIN stmt_seq:sent END 	{: if(modoDepuracion) System.out.println("\t regla program a"); 
 						NodoBase hijo = ini;
 						if(hijo!=null){
