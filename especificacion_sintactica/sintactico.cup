@@ -87,7 +87,7 @@ precedence left TIMES, OVER;
 precedence left LPAREN,RPAREN,OBRACKET,CBRACKET;
 
 /* REGLAS GRAMATICALES */
-program     ::= funcion_stmt:ini BEGIN stmt_seq:sent END 	{: if(modoDepuracion) System.out.println("\t regla 1"); 
+program     ::= funcion_stmt:ini BEGIN stmt_seq:sent END 	{: if(modoDepuracion) System.out.println("\t regla program a"); 
 						NodoBase hijo = ini;
 						if(hijo!=null){
 							hijo.setHermanoDerecha(sent);
@@ -97,11 +97,11 @@ program     ::= funcion_stmt:ini BEGIN stmt_seq:sent END 	{: if(modoDepuracion) 
 							ast = sent;
 						}
 			:}
-			| BEGIN stmt_seq:sent END {: if(modoDepuracion) System.out.println("\t regla 1"); 
+			| BEGIN stmt_seq:sent END {: if(modoDepuracion) System.out.println("\t regla program b"); 
 							ast = sent;
 			:}
 			;
-funcion_stmt    ::= funcion_stmt:ini encabezado_stmt:sent {: if(modoDepuracion) System.out.println("\t regla funcion"); 
+funcion_stmt    ::= funcion_stmt:ini encabezado_stmt:sent {: if(modoDepuracion) System.out.println("\t regla funcion a"); 
 						NodoBase hijoActual = ini;
 						if(hijoActual !=null){
 							while(hijoActual.TieneHermano()){
@@ -113,7 +113,7 @@ funcion_stmt    ::= funcion_stmt:ini encabezado_stmt:sent {: if(modoDepuracion) 
 							RESULT=sent;
 						}
 						:}
-            | encabezado_stmt:sent {: if(modoDepuracion) System.out.println("\t regla 12b"); 
+            | encabezado_stmt:sent {: if(modoDepuracion) System.out.println("\t regla funcion b"); 
 				RESULT=sent;
 				:}
 		; 
