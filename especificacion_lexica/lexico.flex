@@ -24,6 +24,7 @@ import java_cup.runtime.*;
 %}
 
 %eofval{
+	System.out.println(“Fin del archivo”);
     return sf.newSymbol("EOF",sym.EOF);
 %eofval}
 

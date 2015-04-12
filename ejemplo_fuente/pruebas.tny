@@ -1,0 +1,6 @@
+begin
+    int a,b,c;
+    
+    boolean d,e,f;
+    a:=1+2+3+5;
+end

@@ -164,24 +164,24 @@ par_stmt ::=  simple_exp:ex  COMA par_stmt:v {: if(modoDepuracion) System.out.pr
 		;
 
 variable_stmt     ::= INT var_stmt:v {: if(modoDepuracion) System.out.println("\t regla variable_stmt int"); 
-			RESULT = new NodoVariable(v,tipoDato.INT);
+			RESULT = new NodoVariable(tipoDato.INT,v);
 		:}
 		| BOOLEAN var_stmt:v {: if(modoDepuracion) System.out.println("\t regla variable_stmt boolean"); 
-			RESULT = new NodoVariable(v,tipoDato.BOOLEAN);
+			RESULT = new NodoVariable(tipoDato.BOOLEAN,v);
 		:}		
 		;
 
 var_stmt     ::= ID:variable COMA var_stmt:v {: if(modoDepuracion) System.out.println("\t regla var_stmt id coma"); 
-			RESULT = new NodoVariable(variable.toString(),v,tipoDato.INT);
+			RESULT = new NodoVariable(variable.toString(),tipoOp.coma,v);
 		:}
 		| ID:variable {: if(modoDepuracion) System.out.println("\t regla var_stmt id"); 
-		RESULT = new NodoVariable(variable.toString(),tipoDato.BOOLEAN);
+		RESULT = new NodoVariable(variable.toString(),tipoOp.puntoComa);
 		:}
 		| ID:variable OBRACKET NUM:tam CBRACKET COMA var_stmt:v {: if(modoDepuracion) System.out.println("\t regla var_stmt vector coma"); 
-			RESULT = new NodoVector(variable.toString(),tipoDato.INT,tam);
-		:}		
+			RESULT = new NodoVariable(variable.toString(),tam,tipoOp.coma,v);
+		:}					
 		| ID:variable OBRACKET NUM:tam CBRACKET{: if(modoDepuracion) System.out.println("\t regla var_stmt vector"); 
-			RESULT = new NodoVector(variable.toString(),tipoDato.INT,tam);
+			RESULT = new NodoVariable(variable.toString(),tam,tipoOp.puntoComa);
 		:}		
 		;		
 		

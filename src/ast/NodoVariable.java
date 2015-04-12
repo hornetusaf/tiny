@@ -3,34 +3,48 @@ package ast;
 public class NodoVariable extends NodoBase{
 	
 	private String id;
+	private tipoOp TipoOperador;
 	private NodoBase partev;
 	private tipoDato tipo;
+	private Integer tam;
 
-	public NodoVariable(String id,tipoDato tipo) {
-		super();
+	public NodoVariable(String id,tipoOp to,NodoBase partev) {
+		super();//si
 		this.id = id;
-		this.partev = null;
-		this.tipo= tipo;
+		this.TipoOperador=to;
+		this.partev= partev;		
 	}
-	public NodoVariable(NodoBase partev,tipoDato tipo) {
+	public NodoVariable(String id,Integer tam,tipoOp to,NodoBase partev) {
+		super();//si
+		this.id = id;
+		this.tam=tam;
+		this.TipoOperador=to;
+		this.partev= partev;		
+	}
+	public NodoVariable(tipoDato tipo,NodoBase partev) {
 		super();
-		this.id = null;
-		this.partev = partev;
 		this.tipo = tipo;
-	}
+		this.partev=partev;
+	}	
 	
-	public NodoVariable(String id, NodoBase partev,tipoDato tipo) {
+	public NodoVariable(String id,tipoOp to) {
 		super();
 		this.id = id;
-		this.partev = partev;
-		this.tipo = tipo;
+		this.TipoOperador=to;
+	}
+	public NodoVariable(String id,Integer tam,tipoOp to) {
+		super();
+		this.id = id;
+		this.setTam(tam);
+		this.TipoOperador=to;
 	}
 	
 	public NodoVariable() {
 		super();
-		this.id = null;
+		this.id = "";
 		this.partev = null;
 		this.tipo = null;
+		this.setTam(1);
 	}
 	
 	public String getId() {
@@ -55,5 +69,17 @@ public class NodoVariable extends NodoBase{
 	
 	public void setPartev(NodoBase partev) {
 		this.partev = partev;
+	}
+	public tipoOp getTipoOperador() {
+		return TipoOperador;
+	}
+	public void setTipoOperador(tipoOp tipoOperador) {
+		TipoOperador = tipoOperador;
+	}
+	public Integer getTam() {
+		return tam;
+	}
+	public void setTam(Integer tam) {
+		this.tam = tam;
 	}	
 }

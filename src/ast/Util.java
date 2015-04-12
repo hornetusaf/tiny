@@ -22,11 +22,13 @@ public class Util {
 
 		    else if (raiz instanceof  NodoEscribir)
 		    	System.out.println("Escribir");
-		    
+		    else if (raiz instanceof  NodoVariable)
+		    	System.out.println("Declaracion "+((NodoVariable)raiz).getTipo());		  
 		    else if (raiz instanceof NodoOperacion
 		    		|| raiz instanceof NodoValor
 		    		|| raiz instanceof NodoIdentificador )
 		    	imprimirNodo(raiz);
+		    
 		    else System.out.println("Tipo de nodo desconocido");;
 		    
 		    /* Hago el recorrido recursivo */
@@ -42,7 +44,7 @@ public class Util {
 		    		System.out.println("**Else IF**");
 		    		imprimirAST(((NodoIf)raiz).getParteElse());
 		    	}
-		    }
+		    }		    
 		    else if (raiz instanceof  NodoRepeat){
 		    	printSpaces();
 		    	System.out.println("**Cuerpo REPEAT**");
@@ -62,6 +64,10 @@ public class Util {
 		    	printSpaces();
 		    	System.out.println("**Expr Derecha Operacion**");		    	
 		    	imprimirAST(((NodoOperacion)raiz).getOpDerecho());
+		    }
+		    else if (raiz instanceof NodoVariable){
+		    	printSpaces();
+		    	imprimirNodo(((NodoVariable)raiz).getPartev());		    	
 		    }
 		    raiz = raiz.getHermanoDerecha();
 		  }
@@ -110,6 +116,16 @@ static void imprimirNodo( NodoBase raiz )
 	if(	raiz instanceof NodoIdentificador ){
 		System.out.println("ID, nombre= "+ ((NodoIdentificador)raiz).getNombre());
 	}
+	if (raiz instanceof NodoVariable)
+	{		
+		System.out.println("**ID: "+((NodoVariable)raiz).getId());		    	
+    	printSpaces();
+    	if(((NodoVariable)raiz).getPartev()!=null)
+    	{		    				    
+    		imprimirNodo(((NodoVariable)raiz).getPartev());	
+    	}
+	}
+	
 
 }
 
