@@ -70,7 +70,6 @@ non terminal NodoBase factor;
 non terminal NodoBase var_stmt;
 non terminal NodoBase variable_stmt ;
 non terminal NodoBase for_stmt;
-non terminal NodoBase vector_stmt;
 non terminal NodoBase return_stmt;
 non terminal NodoBase call_stmt;
 non terminal NodoBase par_stmt;
@@ -124,10 +123,7 @@ stmt        ::= if_stmt:sif	{: if(modoDepuracion) System.out.println("\t regla 3
 					:}
             | variable_stmt:svar	{: if(modoDepuracion) System.out.println("\t regla 3f yr"); 
 					RESULT=svar;
-					:}
-			| vector_stmt:svect	{: if(modoDepuracion) System.out.println("\t regla 3f.1 yr"); 
-					RESULT=svect;
-					:}
+					:}			
 			| for_stmt:sfor	{: if(modoDepuracion) System.out.println("\t regla 3f.2 yr"); 
 					RESULT=sfor;
 					:}
@@ -181,16 +177,15 @@ var_stmt     ::= ID:variable COMA var_stmt:v {: if(modoDepuracion) System.out.pr
 		:}
 		| ID:variable {: if(modoDepuracion) System.out.println("\t regla 4a.4"); 
 		RESULT = new NodoVariable(variable.toString(),tipoDato.BOOLEAN);
-		:}		
-		;
-		
-vector_stmt ::= INT:tipo ID:variable OBRACKET NUM:tam CBRACKET {: if(modoDepuracion) System.out.println("\t regla 4y.1"); 
-			RESULT = new NodoVector(variable.toString(),tipoDato.INT,tam);
 		:}
-		| BOOLEAN:tipo ID:variable OBRACKET NUM:tam CBRACKET {: if(modoDepuracion) System.out.println("\t regla 4y.2"); 
-			RESULT = new NodoVector(variable.toString(),tipoDato.BOOLEAN,tam);
+		| ID:variable OBRACKET NUM:tam CBRACKET COMA var_stmt:v {: if(modoDepuracion) System.out.println("\t regla 4y.1"); 
+			RESULT = new NodoVector(variable.toString(),tipoDato.INT,tam);
 		:}		
-		;
+		| ID:variable OBRACKET NUM:tam CBRACKET{: if(modoDepuracion) System.out.println("\t regla 4y.1"); 
+			RESULT = new NodoVector(variable.toString(),tipoDato.INT,tam);
+		:}		
+					
+		;		
 		
 repeat_stmt ::= REPEAT stmt_seq:cuerpo UNTIL exp:prueba	{: if(modoDepuracion) System.out.println("\t regla 5"); 
 							RESULT = new NodoRepeat(cuerpo,prueba);
