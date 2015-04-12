@@ -70,6 +70,13 @@ non terminal NodoBase factor;
 non terminal NodoBase var_stmt;
 non terminal NodoBase variable_stmt ;
 non terminal NodoBase for_stmt;
+<<<<<<< HEAD
+=======
+non terminal NodoBase funcion_stmt;
+non terminal NodoBase parametro_stmt;
+non terminal NodoBase exp_var;
+non terminal NodoBase encabezado_stmt;
+>>>>>>> Noel
 non terminal NodoBase return_stmt;
 non terminal NodoBase call_stmt;
 non terminal NodoBase par_stmt;
@@ -83,12 +90,72 @@ precedence left TIMES, OVER;
 precedence left LPAREN,RPAREN,OBRACKET,CBRACKET;
 
 /* REGLAS GRAMATICALES */
+<<<<<<< HEAD
 program     ::= BEGIN stmt_seq:s END	{: if(modoDepuracion) System.out.println("\t regla program"); 
 					ast = s;
 					:}
 
 		;
 
+=======
+program     ::= funcion_stmt:ini BEGIN stmt_seq:sent END 	{: if(modoDepuracion) System.out.println("\t regla program a"); 
+						NodoBase hijo = ini;
+						if(hijo!=null){
+							hijo.setHermanoDerecha(sent);
+							ast = hijo;
+						}
+						else{
+							ast = sent;
+						}
+			:}
+			| BEGIN stmt_seq:sent END {: if(modoDepuracion) System.out.println("\t regla program b"); 
+							ast = sent;
+			:}
+			;
+funcion_stmt    ::= funcion_stmt:ini encabezado_stmt:sent {: if(modoDepuracion) System.out.println("\t regla funcion a"); 
+						NodoBase hijoActual = ini;
+						if(hijoActual !=null){
+							while(hijoActual.TieneHermano()){
+								hijoActual = hijoActual.getHermanoDerecha();
+							}
+							hijoActual.setHermanoDerecha(sent);
+							RESULT=ini;
+						}else{
+							RESULT=sent;
+						}
+						:}
+            | encabezado_stmt:sent {: if(modoDepuracion) System.out.println("\t regla funcion b"); 
+				RESULT=sent;
+				:}
+		; 
+					    
+encabezado_stmt ::= VOID ID:nf LPAREN exp_var:p RPAREN BEGIN stmt_seq:cuerpo END {: if(modoDepuracion) System.out.println("\t regla encabezado funcion a"); 
+			RESULT = new NodoProcedimiento(nf.toString(),p,cuerpo,tipoFuncion.VOID);
+		:}
+		|INT ID:nf LPAREN parametro_stmt:p RPAREN BEGIN stmt_seq:cuerpo RETURN ID END {: if(modoDepuracion) System.out.println("\t regla encabezado funcion b"); 
+			RESULT = new NodoProcedimiento(nf.toString(),p,cuerpo,tipoFuncion.INT);
+		:}
+		|BOOLEAN ID:nf LPAREN parametro_stmt:p RPAREN BEGIN stmt_seq:cuerpo RETURN ID END {: if(modoDepuracion) System.out.println("\t regla encabezado funcion c"); 
+			RESULT = new NodoProcedimiento(nf.toString(),p,cuerpo,tipoFuncion.BOOLEAN);
+		:}
+		;
+			  
+		  
+exp_var ::= INT ID:v COMA exp_var:va {: if(modoDepuracion) System.out.println("\t regla funcion parametros a"); 
+			RESULT = new NodoVariable(v.toString(),va,tipoDato.INT);
+		  :}
+		  |BOOLEAN ID:v COMA exp_var:va {: if(modoDepuracion) System.out.println("\t regla funcion parametros b"); 
+			RESULT = new NodoVariable(v.toString(),va,tipoDato.BOOLEAN);
+		  :}
+		  |INT ID:v {: if(modoDepuracion) System.out.println("\t regla funcion parametros c"); 
+			RESULT = new NodoVariable(v.toString(),tipoDato.INT);
+		  :}
+		  | BOOLEAN ID:v {: if(modoDepuracion) System.out.println("\tregla funcion parametros d"); 
+			RESULT = new NodoVariable(v.toString(),tipoDato.BOOLEAN);
+		  :}	
+		  ;
+		  
+>>>>>>> Noel
 stmt_seq    ::= stmt_seq:ini stmt:sent SEMI {: if(modoDepuracion) System.out.println("\t regla stmt_seq stmt_seq"); 
 						NodoBase hijoActual = ini;
 						if(hijoActual !=null){
@@ -152,9 +219,21 @@ call_stmt   ::= ID LPAREN par_stmt:parametros RPAREN  {: if(modoDepuracion) Syst
 		:}
 		| ID LPAREN  RPAREN  {: if(modoDepuracion) System.out.println("\t regla call_stmt funcion sin parametros"); 
 			RESULT=null;
+<<<<<<< HEAD
+=======
 		:}
 		;
 
+par_stmt ::=  simple_exp:ex  COMA par_stmt:v {: if(modoDepuracion) System.out.println("\t regla par_stmt con coma"); 
+				RESULT = new NodoCall(ex,v);
+>>>>>>> Noel
+		:}
+		| simple_exp:ex {: if(modoDepuracion) System.out.println("\t regla par_stmt sin coma"); 
+		RESULT = new NodoCall(ex);
+		:}	
+		;
+
+<<<<<<< HEAD
 par_stmt ::=  simple_exp:ex  COMA par_stmt:v {: if(modoDepuracion) System.out.println("\t regla par_stmt con coma"); 
 				RESULT = new NodoCall(ex,v);
 		:}
@@ -182,6 +261,27 @@ var_stmt     ::= ID:variable COMA var_stmt:v {: if(modoDepuracion) System.out.pr
 		:}					
 		| ID:variable OBRACKET NUM:tam CBRACKET{: if(modoDepuracion) System.out.println("\t regla var_stmt vector"); 
 			RESULT = new NodoVariable(variable.toString(),tam,tipoOp.puntoComa);
+=======
+variable_stmt     ::= INT var_stmt:v {: if(modoDepuracion) System.out.println("\t regla variable_stmt int"); 
+			RESULT = new NodoVariable(v,tipoDato.INT);
+		:}
+		| BOOLEAN var_stmt:v {: if(modoDepuracion) System.out.println("\t regla variable_stmt boolean"); 
+			RESULT = new NodoVariable(v,tipoDato.BOOLEAN);
+		:}		
+		;
+
+var_stmt     ::= ID:variable COMA var_stmt:v {: if(modoDepuracion) System.out.println("\t regla var_stmt id coma"); 
+			RESULT = new NodoVariable(variable.toString(),v,tipoDato.INT);
+		:}
+		| ID:variable {: if(modoDepuracion) System.out.println("\t regla var_stmt id"); 
+		RESULT = new NodoVariable(variable.toString(),tipoDato.BOOLEAN);
+		:}
+		| ID:variable OBRACKET NUM:tam CBRACKET COMA var_stmt:v {: if(modoDepuracion) System.out.println("\t regla var_stmt vector coma"); 
+			RESULT = new NodoVector(variable.toString(),tipoDato.INT,tam);
+		:}		
+		| ID:variable OBRACKET NUM:tam CBRACKET{: if(modoDepuracion) System.out.println("\t regla var_stmt vector"); 
+			RESULT = new NodoVector(variable.toString(),tipoDato.INT,tam);
+>>>>>>> Noel
 		:}		
 		;		
 		

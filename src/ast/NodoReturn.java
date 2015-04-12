@@ -26,6 +26,5 @@ public class NodoReturn extends NodoBase {
 	public void set_bool(boolean _bool) {
 		this._bool = _bool;
 	}
-	
-
 }
+	

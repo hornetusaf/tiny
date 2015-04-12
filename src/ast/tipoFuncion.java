@@ -1,6 +1,6 @@
 package ast;
 
-public enum tipoDato {
+public enum tipoFuncion {
 	INT,BOOLEAN,VOID
 
 }
