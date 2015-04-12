@@ -14,6 +14,18 @@ public class NodoVariable extends NodoBase{
 		this.TipoOperador=to;
 		this.partev= partev;		
 	}
+	public NodoVariable(tipoDato td, String id,tipoOp to,NodoBase partev) {
+		super();//si
+		this.tipo= td;
+		this.id = id;
+		this.TipoOperador=to;
+		this.partev= partev;		
+	}
+	public NodoVariable(tipoDato td, String id) {
+		super();//si
+		this.tipo= td;
+		this.id = id;
+	}
 	public NodoVariable(String id,Integer tam,tipoOp to,NodoBase partev) {
 		super();//si
 		this.id = id;
@@ -32,6 +44,7 @@ public class NodoVariable extends NodoBase{
 		this.id = id;
 		this.TipoOperador=to;
 	}
+	
 	public NodoVariable(String id,Integer tam,tipoOp to) {
 		super();
 		this.id = id;
