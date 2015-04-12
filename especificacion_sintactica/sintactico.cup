@@ -86,17 +86,19 @@ precedence left LPAREN,RPAREN,OBRACKET,CBRACKET;
 
 /* REGLAS GRAMATICALES */
 program     ::= funcion_stmt:ini BEGIN stmt_seq:sent END 	{: if(modoDepuracion) System.out.println("\t regla 1"); 
-					NodoBase hijoActual = ini;
-					if(hijoActual!=null){
-						hijoActual.setHermanoDerecha(sent);
-						ast= hijoActual;
-						 if(modoDepuracion) System.out.println("\t entro a regla 1.b");
-					}
-					else
-						ast = s;
+						NodoBase hijo = ini;
+						if(hijo!=null){
+							hijo.setHermanoDerecha(sent);
+							ast = hijo;
+						}
+						else{
+							ast = sent;
+						}
+			:}
+			| BEGIN stmt_seq:sent END {: if(modoDepuracion) System.out.println("\t regla 1"); 
+							ast = sent;
 			:}
 			;
-
 funcion_stmt    ::= funcion_stmt:ini encabezado_stmt:sent {: if(modoDepuracion) System.out.println("\t regla 12a"); 
 						NodoBase hijoActual = ini;
 						if(hijoActual !=null){
@@ -109,7 +111,7 @@ funcion_stmt    ::= funcion_stmt:ini encabezado_stmt:sent {: if(modoDepuracion) 
 							RESULT=sent;
 						}
 						:}
-            | stmt:sent SEMI{: if(modoDepuracion) System.out.println("\t regla 12b"); 
+            | encabezado_stmt:sent {: if(modoDepuracion) System.out.println("\t regla 12b"); 
 				RESULT=sent;
 				:}
 		; 
@@ -140,6 +142,7 @@ exp_var ::= ID COMA parametro_stmt {: if(modoDepuracion) System.out.println("\t 
 			RESULT = new NodoProcedimiento();
 		  :}	
 		  ;	
+		  
 
 stmt_seq    ::= stmt_seq:ini stmt:sent SEMI {: if(modoDepuracion) System.out.println("\t regla 2a"); 
 						NodoBase hijoActual = ini;
@@ -181,7 +184,7 @@ stmt       ::= if_stmt:sif	{: if(modoDepuracion) System.out.println("\t regla 3a
 					:} 
 			| for_stmt:sfor	{: if(modoDepuracion) System.out.println("\t regla 3f yr"); 
 					RESULT=sfor;
-					:} 
+					:}  
             | error	{: if(modoDepuracion) System.out.println("\t regla 3g"); 
 				System.out.println("Ocurrio error en cup # 0004");
 				RESULT=null;
