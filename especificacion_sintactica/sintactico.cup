@@ -207,11 +207,11 @@ if_stmt     ::= IF exp:ex THEN stmt_seq:pthen END {: if(modoDepuracion) System.o
 		:}		
 		;
 		
-call_stmt   ::= ID LPAREN par_stmt:parametros RPAREN  {: if(modoDepuracion) System.out.println("\t regla call_stmt funcion con parametros"); 
-			RESULT=parametros;
+call_stmt   ::= ID:nombre LPAREN par_stmt:parIzquierdo RPAREN  {: if(modoDepuracion) System.out.println("\t regla call_stmt funcion con parametros"); 
+			RESULT=new NodoCall(parIzquierdo,null,nombre.toString());
 		:}
-		| ID LPAREN  RPAREN  {: if(modoDepuracion) System.out.println("\t regla call_stmt funcion sin parametros"); 
-			RESULT=null;
+		| ID:nombre LPAREN  RPAREN  {: if(modoDepuracion) System.out.println("\t regla call_stmt funcion sin parametros"); 
+			RESULT=new NodoCall(null,null,nombre.toString());
 		:}
 		;
 
@@ -219,7 +219,7 @@ par_stmt ::=  simple_exp:ex  COMA par_stmt:v {: if(modoDepuracion) System.out.pr
 				RESULT = new NodoCall(ex,v);
 		:}
 		| simple_exp:ex {: if(modoDepuracion) System.out.println("\t regla par_stmt sin coma"); 
-		RESULT = new NodoCall(ex);
+		RESULT = new NodoCall(ex,null);
 		:}	
 		;
 

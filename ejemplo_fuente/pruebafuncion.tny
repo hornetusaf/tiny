@@ -1,0 +1,7 @@
+
+	if(a!=b) then
+		write a;
+		if(c=d) then
+																
+		end;			
+	end;
