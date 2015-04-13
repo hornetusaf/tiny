@@ -4,7 +4,7 @@ import java_cup.runtime.*;
 import ast.*;
 
 action code {:
-	private boolean modoDepuracion=true;
+	private boolean modoDepuracion=false;
 	private NodoBase ast=null;
 	private int lineanum=0;
 	
@@ -71,7 +71,6 @@ non terminal NodoBase var_stmt;
 non terminal NodoBase variable_stmt ;
 non terminal NodoBase for_stmt;
 non terminal NodoBase funcion_stmt;
-non terminal NodoBase parametro_stmt;
 non terminal NodoBase exp_var;
 non terminal NodoBase encabezado_stmt;
 non terminal NodoBase return_stmt;
@@ -126,10 +125,10 @@ funcion_stmt    ::= funcion_stmt:ini encabezado_stmt:sent  {: if(modoDepuracion)
 encabezado_stmt ::= VOID ID:nf LPAREN exp_var:p RPAREN BEGIN stmt_seq:cuerpo END {: if(modoDepuracion) System.out.println("\t regla encabezado funcion a"); 
 			RESULT = new NodoProcedimiento(nf.toString(),p,cuerpo,tipoFuncion.VOID);
 		:}
-		|INT ID:nf LPAREN parametro_stmt:p RPAREN BEGIN stmt_seq:cuerpo END {: if(modoDepuracion) System.out.println("\t regla encabezado funcion b"); 
+		|INT ID:nf LPAREN exp_var:p RPAREN BEGIN stmt_seq:cuerpo END {: if(modoDepuracion) System.out.println("\t regla encabezado funcion b"); 
 			RESULT = new NodoProcedimiento(nf.toString(),p,cuerpo,tipoFuncion.INT);
 		:}
-		|BOOLEAN ID:nf LPAREN parametro_stmt:p RPAREN BEGIN stmt_seq:cuerpo END {: if(modoDepuracion) System.out.println("\t regla encabezado funcion c"); 
+		|BOOLEAN ID:nf LPAREN exp_var:p RPAREN BEGIN stmt_seq:cuerpo END {: if(modoDepuracion) System.out.println("\t regla encabezado funcion c"); 
 			RESULT = new NodoProcedimiento(nf.toString(),p,cuerpo,tipoFuncion.BOOLEAN);
 		:}
 		;
@@ -325,8 +324,6 @@ exp         ::= simple_exp:exI LT simple_exp:exD	{: if(modoDepuracion) System.ou
 					RESULT = ex;
 					:}			
 		;
-
-
 
 simple_exp  ::= simple_exp:exI PLUS term:exD	{: if(modoDepuracion) System.out.println("\t regla simple_exp PLUS"); 
 							RESULT = new NodoOperacion(exI,tipoOp.mas,exD);
