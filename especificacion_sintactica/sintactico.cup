@@ -4,7 +4,7 @@ import java_cup.runtime.*;
 import ast.*;
 
 action code {:
-	private boolean modoDepuracion=false;
+	private boolean modoDepuracion=true;
 	private NodoBase ast=null;
 	private int lineanum=0;
 	
@@ -91,8 +91,11 @@ precedence left LPAREN,RPAREN,OBRACKET,CBRACKET;
 program     ::= funcion_stmt:ini BEGIN stmt_seq:sent END 	{: if(modoDepuracion) System.out.println("\t regla program a"); 
 						NodoBase hijo = ini;
 						if(hijo!=null){
+						while(hijo.TieneHermano()){
+								hijo = hijo.getHermanoDerecha();
+							}
 							hijo.setHermanoDerecha(sent);
-							ast = hijo;
+							ast = ini;
 						}
 						else{
 							ast = sent;
@@ -103,7 +106,7 @@ program     ::= funcion_stmt:ini BEGIN stmt_seq:sent END 	{: if(modoDepuracion) 
 			:}
 			;
 			
-funcion_stmt    ::= funcion_stmt:ini encabezado_stmt:sent {: if(modoDepuracion) System.out.println("\t regla funcion a"); 
+funcion_stmt    ::= funcion_stmt:ini encabezado_stmt:sent  {: if(modoDepuracion) System.out.println("\t regla funcion a"); 
 						NodoBase hijoActual = ini;
 						if(hijoActual !=null){
 							while(hijoActual.TieneHermano()){
@@ -322,6 +325,8 @@ exp         ::= simple_exp:exI LT simple_exp:exD	{: if(modoDepuracion) System.ou
 					RESULT = ex;
 					:}			
 		;
+
+
 
 simple_exp  ::= simple_exp:exI PLUS term:exD	{: if(modoDepuracion) System.out.println("\t regla simple_exp PLUS"); 
 							RESULT = new NodoOperacion(exI,tipoOp.mas,exD);
