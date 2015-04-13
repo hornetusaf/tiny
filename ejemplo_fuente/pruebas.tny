@@ -1,8 +1,5 @@
-void funcion (int a) begin int b; end
-void funcion (int a) begin int b; end
 begin
-    int a,b,c;
-    
-    boolean d,e,f;
-    a:=1+2+3+5;
+if true and false then
+  fact := 1;
+ end;
 end

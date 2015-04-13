@@ -34,5 +34,4 @@ public class Compilador {
 		Generador.setTablaSimbolos(ts);
 		Generador.generarCodigoObjeto(root);
 	}
-
 }
