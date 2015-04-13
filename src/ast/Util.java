@@ -23,30 +23,7 @@ public class Util {
 		    else if (raiz instanceof  NodoEscribir)
 		    	System.out.println("Escribir");
 		    else if (raiz instanceof  NodoVariable)
-		    	System.out.println("Declaracion "+((NodoVariable)raiz).getTipo());
-		    
-		    else if (raiz instanceof NodoCall)
-	    	{		
-		    	if(((NodoCall)raiz).getNombreFuncion()!="")
-		    	{
-		    		System.out.println("Llamada a Funcion: "+((NodoCall)raiz).getNombreFuncion());
-		    		imprimirAST(((NodoCall)raiz).getExI());
-		    	}
-		    	else
-		    	if(((NodoCall)raiz).getExI()!=null)
-	    		{	
-	    			imprimirAST(((NodoCall)raiz).getExI());
-	    			
-	    			if(((NodoCall)raiz).getExD()!=null)    		    			    
-	    				imprimirAST(((NodoCall)raiz).getExD());
-	    			else
-	    				System.out.println("Fin de llamada a funcion");
-	    		}		    	
-		    	
-		    	if(((NodoCall)raiz).getExI()==null)
-	    			System.out.println("Funcion sin parametros"); 
-		    	
-	    	}	
+		    	System.out.println("Declaracion "+((NodoVariable)raiz).getTipo());		  
 		    else if (raiz instanceof NodoOperacion
 		    		|| raiz instanceof NodoValor
 		    		|| raiz instanceof NodoIdentificador )
@@ -92,7 +69,6 @@ public class Util {
 		    	printSpaces();
 		    	imprimirNodo(((NodoVariable)raiz).getPartev());		    	
 		    }
-		    		    
 		    raiz = raiz.getHermanoDerecha();
 		  }
 		  sangria-=2;
@@ -140,7 +116,6 @@ static void imprimirNodo( NodoBase raiz )
 	if(	raiz instanceof NodoIdentificador ){
 		System.out.println("ID, nombre= "+ ((NodoIdentificador)raiz).getNombre());
 	}
-	
 	if (raiz instanceof NodoVariable)
 	{		
 		System.out.println("**ID: "+((NodoVariable)raiz).getId());		    	
@@ -150,5 +125,9 @@ static void imprimirNodo( NodoBase raiz )
     		imprimirNodo(((NodoVariable)raiz).getPartev());	
     	}
 	}
- }
+	
+
+}
+
+
 }
