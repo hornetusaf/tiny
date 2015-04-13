@@ -1,0 +1,17 @@
+void funcionabbbbb (int c)
+begin 
+ 	int d,z;
+  	boolean boola; 
+end
+
+void funcionaaaccccccc (int a)
+begin 
+	int b,x; 
+	boolean boolb; 
+end
+
+void funcionaaaddddddd (int a)
+begin 
+	int c,y; 
+	boolean boolc; 
+end
