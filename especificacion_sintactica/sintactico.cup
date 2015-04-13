@@ -4,7 +4,7 @@ import java_cup.runtime.*;
 import ast.*;
 
 action code {:
-	private boolean modoDepuracion=false;
+	private boolean modoDepuracion=true;
 	private NodoBase ast=null;
 	private int lineanum=0;
 	
@@ -130,6 +130,15 @@ encabezado_stmt ::= VOID ID:nf LPAREN exp_var:p RPAREN BEGIN stmt_seq:cuerpo END
 		:}
 		|BOOLEAN ID:nf LPAREN exp_var:p RPAREN BEGIN stmt_seq:cuerpo END {: if(modoDepuracion) System.out.println("\t regla encabezado funcion c"); 
 			RESULT = new NodoProcedimiento(nf.toString(),p,cuerpo,tipoFuncion.BOOLEAN);
+		:}
+		|  VOID ID:nf LPAREN  RPAREN BEGIN stmt_seq:cuerpo END {: if(modoDepuracion) System.out.println("\t regla encabezado funcion a"); 
+			RESULT = new NodoProcedimiento(nf.toString(),cuerpo,tipoFuncion.VOID);
+		:}
+		|INT ID:nf LPAREN  RPAREN BEGIN stmt_seq:cuerpo END {: if(modoDepuracion) System.out.println("\t regla encabezado funcion b"); 
+			RESULT = new NodoProcedimiento(nf.toString(),cuerpo,tipoFuncion.INT);
+		:}
+		|BOOLEAN ID:nf LPAREN  RPAREN BEGIN stmt_seq:cuerpo END {: if(modoDepuracion) System.out.println("\t regla encabezado funcion c"); 
+			RESULT = new NodoProcedimiento(nf.toString(),cuerpo,tipoFuncion.BOOLEAN);
 		:}
 		;
 			  

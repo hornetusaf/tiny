@@ -1,6 +1,12 @@
-void prueba (int z) begin int y,z; end
-int pruebab (int u) begin boolean boolc,boold; end
+void f() begin int a; end
+int fa(int a) begin int a; end
+boolean fb(int z, int y) begin int a; end
+
+
+
 begin
+	fnoel(a,b);
+	fotro();
 	int a,b,c[2];
 	a:=1;
 	b:=1+2+3;
@@ -26,9 +32,9 @@ begin
 			read a;
 			if (c=b) then
 				read b;					
-				H:=2+2;
+				a:=2+2;
 			else
-				q:=2+2;
+				b:=2+2;
 			end;
 		end;				
 	end;
@@ -36,7 +42,7 @@ begin
 		for (a:=1;a<2;a:=a+1)
 			for (a:=1;a<2;a:=a+1)
 				read x;
-				if (true) then
+				if (a<2) then
 					read a;
 					if (true) then
 						read b;					
@@ -50,7 +56,7 @@ begin
 	end;
 	return a;
 	if(a!=b) then		
-		if true then
+		if a>=0 then
 			read a;			
 		end;				
 	end;

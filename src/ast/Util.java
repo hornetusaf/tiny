@@ -108,7 +108,7 @@ public class Util {
 		    	imprimirNodo(((NodoVariable)raiz).getPartev());		    	
 		    }
 		    else if (raiz instanceof NodoProcedimiento){
-		    	printSpaces();
+		    	
 		    	
 		    	imprimirAST(((NodoProcedimiento)raiz).getPartev());
 		    	imprimirNodo(((NodoProcedimiento)raiz).getPartev());
