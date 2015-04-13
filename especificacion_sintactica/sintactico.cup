@@ -76,7 +76,6 @@ non terminal NodoBase encabezado_stmt;
 non terminal NodoBase return_stmt;
 non terminal NodoBase call_stmt;
 non terminal NodoBase par_stmt;
-non terminal NodoBase ext;
 
 /* Precedencia de operadores */
 precedence left OR;
