@@ -24,6 +24,8 @@ public class Util {
 		    	System.out.println("Escribir");
 		    else if (raiz instanceof  NodoVariable)
 		    	System.out.println("Declaracion "+((NodoVariable)raiz).getTipo());
+		    else if (raiz instanceof  NodoReturn)
+		    	System.out.println("Return "+((NodoReturn)raiz).getId());
 		    else if (raiz instanceof NodoCall)
 		    		    	{		
 		    			    	if(((NodoCall)raiz).getNombreFuncion()!="")
