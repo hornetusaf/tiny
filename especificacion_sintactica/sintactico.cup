@@ -77,6 +77,7 @@ non terminal NodoBase encabezado_stmt;
 non terminal NodoBase return_stmt;
 non terminal NodoBase call_stmt;
 non terminal NodoBase par_stmt;
+non terminal NodoBase ext;
 
 /* Precedencia de operadores */
 precedence left OR;
@@ -312,17 +313,16 @@ exp         ::= simple_exp:exI LT simple_exp:exD	{: if(modoDepuracion) System.ou
 		| simple_exp:exI NEQUAL simple_exp:exD	{: if(modoDepuracion) System.out.println("\t regla exp NEQUAL"); 
 							RESULT = new NodoOperacion(exI,tipoOp.diferente,exD);
 							:}
-		| simple_exp:exI AND simple_exp:exD	{: if(modoDepuracion) System.out.println("\t regla exp AND"); 
+		| exp:exI AND simple_exp:exD	{: if(modoDepuracion) System.out.println("\t regla exp AND"); 
 							RESULT = new NodoOperacion(exI,tipoOp.and,exD);
 							:}
-		| simple_exp:exI OR simple_exp:exD	{: if(modoDepuracion) System.out.println("\t regla exp OR"); 
+		| exp:exI OR simple_exp:exD	{: if(modoDepuracion) System.out.println("\t regla exp OR"); 
 							RESULT = new NodoOperacion(exI,tipoOp.or,exD);
-							:}	
+							:}
 		| simple_exp:ex	{: if(modoDepuracion) System.out.println("\t regla exp"); 
-					RESULT = ex;
-					:}			
+							RESULT = ex;
+							:}			
 		;
-
 simple_exp  ::= simple_exp:exI PLUS term:exD	{: if(modoDepuracion) System.out.println("\t regla simple_exp PLUS"); 
 							RESULT = new NodoOperacion(exI,tipoOp.mas,exD);
 							:}

@@ -13,6 +13,8 @@ public class Util {
 		    	System.out.println("If");
 		    else if (raiz instanceof  NodoRepeat)
 		    	System.out.println("Repeat");
+		    else if (raiz instanceof  NodoFor)
+		    	System.out.println("For");
 		    
 		    else if (raiz instanceof  NodoAsignacion)
 		    	System.out.println("Asignacion a: "+((NodoAsignacion)raiz).getIdentificador());
@@ -28,6 +30,7 @@ public class Util {
 		    		|| raiz instanceof NodoValor
 		    		|| raiz instanceof NodoIdentificador )
 		    	imprimirNodo(raiz);
+		    
 		    
 		    else System.out.println("Tipo de nodo desconocido");;
 		    
@@ -52,6 +55,18 @@ public class Util {
 		    	printSpaces();
 		    	System.out.println("**Prueba REPEAT**");
 		    	imprimirAST(((NodoRepeat)raiz).getPrueba());
+		    }
+		    else if (raiz instanceof  NodoFor){
+		    	printSpaces();
+		    	System.out.println("**inicio FOR**");
+		    	imprimirAST(((NodoFor)raiz).getAsi());
+		    	System.out.println("**condicion FOR**");
+		    	imprimirAST(((NodoFor)raiz).getExp());
+		    	System.out.println("**incremento FOR**");
+		    	imprimirAST(((NodoFor)raiz).getAsf());
+		    	System.out.println("**Cuerpo FOR**");
+		    	imprimirAST(((NodoFor)raiz).getCuerpo());
+		    	printSpaces();
 		    }
 		    else if (raiz instanceof  NodoAsignacion)
 		    	imprimirAST(((NodoAsignacion)raiz).getExpresion());
@@ -107,9 +122,22 @@ static void imprimirNodo( NodoBase raiz )
 			System.out.println("*");
 		if(sel==tipoOp.entre)
 			System.out.println("/");
+		if(sel==tipoOp.and)
+			System.out.println("and");
+		if(sel==tipoOp.or)
+			System.out.println("or");
+		if(sel==tipoOp.menor_igual)
+			System.out.println("<=");
+		if(sel==tipoOp.mayor_igual)
+			System.out.println(">=");
+		if(sel==tipoOp.diferente)
+			System.out.println("!=");
 	}
 
 	if(	raiz instanceof NodoValor ){
+		if(((NodoValor) raiz).getValor()==null)
+		System.out.println("BOOL, val= "+ ((NodoValor)raiz).get_Valor());
+		else
 		System.out.println("NUM, val= "+ ((NodoValor)raiz).getValor());
 	}
 

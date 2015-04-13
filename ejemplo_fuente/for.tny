@@ -1,0 +1,28 @@
+begin
+	if(true)
+	then
+		a:=3;
+	end;
+	for(x:=0; x<4; x:=x+1)
+	a:=1+1;
+	b:=4*3+5;
+		if(a!=b)
+		then
+			write a;
+			if(c=d)
+				then
+					read b;	
+						repeat
+							H:=2+2;
+								repeat
+									q:=2+2;
+										for(x:=0; x<4; x:=x+1)
+											a:=1+1;
+										end;
+								until a=g;
+						until a=g;
+				end;
+			
+		end;
+	end;
+end
