@@ -23,9 +23,9 @@ public class TablaSimbolos {
 
 	public void cargarTabla(NodoBase raiz){
 		while (raiz != null) {
-	    if (raiz instanceof NodoIdentificador){
-	    	InsertarSimbolo(((NodoIdentificador)raiz).getNombre(),-1);
-	    	//TODO: Añadir el numero de linea y localidad de memoria correcta
+	    if (raiz instanceof NodoAsignacion){
+	    	InsertarSimbolo(((NodoAsignacion)raiz).getIdentificador(),-1);
+	    	//TODO: Aï¿½adir el numero de linea y localidad de memoria correcta
 	    }
 
 	    /* Hago el recorrido recursivo */

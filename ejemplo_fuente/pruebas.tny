@@ -1,8 +1,63 @@
-void funcion (int a) begin int b; end
-void funcion (int a) begin int b; end
+void f() begin int a; end
+int fa(int a) begin int a; end
+boolean fb(int z, int y) begin int a; end
+
+
+
 begin
-    int a,b,c;
-    
-    boolean d,e,f;
-    a:=1+2+3+5;
+	fnoel(a,b);
+	fotro();
+	int a,b,c[2];
+	a:=1;
+	b:=1+2+3;
+	c:=1*3;
+	c:=1*3+2+3;
+	if a<2 then
+		write a;
+	end;
+	if(a!=b)then
+		write a;
+	end;
+	if(a=b)then
+		read a;
+	end;
+	a:=1+1;
+	b:=4*3+5;
+	if 1>2 then
+		a:=3;
+	end;
+	if(a!=b) then
+		write a;
+		if (c=b) then
+			read a;
+			if (c=b) then
+				read b;					
+				a:=2+2;
+			else
+				b:=2+2;
+			end;
+		end;				
+	end;
+	for (a:=1;a<2;a:=a+1)
+		for (a:=1;a<2;a:=a+1)
+			for (a:=1;a<2;a:=a+1)
+				read x;
+				if (a<2) then
+					read a;
+					if (true) then
+						read b;					
+						H:=2+2;
+					else
+						q:=2+2;
+					end;
+				end;
+			end;
+		end;
+	end;
+	return a;
+	if(a!=b) then		
+		if a>=0 then
+			read a;			
+		end;				
+	end;
 end

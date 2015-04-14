@@ -4,7 +4,7 @@ import java_cup.runtime.*;
 import ast.*;
 
 action code {:
-	private boolean modoDepuracion=false;
+	private boolean modoDepuracion=true;
 	private NodoBase ast=null;
 	private int lineanum=0;
 	
@@ -71,7 +71,6 @@ non terminal NodoBase var_stmt;
 non terminal NodoBase variable_stmt ;
 non terminal NodoBase for_stmt;
 non terminal NodoBase funcion_stmt;
-non terminal NodoBase parametro_stmt;
 non terminal NodoBase exp_var;
 non terminal NodoBase encabezado_stmt;
 non terminal NodoBase return_stmt;
@@ -91,8 +90,11 @@ precedence left LPAREN,RPAREN,OBRACKET,CBRACKET;
 program     ::= funcion_stmt:ini BEGIN stmt_seq:sent END 	{: if(modoDepuracion) System.out.println("\t regla program a"); 
 						NodoBase hijo = ini;
 						if(hijo!=null){
+						while(hijo.TieneHermano()){
+								hijo = hijo.getHermanoDerecha();
+							}
 							hijo.setHermanoDerecha(sent);
-							ast = hijo;
+							ast = ini;
 						}
 						else{
 							ast = sent;
@@ -103,7 +105,7 @@ program     ::= funcion_stmt:ini BEGIN stmt_seq:sent END 	{: if(modoDepuracion) 
 			:}
 			;
 			
-funcion_stmt    ::= funcion_stmt:ini encabezado_stmt:sent {: if(modoDepuracion) System.out.println("\t regla funcion a"); 
+funcion_stmt    ::= funcion_stmt:ini encabezado_stmt:sent  {: if(modoDepuracion) System.out.println("\t regla funcion a"); 
 						NodoBase hijoActual = ini;
 						if(hijoActual !=null){
 							while(hijoActual.TieneHermano()){
@@ -123,11 +125,20 @@ funcion_stmt    ::= funcion_stmt:ini encabezado_stmt:sent {: if(modoDepuracion) 
 encabezado_stmt ::= VOID ID:nf LPAREN exp_var:p RPAREN BEGIN stmt_seq:cuerpo END {: if(modoDepuracion) System.out.println("\t regla encabezado funcion a"); 
 			RESULT = new NodoProcedimiento(nf.toString(),p,cuerpo,tipoFuncion.VOID);
 		:}
-		|INT ID:nf LPAREN parametro_stmt:p RPAREN BEGIN stmt_seq:cuerpo END {: if(modoDepuracion) System.out.println("\t regla encabezado funcion b"); 
+		|INT ID:nf LPAREN exp_var:p RPAREN BEGIN stmt_seq:cuerpo END {: if(modoDepuracion) System.out.println("\t regla encabezado funcion b"); 
 			RESULT = new NodoProcedimiento(nf.toString(),p,cuerpo,tipoFuncion.INT);
 		:}
-		|BOOLEAN ID:nf LPAREN parametro_stmt:p RPAREN BEGIN stmt_seq:cuerpo END {: if(modoDepuracion) System.out.println("\t regla encabezado funcion c"); 
+		|BOOLEAN ID:nf LPAREN exp_var:p RPAREN BEGIN stmt_seq:cuerpo END {: if(modoDepuracion) System.out.println("\t regla encabezado funcion c"); 
 			RESULT = new NodoProcedimiento(nf.toString(),p,cuerpo,tipoFuncion.BOOLEAN);
+		:}
+		|  VOID ID:nf LPAREN  RPAREN BEGIN stmt_seq:cuerpo END {: if(modoDepuracion) System.out.println("\t regla encabezado funcion a"); 
+			RESULT = new NodoProcedimiento(nf.toString(),cuerpo,tipoFuncion.VOID);
+		:}
+		|INT ID:nf LPAREN  RPAREN BEGIN stmt_seq:cuerpo END {: if(modoDepuracion) System.out.println("\t regla encabezado funcion b"); 
+			RESULT = new NodoProcedimiento(nf.toString(),cuerpo,tipoFuncion.INT);
+		:}
+		|BOOLEAN ID:nf LPAREN  RPAREN BEGIN stmt_seq:cuerpo END {: if(modoDepuracion) System.out.println("\t regla encabezado funcion c"); 
+			RESULT = new NodoProcedimiento(nf.toString(),cuerpo,tipoFuncion.BOOLEAN);
 		:}
 		;
 			  
@@ -204,11 +215,11 @@ if_stmt     ::= IF exp:ex THEN stmt_seq:pthen END {: if(modoDepuracion) System.o
 		:}		
 		;
 		
-call_stmt   ::= ID LPAREN par_stmt:parametros RPAREN  {: if(modoDepuracion) System.out.println("\t regla call_stmt funcion con parametros"); 
-			RESULT=parametros;
+call_stmt   ::= ID:nombre LPAREN par_stmt:parIzquierdo RPAREN  {: if(modoDepuracion) System.out.println("\t regla call_stmt funcion con parametros"); 
+			RESULT=new NodoCall(parIzquierdo,null,nombre.toString());
 		:}
-		| ID LPAREN  RPAREN  {: if(modoDepuracion) System.out.println("\t regla call_stmt funcion sin parametros"); 
-			RESULT=null;
+		| ID:nombre LPAREN  RPAREN  {: if(modoDepuracion) System.out.println("\t regla call_stmt funcion sin parametros"); 
+			RESULT=new NodoCall(null,null,nombre.toString());
 		:}
 		;
 
@@ -216,7 +227,7 @@ par_stmt ::=  simple_exp:ex  COMA par_stmt:v {: if(modoDepuracion) System.out.pr
 				RESULT = new NodoCall(ex,v);
 		:}
 		| simple_exp:ex {: if(modoDepuracion) System.out.println("\t regla par_stmt sin coma"); 
-		RESULT = new NodoCall(ex);
+		RESULT = new NodoCall(ex,null);
 		:}	
 		;
 
