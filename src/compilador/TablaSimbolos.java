@@ -10,11 +10,12 @@ import ast.NodoIdentificador;
 import ast.NodoIf;
 import ast.NodoOperacion;
 import ast.NodoRepeat;
-
+import ast.NodoFor;
+import ast.NodoLeer;
+import ast.NodoCall;
 public class TablaSimbolos {
 	private HashMap<String, RegistroSimbolo> tabla;
 	private int direccion;  //Contador de las localidades de memoria asignadas a la tabla
-	
 	public TablaSimbolos() {
 		super();
 		tabla = new HashMap<String, RegistroSimbolo>();
@@ -27,6 +28,19 @@ public class TablaSimbolos {
 	    	InsertarSimbolo(((NodoAsignacion)raiz).getIdentificador(),-1);
 	    	//TODO: A�adir el numero de linea y localidad de memoria correcta
 	    }
+	    if (raiz instanceof NodoLeer){
+	    	InsertarSimbolo(((NodoLeer)raiz).getIdentificador(),-1);
+	    	//TODO: A�adir el numero de linea y localidad de memoria correcta
+	    }
+	    if (raiz instanceof NodoCall){
+	    	InsertarSimbolo(((NodoCall)raiz).getNombreFuncion(),-1);
+	    	//TODO: A�adir el numero de linea y localidad de memoria correcta
+	    }
+	    if (raiz instanceof NodoIdentificador){
+	    	InsertarSimbolo(((NodoIdentificador)raiz).getNombre(),-1);
+	    	//TODO: A�adir el numero de linea y localidad de memoria correcta
+	    }
+	    
 
 	    /* Hago el recorrido recursivo */
 	    if (raiz instanceof  NodoIf){
@@ -36,9 +50,18 @@ public class TablaSimbolos {
 	    		cargarTabla(((NodoIf)raiz).getParteElse());
 	    	}
 	    }
+	    else if (raiz instanceof NodoFor){  //rafa
+	    	cargarTabla(((NodoFor)raiz).getAsi());
+	    	cargarTabla(((NodoFor)raiz).getExp());
+	    	cargarTabla(((NodoFor)raiz).getAsf());
+	    	cargarTabla(((NodoFor)raiz).getCuerpo());
+	    }
 	    else if (raiz instanceof  NodoRepeat){
 	    	cargarTabla(((NodoRepeat)raiz).getCuerpo());
-	    	cargarTabla(((NodoRepeat)raiz).getPrueba());
+	    }
+	    else if (raiz instanceof  NodoCall){
+	    	cargarTabla(((NodoCall)raiz).getExI());
+	    	cargarTabla(((NodoCall)raiz).getExD());
 	    }
 	    else if (raiz instanceof  NodoAsignacion)
 	    	cargarTabla(((NodoAsignacion)raiz).getExpresion());

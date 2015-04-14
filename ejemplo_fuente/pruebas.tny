@@ -11,7 +11,7 @@ begin
 	a:=1;
 	b:=1+2+3;
 	c:=1*3;
-	c:=1*3+2+3;
+	c:=1--3+2+3;
 	if a<2 then
 		write a;
 	end;

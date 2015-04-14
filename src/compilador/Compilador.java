@@ -1,5 +1,7 @@
 package compilador;
 
+import java.io.File;
+
 import ast.*;
 import java_cup.runtime.*;
 
@@ -10,10 +12,12 @@ public class Compilador {
 	, esto debido a que dicha clase no provee mucha informaci�n de contexto que podria ser util para el analisis semantico o ayudar en la construccion del AST
 	Mas informacion en: http//4thmouse.com/index.php/2007/02/15/using-custom-symbols-in-cup/
 	***********/
-
+	static String archivo;
 	public static void main(String[] args) throws Exception {
 		@SuppressWarnings("deprecation")
 		SymbolFactory sf = new DefaultSymbolFactory();
+		File myFile = new File(args[0]); // theinstrumentfile.xml
+		archivo = myFile.getName();
 		parser parser_obj;
 		if (args.length==0) 
 			parser_obj=new parser(new Scanner(System.in,sf),sf);

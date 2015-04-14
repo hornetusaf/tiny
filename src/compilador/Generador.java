@@ -217,7 +217,7 @@ public class Generador {
 	//TODO: enviar preludio a archivo de salida, obtener antes su nombre
 	private static void generarPreludioEstandar(){
 		UtGen.emitirComentario("Compilacion TINY para el codigo objeto TM");
-		UtGen.emitirComentario("Archivo: "+ "NOMBRE_ARREGLAR");
+		UtGen.emitirComentario("Archivo: "+ Compilador.archivo);
 		/*Genero inicializaciones del preludio estandar*/
 		/*Todos los registros en tiny comienzan en cero*/
 		UtGen.emitirComentario("Preludio estandar:");

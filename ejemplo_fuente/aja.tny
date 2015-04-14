@@ -1,0 +1,4 @@
+begin
+	int a;
+	a:=4-4;	
+end
