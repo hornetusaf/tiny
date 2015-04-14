@@ -25,7 +25,45 @@ public class Util {
 		    else if (raiz instanceof  NodoEscribir)
 		    	System.out.println("Escribir");
 		    else if (raiz instanceof  NodoVariable)
-		    	System.out.println("Declaracion "+((NodoVariable)raiz).getTipo());		  
+		    	System.out.println("Declaracion "+((NodoVariable)raiz).getTipo());
+		    else if (raiz instanceof  NodoReturn)
+		    	System.out.println("Return "+((NodoReturn)raiz).getId());
+		    else if (raiz instanceof NodoCall)
+		    		    	{		
+		    			    	if(((NodoCall)raiz).getNombreFuncion()!="")
+		    			    	{
+		    			    		System.out.println("Llamada a Funcion: "+((NodoCall)raiz).getNombreFuncion());
+		    			    		imprimirAST(((NodoCall)raiz).getExI());
+		    			    	}
+		    			    	else
+		    			    	if(((NodoCall)raiz).getExI()!=null)
+		    		    		{	
+		    		    			imprimirAST(((NodoCall)raiz).getExI());
+		    		    			
+		    		    			if(((NodoCall)raiz).getExD()!=null)    		    			    
+		    		    				imprimirAST(((NodoCall)raiz).getExD());
+		    		    			else
+		    		    				System.out.println("Fin de llamada a funcion");
+		    		    		}		    	
+		    			    	
+		    			    	if(((NodoCall)raiz).getExI()==null)
+		    		    			System.out.println("Funcion sin parametros"); 
+		    			    	
+		    		    	}
+		    else if (raiz instanceof  NodoProcedimiento)
+		    	System.out.println("Declaracion funcion "+((NodoProcedimiento)raiz).getTipo() + " " + ((NodoProcedimiento)raiz).getId());
+		    else if (raiz instanceof  NodoFor){
+		    	printSpaces();
+		    	System.out.println("**inicio FOR**");
+		    	imprimirAST(((NodoFor)raiz).getAsi());
+		    	System.out.println("**condicion FOR**");
+		    	imprimirAST(((NodoFor)raiz).getExp());
+		    	System.out.println("**incremento FOR**");
+		    	imprimirAST(((NodoFor)raiz).getAsf());
+		    	System.out.println("**Cuerpo FOR**");
+		    	imprimirAST(((NodoFor)raiz).getCuerpo());
+		    	printSpaces();
+		    }
 		    else if (raiz instanceof NodoOperacion
 		    		|| raiz instanceof NodoValor
 		    		|| raiz instanceof NodoIdentificador )
@@ -83,6 +121,13 @@ public class Util {
 		    else if (raiz instanceof NodoVariable){
 		    	printSpaces();
 		    	imprimirNodo(((NodoVariable)raiz).getPartev());		    	
+		    }
+		    else if (raiz instanceof NodoProcedimiento){
+		    	
+		    	
+		    	imprimirAST(((NodoProcedimiento)raiz).getPartev());
+		    	imprimirNodo(((NodoProcedimiento)raiz).getPartev());
+		    	imprimirAST(((NodoProcedimiento)raiz).getCuerpo());
 		    }
 		    raiz = raiz.getHermanoDerecha();
 		  }
@@ -151,6 +196,15 @@ static void imprimirNodo( NodoBase raiz )
     	if(((NodoVariable)raiz).getPartev()!=null)
     	{		    				    
     		imprimirNodo(((NodoVariable)raiz).getPartev());	
+    	}
+	}
+	if (raiz instanceof NodoProcedimiento)
+	{		
+		System.out.println("**ID funcion: "+((NodoProcedimiento)raiz).getId());		    	
+    	printSpaces();
+    	if(((NodoProcedimiento)raiz).getPartev()!=null)
+    	{		    				    
+    		imprimirNodo(((NodoProcedimiento)raiz).getPartev());	
     	}
 	}
 	

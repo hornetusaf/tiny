@@ -15,6 +15,14 @@ public class NodoProcedimiento extends NodoBase {
 		this.tipof= tipof;
 	}
 	
+	public  NodoProcedimiento(String id,NodoBase cuerpo,tipoFuncion tipof){
+		super();
+		this.id = id;
+		this.partev = null;
+		this.cuerpo = cuerpo;
+		this.tipof= tipof;
+	}
+	
 	public NodoProcedimiento() {
 		super();
 		this.id = null;
