@@ -141,7 +141,9 @@ static void imprimirNodo( NodoBase raiz )
 	if(	raiz instanceof NodoOperacion ){
 		tipoOp sel=((NodoOperacion) raiz).getOperacion();
 		if(sel==tipoOp.menor)
-			System.out.println("<"); 
+			System.out.println("<");
+		if(sel==tipoOp.mayor)
+			System.out.println(">");
 		if(sel==tipoOp.igual)
 			System.out.println("=");
 		if(sel==tipoOp.mas)

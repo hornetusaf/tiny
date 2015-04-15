@@ -7,7 +7,12 @@ public class NodoVariable extends NodoBase{
 	private NodoBase partev;
 	private tipoDato tipo;
 	private Integer tam;
-
+	
+	public NodoVariable( tipoDato tipo) {
+		super();//si
+		this.tipo=tipo;
+	}
+	
 	public NodoVariable(String id,tipoOp to,NodoBase partev) {
 		super();//si
 		this.id = id;

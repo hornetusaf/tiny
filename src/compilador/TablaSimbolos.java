@@ -2,32 +2,42 @@ package compilador;
 
 import java.util.*;
 
-
 import ast.NodoAsignacion;
 import ast.NodoBase;
 import ast.NodoEscribir;
 import ast.NodoIdentificador;
 import ast.NodoIf;
 import ast.NodoOperacion;
+import ast.NodoProcedimiento;
 import ast.NodoRepeat;
+import ast.NodoVariable;
 
 public class TablaSimbolos {
 	private HashMap<String, RegistroSimbolo> tabla;
 	private int direccion;  //Contador de las localidades de memoria asignadas a la tabla
+	private int linea;
 	
 	public TablaSimbolos() {
 		super();
 		tabla = new HashMap<String, RegistroSimbolo>();
 		direccion=0;
+		linea=0;
 	}
 
 	public void cargarTabla(NodoBase raiz){
+		
 		while (raiz != null) {
-	    if (raiz instanceof NodoAsignacion){
-	    	InsertarSimbolo(((NodoAsignacion)raiz).getIdentificador(),-1);
-	    	//TODO: Aï¿½adir el numero de linea y localidad de memoria correcta
+	    if (raiz instanceof NodoProcedimiento){
+	    	InsertarSimbolo(((NodoProcedimiento)raiz).getId(),-1);
+	    	//TODO: Añadir el numero de linea y localidad de memoria correcta
 	    }
-
+	    if (raiz instanceof NodoVariable){
+	    	InsertarSimbolo(((NodoVariable)raiz).getId(),-1);
+	    	//TODO: Añadir el numero de linea y localidad de memoria correcta
+	    }
+	    
+	    
+	    
 	    /* Hago el recorrido recursivo */
 	    if (raiz instanceof  NodoIf){
 	    	cargarTabla(((NodoIf)raiz).getPrueba());
@@ -73,7 +83,7 @@ public class TablaSimbolos {
 		System.out.println("*** Tabla de Simbolos ***");
 		for( Iterator <String>it = tabla.keySet().iterator(); it.hasNext();) { 
             String s = (String)it.next();
-	    System.out.println("Consegui Key: "+s+" con direccion: " + BuscarSimbolo(s).getDireccionMemoria());
+	    System.out.println("Consegui Key: "+s+" con direccion: " + BuscarSimbolo(s).getDireccionMemoria() +" con numero de linea: " + BuscarSimbolo(s).getNumLinea());
 		}
 	}
 
