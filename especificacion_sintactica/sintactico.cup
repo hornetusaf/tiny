@@ -222,6 +222,7 @@ call_stmt   ::= ID:nombre LPAREN par_stmt:parIzquierdo RPAREN  {: if(modoDepurac
 		| ID:nombre LPAREN  RPAREN  {: if(modoDepuracion) System.out.println("\t regla call_stmt funcion sin parametros"); 
 			RESULT=new NodoCall(null,null,nombre.toString());
 		:}
+		
 		;
 
 par_stmt ::=  exp_log:ex  COMA par_stmt:v {: if(modoDepuracion) System.out.println("\t regla par_stmt con coma"); 
@@ -259,7 +260,13 @@ var_stmt     ::= ID:variable COMA var_stmt:v {: if(modoDepuracion) System.out.pr
 		:}
 		| ID:variable {: if(modoDepuracion) System.out.println("\t regla var_stmt id"); 
 		RESULT = new NodoVariable(variable.toString(),tipoOp.puntoComa);
-		:}	
+		:}
+		| ID:variable OBRACKET NUM:tam CBRACKET COMA var_stmt:v {: if(modoDepuracion) System.out.println("\t regla var_stmt vector coma"); 
+			RESULT = new NodoVariable(variable.toString(),tam,tipoOp.coma,v);
+		:}					
+		| ID:variable OBRACKET NUM:tam CBRACKET{: if(modoDepuracion) System.out.println("\t regla var_stmt vector"); 
+			RESULT = new NodoVariable(variable.toString(),tam,tipoOp.puntoComa);
+		:}		
 		;		
 		
 repeat_stmt ::= REPEAT stmt_seq:cuerpo UNTIL exp:prueba	{: if(modoDepuracion) System.out.println("\t regla repeat_stmt"); 
