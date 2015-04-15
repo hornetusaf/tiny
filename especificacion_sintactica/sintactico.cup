@@ -232,15 +232,25 @@ par_stmt ::=  exp_log:ex  COMA par_stmt:v {: if(modoDepuracion) System.out.print
 		:}		
 		; 
 
-variable_stmt     ::= INT var_stmt:v {: if(modoDepuracion) System.out.println("\t regla variable_stmt int"); 
-			RESULT = new NodoVariable(tipoDato.INT);
-			NodoBase hijoActual = v;
-			if (v!=null){
-				System.out.println("aaaaaaaaaaa"+v.getHermanoDerecha()); 
-			}
+variable_stmt      ::= INT var_stmt:v {: if(modoDepuracion) System.out.println("\t regla variable_stmt int");				
+			((NodoVariable)v).setTipo(tipoDato.INT);
+			NodoVariable a=(NodoVariable)((NodoVariable)v).getPartev();			
+			while(a!=null)
+			{
+				a.setTipo(tipoDato.INT);
+				a=(NodoVariable)a.getPartev();
+			}										
+			RESULT = v;			
 		:}
 		| BOOLEAN var_stmt:v {: if(modoDepuracion) System.out.println("\t regla variable_stmt boolean"); 
-			RESULT = new NodoVariable(tipoDato.BOOLEAN);
+			((NodoVariable)v).setTipo(tipoDato.BOOLEAN);
+			NodoVariable a=(NodoVariable)((NodoVariable)v).getPartev();			
+			while(a!=null)
+			{
+				a.setTipo(tipoDato.BOOLEAN);
+				a=(NodoVariable)a.getPartev();
+			}
+			RESULT = v;
 		:}		
 		;
 

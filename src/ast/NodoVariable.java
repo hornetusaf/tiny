@@ -4,7 +4,6 @@ public class NodoVariable extends NodoBase{
 	
 	private String id;
 	private tipoOp TipoOperador;
-	private NodoBase partev;
 	private tipoDato tipo;
 	private Integer tam;
 	
@@ -13,54 +12,33 @@ public class NodoVariable extends NodoBase{
 		this.tipo=tipo;
 	}
 	
-	public NodoVariable(String id,tipoOp to,NodoBase partev) {
+	public NodoVariable(String id,tipoOp to) {
 		super();//si
 		this.id = id;
-		this.TipoOperador=to;
-		this.partev= partev;		
+		this.TipoOperador=to;		
 	}
-	public NodoVariable(tipoDato td, String id,tipoOp to,NodoBase partev) {
+	public NodoVariable(tipoDato td, String id,tipoOp to) {
 		super();//si
 		this.tipo= td;
 		this.id = id;
-		this.TipoOperador=to;
-		this.partev= partev;		
+		this.TipoOperador=to;		
 	}
 	public NodoVariable(tipoDato td, String id) {
 		super();//si
 		this.tipo= td;
 		this.id = id;
 	}
-	public NodoVariable(String id,Integer tam,tipoOp to,NodoBase partev) {
+	public NodoVariable(String id,Integer tam,tipoOp to) {
 		super();//si
 		this.id = id;
 		this.tam=tam;
-		this.TipoOperador=to;
-		this.partev= partev;		
+		this.TipoOperador=to;		
 	}
-	public NodoVariable(tipoDato tipo,NodoBase partev) {
-		super();
-		this.tipo = tipo;
-		this.partev=partev;
-	}	
-	
-	public NodoVariable(String id,tipoOp to) {
-		super();
-		this.id = id;
-		this.TipoOperador=to;
-	}
-	
-	public NodoVariable(String id,Integer tam,tipoOp to) {
-		super();
-		this.id = id;
-		this.setTam(tam);
-		this.TipoOperador=to;
-	}
+
 	
 	public NodoVariable() {
 		super();
 		this.id = "";
-		this.partev = null;
 		this.tipo = null;
 		this.setTam(1);
 	}
@@ -81,13 +59,6 @@ public class NodoVariable extends NodoBase{
 		this.tipo = tipo;
 	}
 
-	public NodoBase getPartev() {
-		return partev;
-	}
-	
-	public void setPartev(NodoBase partev) {
-		this.partev = partev;
-	}
 	public tipoOp getTipoOperador() {
 		return TipoOperador;
 	}

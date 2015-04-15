@@ -120,7 +120,7 @@ public class Util {
 		    }
 		    else if (raiz instanceof NodoVariable){
 		    	printSpaces();
-		    	imprimirNodo(((NodoVariable)raiz).getPartev());		    	
+		    	imprimirNodo(((NodoVariable)raiz));		    	
 		    }
 		    else if (raiz instanceof NodoProcedimiento){
 		    	
@@ -193,12 +193,7 @@ static void imprimirNodo( NodoBase raiz )
 	}
 	if (raiz instanceof NodoVariable)
 	{		
-		System.out.println("**ID: "+((NodoVariable)raiz).getId());		    	
-    	printSpaces();
-    	if(((NodoVariable)raiz).getPartev()!=null)
-    	{		    				    
-    		imprimirNodo(((NodoVariable)raiz).getPartev());	
-    	}
+		System.out.println(((NodoVariable)raiz).getTipo()+"**ID: "+((NodoVariable)raiz).getId());   		    	    	
 	}
 	if (raiz instanceof NodoProcedimiento)
 	{		
