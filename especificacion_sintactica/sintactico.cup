@@ -175,7 +175,7 @@ stmt_seq    ::= stmt_seq:ini stmt:sent SEMI {: if(modoDepuracion) System.out.pri
 				:}
 		;
 
-stmt        ::= if_stmt:sif	{: if(modoDepuracion) System.out.println("\t regla stmt if_stmt"); 
+stmt     ::= if_stmt:sif	{: if(modoDepuracion) System.out.println("\t regla stmt if_stmt"); 
 					RESULT=sif;
 					:}
             | repeat_stmt:srep	{: if(modoDepuracion) System.out.println("\t regla stmt repeat_stmt"); 
@@ -229,8 +229,7 @@ par_stmt ::=  exp_log:ex  COMA par_stmt:v {: if(modoDepuracion) System.out.print
 		:}
 		|  exp_log:ex {: if(modoDepuracion) System.out.println("\t regla par_stmt_log con coma"); 
 				RESULT = new NodoCall (ex,null);	
-		:}
-			
+		:}		
 		; 
 
 variable_stmt     ::= INT var_stmt:v {: if(modoDepuracion) System.out.println("\t regla variable_stmt int"); 
@@ -280,7 +279,7 @@ assign_stmt ::= ID:variable ASSIGN exp_log:ex	{: if(modoDepuracion) System.out.p
 					}
 					:}
 		| ID:variable ASSIGN call_stmt:ex {: if(modoDepuracion) System.out.println("\t regla asignacion_stmt llamada de funcion"); 
-			if(variable!=null)
+				if(variable!=null)
 				RESULT = new NodoAsignacion(variable.toString(),ex);
 			else{
 				RESULT = null;
