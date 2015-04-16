@@ -1,11 +1,7 @@
-int a (int a) begin int b; end
 
 begin
- int a,b;
- 
- a:= a (b);
- a:= z (a);
- 
+ int xx,b,a;
+ a:= gun(1,4,5);
 end
 
 
