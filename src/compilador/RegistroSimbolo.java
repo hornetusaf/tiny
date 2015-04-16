@@ -73,4 +73,5 @@ public class RegistroSimbolo {
 	public void setInicializado(boolean inicializado) {
 		Inicializado = inicializado;
 	}
+	
 }

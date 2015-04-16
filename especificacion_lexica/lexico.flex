@@ -36,8 +36,7 @@ import java_cup.runtime.*;
 
 digito		= [0-9]
 numero		= -?{digito}+
-letra			= [a-zA-Z]
-identificador	= {letra}+
+identificador	= [a-zA-Z_]+[a-zA-Z0-9_]*
 nuevalinea		= \n | \n\r | \r\n
 espacio		= [ \t]+
 %%

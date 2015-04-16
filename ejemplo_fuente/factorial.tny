@@ -1,7 +1,11 @@
+int a (int a) begin int b; end
+
 begin
- int a,b,c;
- boolean a;
- a:= true and false or true;
+ int a,b;
+ 
+ a:= a (b);
+ a:= z (a);
+ 
 end
 
 
