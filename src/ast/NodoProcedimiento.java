@@ -2,15 +2,15 @@ package ast;
 
 public class NodoProcedimiento extends NodoBase {
 	
-	private String id;
-	private NodoBase partev;
+	private String id;	
 	private NodoBase cuerpo;
+	private NodoBase partev;
 	private tipoFuncion tipof;
 
 	public  NodoProcedimiento(String id,NodoBase partev,NodoBase cuerpo,tipoFuncion tipof){
 		super();
 		this.id = id;
-		this.partev = partev;
+		this.setPartev(partev);
 		this.cuerpo = cuerpo;
 		this.tipof= tipof;
 	}
@@ -18,7 +18,7 @@ public class NodoProcedimiento extends NodoBase {
 	public  NodoProcedimiento(String id,NodoBase cuerpo,tipoFuncion tipof){
 		super();
 		this.id = id;
-		this.partev = null;
+		this.setPartev(null);
 		this.cuerpo = cuerpo;
 		this.tipof= tipof;
 	}
@@ -26,7 +26,7 @@ public class NodoProcedimiento extends NodoBase {
 	public NodoProcedimiento() {
 		super();
 		this.id = null;
-		this.partev = null;
+		this.setPartev(null);
 		this.tipof= null;
 		this.cuerpo = null;
 	}
@@ -46,19 +46,20 @@ public class NodoProcedimiento extends NodoBase {
 	public void setTipo(tipoFuncion tipof) {
 		this.tipof = tipof;
 	}
-
-	public NodoBase getPartev() {
-		return partev;
-	}
 	
-	public void setPartev(NodoBase partev) {
-		this.partev = partev;
-	}	
 	public NodoBase getCuerpo() {
 		return cuerpo;
 	}
 	
 	public void setCuerpo(NodoBase cuerpo) {
 		this.cuerpo = cuerpo;
+	}
+
+	public NodoBase getPartev() {
+		return partev;
+	}
+
+	public void setPartev(NodoBase partev) {
+		this.partev = partev;
 	}
 }

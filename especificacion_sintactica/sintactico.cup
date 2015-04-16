@@ -144,10 +144,10 @@ encabezado_stmt ::= VOID ID:nf LPAREN exp_var:p RPAREN BEGIN stmt_seq:cuerpo END
 		;
 			  
 		  
-exp_var ::= INT ID:v COMA exp_var:va {: if(modoDepuracion) System.out.println("\t regla funcion parametros a"); 
+exp_var ::= exp_var:va COMA INT ID:v {: if(modoDepuracion) System.out.println("\t regla funcion parametros a"); 
 			RESULT = new NodoVariable(tipoDato.INT,v.toString(),tipoOp.coma,va);
 		  :}
-		  |BOOLEAN ID:v COMA exp_var:va {: if(modoDepuracion) System.out.println("\t regla funcion parametros b"); 
+		  |exp_var:va COMA BOOLEAN ID:v {: if(modoDepuracion) System.out.println("\t regla funcion parametros b"); 
 			RESULT = new NodoVariable(tipoDato.BOOLEAN,v.toString(),tipoOp.coma,va);
 		  :}
 		  |INT ID:v {: if(modoDepuracion) System.out.println("\t regla funcion parametros c"); 

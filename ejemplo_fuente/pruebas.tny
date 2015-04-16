@@ -1,17 +1,14 @@
 void f() begin int a; end
-int fa(int a) begin int a; end
+int fa(int a) begin int a;int b; end
 boolean fb(int z, int y) begin int a; end
-
-
-
 begin
+	int a[5],b,c;
 	fnoel(a,b);
-	fotro();
-	int a,b,c[2];
+	fotro();	
 	a:=1;
 	b:=1+2+3;
 	c:=1*3;
-	c:=1--3+2+3;
+	c:=1+3+2+3;
 	if a<2 then
 		write a;
 	end;
@@ -39,16 +36,18 @@ begin
 		end;				
 	end;
 	for (a:=1;a<2;a:=a+1)
+		int j;
 		for (a:=1;a<2;a:=a+1)
 			for (a:=1;a<2;a:=a+1)
 				read x;
 				if (a<2) then
 					read a;
-					if (true) then
+					if (a=b) then
 						read b;					
-						H:=2+2;
+						y:=2+2;
+						int z;
 					else
-						q:=2+2;
+						b:=2+2;
 					end;
 				end;
 			end;

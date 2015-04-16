@@ -1,6 +1,6 @@
 package ast;
 
 public enum tipoDato {
-	INT,BOOLEAN
+	INT,BOOLEAN,VOID
 
 }
