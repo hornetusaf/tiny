@@ -2,6 +2,7 @@ package compilador;
 
 import java.util.*;
 
+
 import ast.NodoAsignacion;
 import ast.NodoBase;
 import ast.NodoEscribir;
@@ -18,7 +19,7 @@ import ast.NodoLeer;
 import ast.NodoCall;
 import ast.tipoDato;
 import ast.tipoFuncion;
-
+import ast.*;
 public class TablaSimbolos {
 	private HashMap<String, RegistroSimbolo> tabla;
 	private int direccion; // Contador de las localidades de memoria asignadas a
@@ -35,7 +36,7 @@ public class TablaSimbolos {
 
 		while (raiz != null) {
 			//System.out.println(raiz);
-			if (raiz instanceof NodoCall){
+			/*if (raiz instanceof NodoCall){
 				RegistroSimbolo s=BuscarSimbolo((((NodoCall)raiz).getNombreFuncion()));
 				//System.out.println("aquiii "+id+".@"+((NodoAsignacion)raiz).getIdentificador());
 				if(s!=null ){
@@ -46,7 +47,7 @@ public class TablaSimbolos {
 				}
 				
 			}
-			else if (raiz instanceof NodoProcedimiento) {
+			else*/ if (raiz instanceof NodoProcedimiento) {
 															
 					RegistroSimbolo simbolo;
 					if (tabla.containsKey(((NodoProcedimiento) raiz).getId())) {
@@ -81,10 +82,10 @@ public class TablaSimbolos {
 				//System.out.println("aquiii "+id+".@"+((NodoAsignacion)raiz).getIdentificador());
 				if(s!=null ){
 					boolean x= ValidarInicializacion(((NodoAsignacion)raiz).getExpresion(),id);
-					System.out.println(x);
+					//System.out.println(x);
 					if(s.isInicializado()!=true && x==true){
 						s.setInicializado(x);
-						System.out.println("aquiii cambia a true");
+						//System.out.println("aquiii cambia a true");
 					}
 				}
 				else{
@@ -95,7 +96,7 @@ public class TablaSimbolos {
 						System.out.println("Variable no declarada "+id+"."+((NodoAsignacion)raiz).getIdentificador());
 				}
 				cargarTabla(((NodoAsignacion) raiz).getExpresion(),id);
-				
+				RecorrerOperacion(((NodoAsignacion)raiz).getExpresion(),null,((NodoAsignacion)raiz).getIdentificador());
 			}
 			
 			if (raiz instanceof  NodoIf){
@@ -222,7 +223,7 @@ public class TablaSimbolos {
 			}
 			if(raiz instanceof NodoIdentificador){
 					String s = ((NodoIdentificador)raiz).getNombre();
-					System.out.println("ID"+((NodoIdentificador)raiz).getNombre()+" es: "+BuscarSimbolo("@."+s).isInicializado());
+					//System.out.println("ID"+((NodoIdentificador)raiz).getNombre()+" es: "+BuscarSimbolo("@."+s).isInicializado());
 					return BuscarSimbolo("@."+s).isInicializado();
 			}
 			
@@ -234,6 +235,33 @@ public class TablaSimbolos {
 		
 	}
 	
+	
+	private void RecorrerOperacion(NodoBase operador, tipoOp to,String id_asignacion) {			
+				
+		while(operador != null)
+		{
+			if(operador instanceof NodoOperacion)
+			{
+				
+				RecorrerOperacion(((NodoOperacion)operador).getOpIzquierdo(),((NodoOperacion)operador).getOperacion(),id_asignacion);				
+				if(((NodoOperacion)operador).getOpDerecho()!=null)
+					RecorrerOperacion(((NodoOperacion)operador).getOpDerecho(),((NodoOperacion)operador).getOperacion(),id_asignacion);
+			}
+			else if(operador instanceof NodoIdentificador)
+			{
+				RegistroSimbolo s = BuscarSimbolo("@."+id_asignacion);
+				NodoIdentificador a = (NodoIdentificador)operador;
+				RegistroSimbolo s2 = BuscarSimbolo("@."+a.getNombre());
+				if(s!=null && s2!=null)	
+				if(s.getTipo()!=s2.getTipo()){
+					System.out.println("tipo invalido "+s.getTipo()+" "+s2.getTipo());	
+				}
+			}
+			operador = operador.getHermanoDerecha();								
+		}
+		
+	}
+		 				
 	
 	
 	/*

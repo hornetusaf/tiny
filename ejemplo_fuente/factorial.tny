@@ -1,7 +1,6 @@
-
 begin
- int xx,b,a;
- a:= gun(1,4,5);
+int a,b,c;
+	boolean x;
+	a:=2;
+	b:=x;
 end
-
-

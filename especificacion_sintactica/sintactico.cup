@@ -229,8 +229,14 @@ par_stmt ::=  exp_log:ex  COMA par_stmt:v {: if(modoDepuracion) System.out.print
 				RESULT = new NodoCall(ex,v);
 		:}
 		|  exp_log:ex {: if(modoDepuracion) System.out.println("\t regla par_stmt_log con coma"); 
-				RESULT = new NodoCall (ex,null);	
-		:}		
+				RESULT = new NodoCall (ex,null);
+				:}	
+		| call_stmt:ex {: if(modoDepuracion) System.out.println("\t regla par_stmt_log con coma"); 
+				RESULT = new NodoCall (ex,null);
+				:}		
+		| call_stmt:ex COMA par_stmt:v {: if(modoDepuracion) System.out.println("\t regla par_stmt_log con coma"); 
+				RESULT = new NodoCall (ex,null);
+				:}
 		; 
 
 variable_stmt      ::= INT var_stmt:v {: if(modoDepuracion) System.out.println("\t regla variable_stmt int");				
