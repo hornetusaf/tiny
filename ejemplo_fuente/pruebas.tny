@@ -1,5 +1,5 @@
 void f() begin int a; end
-int fa(int a) begin int a;int b; end
+int a1(int a) begin int c;int b; end
 boolean fb(int z, int y) begin int a; end
 begin
 	int a[5],b,c;

@@ -1,6 +1,8 @@
+void f() begin int a; end
+int a1(int a) begin int c;int b; end
 begin
-int a,b,c;
-	boolean x;
-	a:=2;
-	b:=x;
+	int a,c;
+	if (a=true) then
+		a:=5;
+	end;
 end
