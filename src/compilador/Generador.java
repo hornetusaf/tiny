@@ -75,11 +75,12 @@ public class Generador {
 			generarVariable(nodo,ambito);
 		}else if (nodo instanceof NodoOperacion){
 			generarOperacion(nodo,ambito);
+		}else if (nodo instanceof NodoFor){
+			generarFor(nodo,ambito);
 		}
 		
 		else{
-			System.out.println("BUG: Tipo de nodo a generar desconocido ");
-			
+			System.out.println("BUG: Tipo de nodo a generar desconocido "+nodo.toString());			
 		}
 		/*Si el hijo de extrema izquierda tiene hermano a la derecha lo genero tambien*/
 		if(nodo.TieneHermano())
@@ -87,6 +88,21 @@ public class Generador {
 	}else
 		System.out.println("ERROR: por favor fije la tabla de simbolos a usar antes de generar codigo objeto!!!");
 }
+
+	private static void generarFor(NodoBase nodo, String ambito) {
+		NodoFor n = (NodoFor)nodo;
+		int localidadSaltoInicio;
+		if(UtGen.debug)	UtGen.emitirComentario("-> for");
+			localidadSaltoInicio = UtGen.emitirSalto(0);
+			UtGen.emitirComentario("repeat: el salto hacia el final (luego del cuerpo) del repeat debe estar aqui");
+			generar(n.getAsi(),ambito);
+			generar(n.getExp(),ambito);
+			generar(n.getCuerpo(),ambito);
+			generar(n.getAsf(),ambito);
+			UtGen.emitirRM_Abs("JEQ", UtGen.AC, localidadSaltoInicio, "repeat: jmp hacia el inicio del cuerpo");
+		if(UtGen.debug)	UtGen.emitirComentario("<- for");
+		
+	}
 
 	private static void generarIf(NodoBase nodo,String ambito){
     	NodoIf n = (NodoIf)nodo;
