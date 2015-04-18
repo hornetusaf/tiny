@@ -1,13 +1,19 @@
 begin
-	int a,b;
-	a:=0;	
-	b:=0;
-	repeat 
-		a:=a + 1;
-		if a!=5 then			
-			write a;		
-		end;		
-		b:=b+1;								
-	until b<10;	
-	write b;	
+	int a,b;	
+	a[1]:=10;
+	a[0]:=5;
+	a[2]:=a[1]*a[0];
+	b:=a[0]*a[1]+a[2];
+	a[2]:=5;
+	read b;
+	read a[2];
+	write a[0];
+	write a[1];
+	write a[2];
+	write b;
+	write (a[0]+a[0])*(a[1]/2)+a[2];
+	repeat
+		write a[0];
+		a[0]:=a[0]+1;
+	until a[0]<10;
 end
