@@ -1,4 +1,4 @@
-int a1(int a) begin int c;boolean b; return b; end
+int a1(int a) begin int c;int b; return b; end
 boolean b1(int a) begin int c;boolean b; return b; end
 begin
 	int t,b;

@@ -28,16 +28,19 @@ public class Compilador {
 		parser_obj.parse();
 		NodoBase root=parser_obj.action_obj.getASTroot();
 		System.out.println();
-		System.out.println("IMPRESION DEL AST GENERADO");
+		//System.out.println("IMPRESION DEL AST GENERADO");
 		System.out.println();
-		ast.Util.imprimirAST(root);
+		//ast.Util.imprimirAST(root);
 		TablaSimbolos ts = new TablaSimbolos();
 		ts.cargarTabla(root,"@");
-		ts.ImprimirClaves();
-		ts.ValidarFunciones();
+		//ts.ImprimirClaves();
+		if(ts.ValidarFunciones()){
+			Generador.setTablaSimbolos(ts);
+			Generador.generarCodigoObjeto(root);
+		}
+		else
+			System.out.println("Hay errores");
 	    //REALIZAR ACA ANALISIS SEMANTICO
-		Generador.setTablaSimbolos(ts);
-		Generador.generarCodigoObjeto(root);
 	}
 
 }

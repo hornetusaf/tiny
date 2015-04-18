@@ -205,7 +205,7 @@ public boolean ValidarOperacion (NodoBase operando_1, NodoBase operando_2 ){
 			return false;
 		}
 	}
-public void ValidarFunciones (){
+public boolean ValidarFunciones (){
 	List<String> listadof =  new ArrayList<>();
 	List<String> listadov =  new ArrayList<>();
 	int pos=0;
@@ -225,13 +225,19 @@ public void ValidarFunciones (){
 		String[] parts = v.split("[.]");
 		for(String f : listadof){
 			if(parts[0].equals(f))
-				if(BuscarSimbolo(v).getTipo().toString()!= BuscarSimbolo(f).getRetorno().toString())
+				if(BuscarSimbolo(v).getTipo().toString()!= BuscarSimbolo(f).getRetorno().toString()){
 					System.out.println("la variable " +v +" es de tipo " + BuscarSimbolo(v).getTipo().toString() + " y la funcion " +f +" es de tipo"+ BuscarSimbolo(f).getRetorno().toString()+" NO SE PUEDE RETORNAR");
+					return false;
+				}
+				else
+				{
+					System.out.println("la variable " +v +" es de tipo " + BuscarSimbolo(v).getTipo().toString() + " y la funcion " +f +" es de tipo"+ BuscarSimbolo(f).getRetorno().toString()+"SE PUEDE RETORNAR");
+				}
+					
 
 		}
 	}
-				
-
+	return true;
 }
 public boolean ValidarRetorno (NodoBase funcion, NodoBase var ){
 	String fun=((NodoProcedimiento)funcion).getId();		
