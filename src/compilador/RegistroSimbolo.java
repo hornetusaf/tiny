@@ -12,6 +12,7 @@ public class RegistroSimbolo {
 	private int tamano;
 	private tipoFuncion Retorno;
 	private boolean Inicializado;
+	private boolean varReturn;
 		
 	
 	public RegistroSimbolo(tipoDato tipo,int direccionMemoria,int tam) {
@@ -21,6 +22,7 @@ public class RegistroSimbolo {
 		this.DireccionMemoria = direccionMemoria;
 		this.tamano=tam;
 		this.setInicializado(false);
+		this.setVarReturn(false);
 		/*0-n cantidad parametros
 		 *-1 variables
 		 * */
@@ -31,6 +33,7 @@ public class RegistroSimbolo {
 			this.identificador = identificador;
 			this.DireccionMemoria = direccionMemoria;
 			this.setInicializado(true);
+			this.setVarReturn(false);
 			/*0-n cantidad parametros
 			 *-1 variables
 			 * */
@@ -72,6 +75,13 @@ public class RegistroSimbolo {
 	}
 	public void setInicializado(boolean inicializado) {
 		Inicializado = inicializado;
+	}
+	
+	public boolean isVarReturn() {
+		return varReturn;
+	}
+	public void setVarReturn(boolean varReturn) {
+		this.varReturn = varReturn;
 	}
 	
 }

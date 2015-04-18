@@ -121,9 +121,13 @@ public class TablaSimbolos {
 			}
 			if(raiz instanceof NodoReturn){
 				RegistroSimbolo s=BuscarSimbolo(id+"."+(((NodoReturn)raiz).getId()));
+				
 				//System.out.println("aquiii "+id+".@"+((NodoAsignacion)raiz).getIdentificador());
 				if(s!=null ){
 					//s.setInicializado(true);
+				//	System.out.println("este estaa"+((NodoAsignacion)raiz).getIdentificador());
+					//simbolo = new RegistroSimbolo(tipo,direccion++,tam);
+					s.setVarReturn(true);
 				}
 				else{
 						System.out.println("Variable no declarada "+id+"."+(((NodoReturn)raiz).getId()));
@@ -178,13 +182,55 @@ public class TablaSimbolos {
 							+ " Tamano: "
 							+ BuscarSimbolo(s).getTamano()
 							+ " Inicializado "
-							+ BuscarSimbolo(s).isInicializado());
+							+ BuscarSimbolo(s).isInicializado()
+							+ " Es variable de retorno"
+							+ BuscarSimbolo(s).isVarReturn());
 						
 		}
 	}
 	public int getDireccion(String Clave) {
 		return BuscarSimbolo(Clave).getDireccionMemoria();
 	}
+	
+public boolean ValidarOperacion (NodoBase operando_1, NodoBase operando_2 ){
+		
+		if ( (((NodoVariable)operando_1).getTipo()) == ((NodoVariable)operando_2).getTipo())
+		{
+			System.out.println("tamos claros");
+			return true;
+		}
+		else
+		{
+			System.out.println("Incompativilidad de tipos entre los operandos");
+			return false;
+		}
+	}
+public void ValidarFunciones (){
+	for (Iterator<String> it = tabla.keySet().iterator(); it.hasNext();) {
+		String s = (String) it.next();
+		System.out.println("este es "+s +" simbolo"+BuscarSimbolo(s).getTipo());
+		String[] parts = s.split("[.]");
+		if(parts.length==1)
+			System.out.println("funcion"+ parts[0]+ "tipo "+BuscarSimbolo(s).getTipo());
+		}
+		/*	System.out.println( parts[0]);
+		*/
+					
+
+
+}
+public boolean ValidarRetorno (NodoBase funcion, NodoBase var ){
+	String fun=((NodoProcedimiento)funcion).getId();		
+	if ( ((NodoProcedimiento)funcion).getTipo() == ((NodoProcedimiento)var).getTipo())
+		return true;
+	else
+	{
+		System.out.println("Incompativilidad de tipos con la funcion, nose puede resolver");
+		return false;
+	}
+}
+
+	
 
 	public boolean ValidarInicializacion (NodoBase raiz,String id){
 		boolean retornar=false,retornar2=false;
@@ -196,6 +242,7 @@ public class TablaSimbolos {
 					retornar2=ValidarInicializacion(((NodoOperacion)raiz).getOpDerecho(), id);
 				else
 					retornar2=true;
+				
 			}
 			if(raiz instanceof NodoValor){
 				//System.out.println("entro a nodovalor");
@@ -229,7 +276,7 @@ public class TablaSimbolos {
 			else*/ if(operador instanceof NodoOperacion)
 			{
 				
-				RecorrerOperacion(((NodoOperacion)operador).getOpIzquierdo(),id_asignacion,id_funcion);				
+				RecorrerOperacion(((NodoOperacion)operador).getOpIzquierdo(),id_asignacion,id_funcion);		
 				if(((NodoOperacion)operador).getOpDerecho()!=null)
 					RecorrerOperacion(((NodoOperacion)operador).getOpDerecho(),id_asignacion,id_funcion);
 			}
