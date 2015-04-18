@@ -206,17 +206,31 @@ public boolean ValidarOperacion (NodoBase operando_1, NodoBase operando_2 ){
 		}
 	}
 public void ValidarFunciones (){
+	List<String> listadof =  new ArrayList<>();
+	List<String> listadov =  new ArrayList<>();
+	int pos=0;
 	for (Iterator<String> it = tabla.keySet().iterator(); it.hasNext();) {
 		String s = (String) it.next();
-		System.out.println("este es "+s +" simbolo"+BuscarSimbolo(s).getTipo());
 		String[] parts = s.split("[.]");
-		if(parts.length==1)
-			System.out.println("funcion"+ parts[0]+ "tipo "+BuscarSimbolo(s).getTipo());
-		}
-		/*	System.out.println( parts[0]);
-		*/
-					
+		if(parts.length==1) //comprabacion de que la variable sea una funcion
+			listadof.add(s);
+		if(parts.length==2)
+			if(!parts[0].contains("@"))
+				if(BuscarSimbolo(s).isVarReturn())
+					listadov.add(s);
+				
+	}
+	System.out.println("listado de variables a verificar");
+	for (String v : listadov) {
+		String[] parts = v.split("[.]");
+		for(String f : listadof){
+			if(parts[0].equals(f))
+				if(BuscarSimbolo(v).getTipo().toString()!= BuscarSimbolo(f).getRetorno().toString())
+					System.out.println("la variable " +v +" es de tipo " + BuscarSimbolo(v).getTipo().toString() + " y la funcion " +f +" es de tipo"+ BuscarSimbolo(f).getRetorno().toString()+" NO SE PUEDE RETORNAR");
 
+		}
+	}
+				
 
 }
 public boolean ValidarRetorno (NodoBase funcion, NodoBase var ){

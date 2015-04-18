@@ -34,7 +34,7 @@ public class Compilador {
 		TablaSimbolos ts = new TablaSimbolos();
 		ts.cargarTabla(root,"@");
 		ts.ImprimirClaves();
-		//ts.ValidarFunciones();
+		ts.ValidarFunciones();
 	    //REALIZAR ACA ANALISIS SEMANTICO
 		Generador.setTablaSimbolos(ts);
 		Generador.generarCodigoObjeto(root);
