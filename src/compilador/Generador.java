@@ -141,7 +141,7 @@ public class Generador {
 		generar(n.getExpresion(),ambito);
 		/* Ahora almaceno el valor resultante */
 		RegistroSimbolo s=tablaSimbolos.BuscarSimbolo(ambito+"."+n.getIdentificador());
-		if(s.getTamano()>n.getPos())
+		if(s.getTamano()>n.getPos()|| s.getTamano()==0)
 		{		
 			direccion = s.getDireccionMemoria()+n.getPos();
 			UtGen.emitirRM("ST", UtGen.AC, direccion, UtGen.GP, "asignacion: almaceno el valor para el id "+n.getIdentificador());
@@ -155,10 +155,16 @@ public class Generador {
 		NodoLeer n = (NodoLeer)nodo;
 		int direccion;
 		if(UtGen.debug)	UtGen.emitirComentario("-> leer");
-		UtGen.emitirRO("IN", UtGen.AC, 0, 0, "leer: lee un valor entero ");
-		direccion = tablaSimbolos.getDireccion(ambito+"."+n.getIdentificador());
-		UtGen.emitirRM("ST", UtGen.AC, direccion, UtGen.GP, "leer: almaceno el valor entero leido en el id "+n.getIdentificador());
-		if(UtGen.debug)	UtGen.emitirComentario("<- leer");
+		RegistroSimbolo s=tablaSimbolos.BuscarSimbolo(ambito+"."+n.getIdentificador());
+		if(s.getTamano()>n.getPos() || s.getTamano()==0)
+		{
+			UtGen.emitirRO("IN", UtGen.AC, 0, 0, "leer: lee un valor entero ");
+			direccion = s.getDireccionMemoria()+n.getPos();
+			UtGen.emitirRM("ST", UtGen.AC, direccion, UtGen.GP, "leer: almaceno el valor entero leido en el id "+n.getIdentificador());
+			if(UtGen.debug)	UtGen.emitirComentario("<- leer");
+		}else{
+			System.out.println("Error: Identificador "+ambito+"."+n.getIdentificador()+" Posicion Maxima "+(s.getTamano()-1));
+		}
 	}
 	
 	private static void generarEscribir(NodoBase nodo,String ambito){
@@ -192,7 +198,7 @@ public class Generador {
 		if(UtGen.debug)	UtGen.emitirComentario("->Variable");
 		{
 			RegistroSimbolo s=tablaSimbolos.BuscarSimbolo(ambito+"."+n.getNombre());
-			if(s.getTamano()>n.getPos())
+			if(s.getTamano()>n.getPos()|| s.getTamano()==0)
 			{
 				direccion =  s.getDireccionMemoria()+n.getPos();
 				UtGen.emitirRM("LD", UtGen.AC, direccion, UtGen.GP, "cargar valor de Variable: "+n.getNombre());
