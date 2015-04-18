@@ -5,7 +5,7 @@ import java.io.File;
 import ast.*;
 import java_cup.runtime.*;
 
-public class Compilador {
+public class Compilador { 
 	
 	/***********
 	SymbolFactory es una nueva caracteristica que ha sido a�adida a las version 11a de cup, la cual facilita la implementacion de clases Symbol personalizadas
