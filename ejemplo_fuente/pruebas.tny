@@ -1,6 +1,17 @@
 begin
+<<<<<<< HEAD
 	int a;
 	for(a:=0;a<10;a:=a+1)
 		write a;
 		end;
+=======
+	int a[3],b;	
+	a[1]:=10;
+	a[0]:=5;
+	a[2]:=a[1]*a[0];
+	b:=a[0]*a[1]+a[2];
+	a[2]:=5;
+	read b;
+	read a[2];
+>>>>>>> origin/Noel
 end

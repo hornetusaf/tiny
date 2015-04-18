@@ -64,6 +64,13 @@ public class NodoVariable extends NodoBase{
 		this.tipo = null;
 		this.setTam(0);
 	}
+	public NodoVariable(String id) {
+		super();
+		this.id = id;
+		this.setHermanoDerecha(null);
+		this.tipo = null;
+		this.setTam(0);
+	}
 	
 	public String getId() {
 		return id;
