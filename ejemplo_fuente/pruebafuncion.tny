@@ -1,7 +1,62 @@
-
+void f() begin int a; end
+int a1(int a) begin int c;int b; end
+boolean fb(int z, int y) begin int a; end
+begin
+	int a[5],b,c;
+	fnoel(a,b,1+a1(2));
+	fotro();	
+	a:=1;
+	b:=1+2+3;
+	c:=1*3;
+	c:=1+3+2+3;
+	if a<2 then
+		write a;
+	end;
+	if(a!=b)then
+		write a;
+	end;
+	if(z=b)then
+		read a;
+	end;
+	a:=1+1;
+	b:=4*3+5;
+	if 1>2 then
+		a:=3;
+	end;
 	if(a!=b) then
 		write a;
-		if(c=d) then
-																
-		end;			
+		if (c=b) then
+			read a;
+			if (c=b) then
+				read b;					
+				a:=2+2;
+			else
+				b:=2+2;
+			end;
+		end;				
 	end;
+	for (a:=1;a<2;a:=a+1)
+		int j;
+		for (a:=1;a<2;a:=a+1)
+			for (a:=1;a<2;a:=a+1)
+				read x;
+				if (a<2) then
+					read a;
+					if (a=b) then
+						read b;					
+						y:=2+2;
+						int z;
+					else
+						b:=2+2;
+					end;
+				end;
+			end;
+		end;
+	end;
+	return a;
+	if(a!=b) then		
+		if a>=0 then
+			read a;			
+		end;				
+	end;
+end

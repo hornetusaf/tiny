@@ -67,6 +67,7 @@ non terminal NodoBase exp;
 non terminal NodoBase simple_exp;
 non terminal NodoBase term;
 non terminal NodoBase factor;
+non terminal NodoBase call_stmt;
 non terminal NodoBase var_stmt;
 non terminal NodoBase variable_stmt ;
 non terminal NodoBase for_stmt;
@@ -74,7 +75,6 @@ non terminal NodoBase funcion_stmt;
 non terminal NodoBase exp_var;
 non terminal NodoBase encabezado_stmt;
 non terminal NodoBase return_stmt;
-non terminal NodoBase call_stmt;
 non terminal NodoBase par_stmt;
 non terminal NodoBase exp_log;
 
@@ -198,10 +198,7 @@ stmt     ::= if_stmt:sif	{: if(modoDepuracion) System.out.println("\t regla stmt
 					:}
 			| return_stmt:sret	{: if(modoDepuracion) System.out.println("\t regla stmt return_stmt"); 
 					RESULT=sret;
-					:}    
-			| call_stmt:scall	{: if(modoDepuracion) System.out.println("\t regla stmt call_stmt"); 
-					RESULT=scall;
-					:}
+					:}    			
             | error	{: if(modoDepuracion) System.out.println("\t regla stmt error"); 
 				System.out.println("Ocurrio error en cup # 0004");
 				RESULT=null;
@@ -272,7 +269,14 @@ var_stmt     ::= ID:variable COMA var_stmt:v {: if(modoDepuracion) System.out.pr
 		:}					
 		| ID:variable OBRACKET NUM:tam CBRACKET{: if(modoDepuracion) System.out.println("\t regla var_stmt vector"); 
 			RESULT = new NodoVariable(variable.toString(),tam,tipoOp.puntoComa);
-		:}		
+		:}	
+		| call_stmt:call {: if(modoDepuracion) System.out.println("\t regla call_stmt en factor"); 											
+					RESULT=null;
+		:}
+		| call_stmt:call COMA var_stmt:v {: if(modoDepuracion) System.out.println("\t regla call_stmt en factor"); 											
+			RESULT = new NodoVariable(call.toString(),tipoOp.coma,v);
+		:}
+			
 		;		
 		
 repeat_stmt ::= REPEAT stmt_seq:cuerpo UNTIL exp:prueba	{: if(modoDepuracion) System.out.println("\t regla repeat_stmt"); 
@@ -371,6 +375,7 @@ simple_exp  ::= simple_exp:exI PLUS term:exD	{: if(modoDepuracion) System.out.pr
 		| term:ex	{: if(modoDepuracion) System.out.println("\t regla simple_exp term"); 
 				RESULT=ex;
 				:}
+		
 		;
 
 term        ::= term:exI TIMES factor:exD	{: if(modoDepuracion) System.out.println("\t regla term TIMES"); 
@@ -412,7 +417,7 @@ factor      ::= LPAREN exp:ex RPAREN	{: if(modoDepuracion) System.out.println("\
 		| FALSE {: if(modoDepuracion) System.out.println("\t regla factor FALSE"); 
 					System.out.println("Devolvi nodo false");					
 					RESULT= new NodoValor(false);										
-					:}
+					:}				
 		| error	{: if(modoDepuracion) System.out.println("\t regla factor error"); 
 				System.out.println("Ocurrio error en cup # 0003");
 				RESULT=null;
