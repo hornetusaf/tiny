@@ -1,6 +1,4 @@
-int f(int a) begin int a; return a; end
 begin
 	int a;
-	a:=f(f(2));
-	a:=3;
+	a:=3+2;
 end

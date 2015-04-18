@@ -338,7 +338,7 @@ exp_log    ::= exp_log:exI AND exp:exD	{: if(modoDepuracion) System.out.println(
 							RESULT = new NodoOperacion(exI,tipoOp.or,exD);
 							:}
 		| exp:exI   {: if(modoDepuracion) System.out.println("\t regla exp"); 
-							RESULT = new NodoOperacion(exI,null,null);
+							RESULT = exI;
 							:}
 		;
 

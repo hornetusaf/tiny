@@ -46,7 +46,7 @@ public class Generador {
 		System.out.println();
 		System.out.println();
 		generarPreludioEstandar();
-		generar(raiz);
+		generar(raiz,"@");
 		/*Genero el codigo de finalizacion de ejecucion del codigo*/   
 		UtGen.emitirComentario("Fin de la ejecucion.");
 		UtGen.emitirRO("HALT", 0, 0, 0, "");
@@ -57,44 +57,47 @@ public class Generador {
 	
 	//Funcion principal de generacion de codigo
 	//prerequisito: Fijar la tabla de simbolos antes de generar el codigo objeto 
-	private static void generar(NodoBase nodo){
+	private static void generar(NodoBase nodo,String ambito){
 	if(tablaSimbolos!=null){
 		if (nodo instanceof  NodoIf){
-			generarIf(nodo);
+			generarIf(nodo,ambito);
 		}else if (nodo instanceof  NodoRepeat){
-			generarRepeat(nodo);
+			generarRepeat(nodo,ambito);
 		}else if (nodo instanceof  NodoAsignacion){
-			generarAsignacion(nodo);
+			generarAsignacion(nodo,ambito);
 		}else if (nodo instanceof  NodoLeer){
-			generarLeer(nodo);
+			generarLeer(nodo,ambito);
 		}else if (nodo instanceof  NodoEscribir){
-			generarEscribir(nodo);
+			generarEscribir(nodo,ambito);
 		}else if (nodo instanceof NodoValor){
-			generarValor(nodo);
-		}else if (nodo instanceof NodoIdentificador){
-			generarIdentificador(nodo);
+			generarValor(nodo,ambito);
+		}else if (nodo instanceof NodoVariable){
+			generarVariable(nodo,ambito);
 		}else if (nodo instanceof NodoOperacion){
-			generarOperacion(nodo);
-		}else{
-			System.out.println("BUG: Tipo de nodo a generar desconocido");
+			generarOperacion(nodo,ambito);
+		}
+		
+		else{
+			System.out.println("BUG: Tipo de nodo a generar desconocido ");
+			
 		}
 		/*Si el hijo de extrema izquierda tiene hermano a la derecha lo genero tambien*/
 		if(nodo.TieneHermano())
-			generar(nodo.getHermanoDerecha());
+			generar(nodo.getHermanoDerecha(),ambito);
 	}else
-		System.out.println("¡¡¡ERROR: por favor fije la tabla de simbolos a usar antes de generar codigo objeto!!!");
+		System.out.println("ERROR: por favor fije la tabla de simbolos a usar antes de generar codigo objeto!!!");
 }
 
-	private static void generarIf(NodoBase nodo){
+	private static void generarIf(NodoBase nodo,String ambito){
     	NodoIf n = (NodoIf)nodo;
 		int localidadSaltoElse,localidadSaltoEnd,localidadActual;
 		if(UtGen.debug)	UtGen.emitirComentario("-> if");
 		/*Genero el codigo para la parte de prueba del IF*/
-		generar(n.getPrueba());
+		generar(n.getPrueba(),ambito);
 		localidadSaltoElse = UtGen.emitirSalto(1);
 		UtGen.emitirComentario("If: el salto hacia el else debe estar aqui");
 		/*Genero la parte THEN*/
-		generar(n.getParteThen());
+		generar(n.getParteThen(),ambito);
 		localidadSaltoEnd = UtGen.emitirSalto(1);
 		UtGen.emitirComentario("If: el salto hacia el final debe estar aqui");
 		localidadActual = UtGen.emitirSalto(0);
@@ -103,7 +106,7 @@ public class Generador {
 		UtGen.restaurarRespaldo();
 		/*Genero la parte ELSE*/
 		if(n.getParteElse()!=null){
-			generar(n.getParteElse());
+			generar(n.getParteElse(),ambito);
     	}
 		//igualmente debo generar la sentencia que reserve en
 		//localidadSaltoEnd al finalizar la ejecucion de un true
@@ -114,77 +117,78 @@ public class Generador {
 		if(UtGen.debug)	UtGen.emitirComentario("<- if");
 	}
 	
-	private static void generarRepeat(NodoBase nodo){
+	private static void generarRepeat(NodoBase nodo,String ambito){
     	NodoRepeat n = (NodoRepeat)nodo;
 		int localidadSaltoInicio;
 		if(UtGen.debug)	UtGen.emitirComentario("-> repeat");
 			localidadSaltoInicio = UtGen.emitirSalto(0);
 			UtGen.emitirComentario("repeat: el salto hacia el final (luego del cuerpo) del repeat debe estar aqui");
 			/* Genero el cuerpo del repeat */
-			generar(n.getCuerpo());
+			generar(n.getCuerpo(),ambito);
 			/* Genero el codigo de la prueba del repeat */
-			generar(n.getPrueba());
+			generar(n.getPrueba(),ambito);
 			UtGen.emitirRM_Abs("JEQ", UtGen.AC, localidadSaltoInicio, "repeat: jmp hacia el inicio del cuerpo");
 		if(UtGen.debug)	UtGen.emitirComentario("<- repeat");
 	}		
 	
-	private static void generarAsignacion(NodoBase nodo){
+	private static void generarAsignacion(NodoBase nodo,String ambito){
 		NodoAsignacion n = (NodoAsignacion)nodo;
 		int direccion;
 		if(UtGen.debug)	UtGen.emitirComentario("-> asignacion");		
 		/* Genero el codigo para la expresion a la derecha de la asignacion */
-		generar(n.getExpresion());
+		generar(n.getExpresion(),ambito);
 		/* Ahora almaceno el valor resultante */
-		direccion = tablaSimbolos.getDireccion(n.getIdentificador());
+		direccion = tablaSimbolos.getDireccion(ambito+"."+n.getIdentificador());
 		UtGen.emitirRM("ST", UtGen.AC, direccion, UtGen.GP, "asignacion: almaceno el valor para el id "+n.getIdentificador());
 		if(UtGen.debug)	UtGen.emitirComentario("<- asignacion");
 	}
 	
-	private static void generarLeer(NodoBase nodo){
+	private static void generarLeer(NodoBase nodo,String ambito){
 		NodoLeer n = (NodoLeer)nodo;
 		int direccion;
 		if(UtGen.debug)	UtGen.emitirComentario("-> leer");
 		UtGen.emitirRO("IN", UtGen.AC, 0, 0, "leer: lee un valor entero ");
-		direccion = tablaSimbolos.getDireccion(n.getIdentificador());
+		direccion = tablaSimbolos.getDireccion(ambito+"."+n.getIdentificador());
 		UtGen.emitirRM("ST", UtGen.AC, direccion, UtGen.GP, "leer: almaceno el valor entero leido en el id "+n.getIdentificador());
 		if(UtGen.debug)	UtGen.emitirComentario("<- leer");
 	}
 	
-	private static void generarEscribir(NodoBase nodo){
+	private static void generarEscribir(NodoBase nodo,String ambito){
 		NodoEscribir n = (NodoEscribir)nodo;
 		if(UtGen.debug)	UtGen.emitirComentario("-> escribir");
 		/* Genero el codigo de la expresion que va a ser escrita en pantalla */
-		generar(n.getExpresion());
+		generar(n.getExpresion(),ambito);
 		/* Ahora genero la salida */
 		UtGen.emitirRO("OUT", UtGen.AC, 0, 0, "escribir: genero la salida de la expresion");
 		if(UtGen.debug)	UtGen.emitirComentario("<- escribir");
 	}
 	
-	private static void generarValor(NodoBase nodo){
+	private static void generarValor(NodoBase nodo,String ambito){
     	NodoValor n = (NodoValor)nodo;
     	if(UtGen.debug)	UtGen.emitirComentario("-> constante");
     	UtGen.emitirRM("LDC", UtGen.AC, n.getValor(), 0, "cargar constante: "+n.getValor().toString());
     	if(UtGen.debug)	UtGen.emitirComentario("<- constante");
 	}
 	
-	private static void generarIdentificador(NodoBase nodo){
-		NodoIdentificador n = (NodoIdentificador)nodo;
+	private static void generarVariable(NodoBase nodo,String ambito){
+		NodoVariable n = (NodoVariable)nodo;
 		int direccion;
-		if(UtGen.debug)	UtGen.emitirComentario("-> identificador");
-		direccion = tablaSimbolos.getDireccion(n.getNombre());
-		UtGen.emitirRM("LD", UtGen.AC, direccion, UtGen.GP, "cargar valor de identificador: "+n.getNombre());
-		if(UtGen.debug)	UtGen.emitirComentario("-> identificador");
+		if(UtGen.debug)	UtGen.emitirComentario("-> Variable");
+		direccion = tablaSimbolos.getDireccion(ambito+"."+n.getId());
+		UtGen.emitirRM("LD", UtGen.AC, direccion, UtGen.GP, "cargar valor de Variable: "+n.getId());
+		if(UtGen.debug)	UtGen.emitirComentario("<- Variable");
 	}
 
-	private static void generarOperacion(NodoBase nodo){
+	private static void generarOperacion(NodoBase nodo,String ambito){
 		NodoOperacion n = (NodoOperacion) nodo;
 		if(UtGen.debug)	UtGen.emitirComentario("-> Operacion: " + n.getOperacion());
 		
-		generar(n.getOpIzquierdo());
+		generar(n.getOpIzquierdo(),ambito);
 		/* Almaceno en la pseudo pila de valor temporales el valor de la operacion izquierda */
 		UtGen.emitirRM("ST", UtGen.AC, desplazamientoTmp--, UtGen.MP, "op: push en la pila tmp el resultado expresion izquierda");
 		/* Genero la expresion derecha de la operacion */
-		generar(n.getOpDerecho());
+		
+		generar(n.getOpDerecho(),ambito);
 		/* Ahora cargo/saco de la pila el valor izquierdo */
 		UtGen.emitirRM("LD", UtGen.AC1, ++desplazamientoTmp, UtGen.MP, "op: pop o cargo de la pila el valor izquierdo en AC1");
 		switch(n.getOperacion()){
