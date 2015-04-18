@@ -313,6 +313,22 @@ assign_stmt ::= ID:variable ASSIGN exp_log:ex	{: if(modoDepuracion) System.out.p
 				System.out.println("Ocurrio error en cup # 0001");
 				}
 				:}
+		| ID:variable OBRACKET NUM:pos CBRACKET ASSIGN call_stmt:ex {: if(modoDepuracion) System.out.println("\t regla asignacion_stmt llamada de funcion"); 
+				if(variable!=null)
+				RESULT = new NodoAsignacion(variable.toString(),pos,ex);
+			else{
+				RESULT = null;
+				System.out.println("Ocurrio error en cup # 000111");
+				}
+				:}
+		| ID:variable OBRACKET NUM:pos CBRACKET ASSIGN exp_log:ex {: if(modoDepuracion) System.out.println("\t regla asignacion_stmt llamada de funcion"); 
+				if(variable!=null)
+				RESULT = new NodoAsignacion(variable.toString(),pos,ex);
+			else{
+				RESULT = null;
+				System.out.println("Ocurrio error en cup # 0001111");
+				}
+				:}
 		;
 
 read_stmt   ::= READ ID:variable	{: if(modoDepuracion) System.out.println("\t regla read_stmt read"); 
@@ -410,6 +426,9 @@ factor      ::= LPAREN exp:ex RPAREN	{: if(modoDepuracion) System.out.println("\
 						System.out.println("Ocurrio error en cup # 0005");
 					}
 					:}
+		| ID:variable OBRACKET NUM:pos CBRACKET{: if(modoDepuracion) System.out.println("\t regla var_stmt vector"); 
+			RESULT = new NodoIdentificador(variable.toString(),pos);
+		:}	
 		| TRUE	{: if(modoDepuracion) System.out.println("\t regla factor TRUE"); 
 					System.out.println("Devolvi nodo true");					
 					RESULT= new NodoValor(true);										

@@ -73,12 +73,14 @@ public class Generador {
 			generarValor(nodo,ambito);
 		}else if (nodo instanceof NodoVariable){
 			generarVariable(nodo,ambito);
+		}else if (nodo instanceof NodoIdentificador){
+			generarIdentificador(nodo,ambito);
 		}else if (nodo instanceof NodoOperacion){
 			generarOperacion(nodo,ambito);
 		}
 		
 		else{
-			System.out.println("BUG: Tipo de nodo a generar desconocido ");
+			System.out.println("BUG: Tipo de nodo a generar desconocido "+nodo.toString());
 			
 		}
 		/*Si el hijo de extrema izquierda tiene hermano a la derecha lo genero tambien*/
@@ -138,9 +140,15 @@ public class Generador {
 		/* Genero el codigo para la expresion a la derecha de la asignacion */
 		generar(n.getExpresion(),ambito);
 		/* Ahora almaceno el valor resultante */
-		direccion = tablaSimbolos.getDireccion(ambito+"."+n.getIdentificador());
-		UtGen.emitirRM("ST", UtGen.AC, direccion, UtGen.GP, "asignacion: almaceno el valor para el id "+n.getIdentificador());
-		if(UtGen.debug)	UtGen.emitirComentario("<- asignacion");
+		RegistroSimbolo s=tablaSimbolos.BuscarSimbolo(ambito+"."+n.getIdentificador());
+		if(s.getTamano()>n.getPos())
+		{		
+			direccion = s.getDireccionMemoria()+n.getPos();
+			UtGen.emitirRM("ST", UtGen.AC, direccion, UtGen.GP, "asignacion: almaceno el valor para el id "+n.getIdentificador());
+			if(UtGen.debug)	UtGen.emitirComentario("<- asignacion");
+		}else{
+			System.out.println("Error: Identificador "+ambito+"."+n.getIdentificador()+" Posicion Maxima "+(s.getTamano()-1));
+		}
 	}
 	
 	private static void generarLeer(NodoBase nodo,String ambito){
@@ -173,11 +181,29 @@ public class Generador {
 	private static void generarVariable(NodoBase nodo,String ambito){
 		NodoVariable n = (NodoVariable)nodo;
 		int direccion;
-		if(UtGen.debug)	UtGen.emitirComentario("-> Variable");
+		if(UtGen.debug)	UtGen.emitirComentario("-> Declaracion de Variable");
 		direccion = tablaSimbolos.getDireccion(ambito+"."+n.getId());
 		UtGen.emitirRM("LD", UtGen.AC, direccion, UtGen.GP, "cargar valor de Variable: "+n.getId());
-		if(UtGen.debug)	UtGen.emitirComentario("<- Variable");
+		if(UtGen.debug)	UtGen.emitirComentario("<-Fin Declaracion de Variable");
 	}
+	private static void generarIdentificador(NodoBase nodo,String ambito){
+		NodoIdentificador n = (NodoIdentificador)nodo;
+		int direccion;
+		if(UtGen.debug)	UtGen.emitirComentario("->Variable");
+		{
+			RegistroSimbolo s=tablaSimbolos.BuscarSimbolo(ambito+"."+n.getNombre());
+			if(s.getTamano()>n.getPos())
+			{
+				direccion =  s.getDireccionMemoria()+n.getPos();
+				UtGen.emitirRM("LD", UtGen.AC, direccion, UtGen.GP, "cargar valor de Variable: "+n.getNombre());
+				if(UtGen.debug)	UtGen.emitirComentario("<- Variable");
+			}
+			else
+			{
+				System.out.println("Error: Variable "+ambito+"."+n.getNombre()+" Posicion Maxima "+(s.getTamano()-1));
+			}
+		}
+	}	
 
 	private static void generarOperacion(NodoBase nodo,String ambito){
 		NodoOperacion n = (NodoOperacion) nodo;

@@ -6,7 +6,6 @@ import ast.*;
 public class TablaSimbolos {
 	private HashMap<String, RegistroSimbolo> tabla;
 	private int direccion; // Contador de las localidades de memoria asignadas a
-							// la tabla
 	private int parametros;
 
 	public TablaSimbolos() {

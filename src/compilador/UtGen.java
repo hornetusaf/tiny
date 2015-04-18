@@ -51,7 +51,7 @@ public class UtGen {
 	public static void emitirRO(String op, int r, int s, int t, String c){
 		System.out.print((instruccionActual++)+":       "+op+"       "+r+","+s+","+t );
 		if(debug)
-			System.out.print("      "+c);
+			System.out.print("      --"+c);
 		System.out.print("\n");
 		if(instruccionMasAlta < instruccionActual) 
 			instruccionMasAlta = instruccionActual;
@@ -70,7 +70,7 @@ public class UtGen {
 	public static void emitirRM(String op, int r, int d, int s, String c){
 		System.out.print((instruccionActual++)+":       "+op+"       "+r+","+d+"("+s+")" );
 		if(debug)
-			System.out.print("      "+c);
+			System.out.print("      --"+c);
 		System.out.print("\n");
 		if(instruccionMasAlta < instruccionActual) 
 			instruccionMasAlta = instruccionActual;	
@@ -117,7 +117,7 @@ public class UtGen {
 		System.out.print((instruccionActual)+":       "+op+"       "+r+","+(a-(instruccionActual+1))+"("+PC+")" );
 		++instruccionActual;
 		if(debug)
-			System.out.print("      "+c);
+			System.out.print("      --"+c);
 		System.out.print("\n");
 		if(instruccionMasAlta < instruccionActual) 
 			instruccionMasAlta = instruccionActual;	
