@@ -20,8 +20,7 @@ public class NodoFor extends NodoBase{
 		this.asi = asi;
 		this.exp = exp;
 		this.asf = asf;
-		this.cuerpo = cuerpo;
-		
+		this.cuerpo = cuerpo;		
 	}
 
 	public NodoBase getAsi() {
