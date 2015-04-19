@@ -1,1 +1,110 @@
-write 1+2*3
+int a,b;	
+	a[1]:=10;
+	a[0]:=5;
+	a[2]:=a[1]*a[0];
+	b:=a[0]*a[1]+a[2];
+	a[2]:=5;
+	read b;
+	read a[2];
+	write a[0];
+	write a[1];
+	write a[2];
+	write b;
+	write (a[0]+a[0])*(a[1]/2)+a[2];
+	repeat
+		write a[0];
+		a[0]:=a[0]+1;
+	until a[0]<10;
+	return 1;
+	
+	
+	if 2<1 then		
+		write 1;
+	end;	
+	if 2<2 then		
+		write 2;
+	end;	
+	if 2<3 then		
+		write 3;
+	end;	
+	if 2<=1 then		
+		write 4;
+	end;	
+	if 2<=2 then		
+		write 5;
+	end;	
+	if 2<=3 then
+		write 6;
+	end;
+
+	if 2>1 then		
+		write 7;
+	end;
+	if 2>2 then		
+		write 8;
+	end;	
+	if 2>3 then		
+		write 9;
+	end;
+		
+	if 2>=1 then		
+		write 10;
+	end;	
+	if 2>=2 then		
+		write 11;
+	end;	
+	if 2>=3 then
+		write 12;
+	end;
+	
+	if 2=1 then		
+		write 13;
+	end;	
+	if 2=2 then		
+		write 14;
+	end;	
+	if 2=3 then
+		write 15;
+	end;
+	
+	if 2!=1 then		
+		write 16;
+	end;	
+	if 2!=2 then		
+		write 17;
+	end;	
+	if 2!=3 then
+		write 18;
+	end;
+	
+	if 2<1 and 2<1 then		
+		write 19;
+	end;
+	
+	if 2<3 and 2<1 then		
+		write 20;
+	end;
+	
+	if 2<1 and 2<3 then		
+		write 21;
+	end;
+	
+	if 2<3 and 2<3 then		
+		write 22;
+	end;
+	
+	if 2<1 or 2<1 then		
+		write 23;
+	end;
+	
+	if 2<3 or 2<1 then		
+		write 24;
+	end;
+	
+	if 2<1 or 2<3 then		
+		write 25;
+	end;
+	
+	if 2<3 or 2<3 then		
+		write 26;
+	end;

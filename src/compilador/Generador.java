@@ -127,8 +127,7 @@ public class Generador {
 		UtGen.emitirComentario("If: el salto hacia el final debe estar aqui");
 		localidadActual = UtGen.emitirSalto(0);
 		UtGen.cargarRespaldo(localidadSaltoElse);
-		UtGen.emitirRM_Abs("JNE", UtGen.AC, localidadActual,
-				"if: jmp hacia else");
+		UtGen.emitirRM_Abs("JEQ", UtGen.AC, localidadActual,"if: jmp hacia else");
 		UtGen.restaurarRespaldo();
 		/* Genero la parte ELSE */
 		if (n.getParteElse() != null) {
@@ -138,8 +137,7 @@ public class Generador {
 		// localidadSaltoEnd al finalizar la ejecucion de un true
 		localidadActual = UtGen.emitirSalto(0);
 		UtGen.cargarRespaldo(localidadSaltoEnd);
-		UtGen.emitirRM_Abs("LDA", UtGen.PC, localidadActual,
-				"if: jmp hacia el final");
+		UtGen.emitirRM_Abs("LDA", UtGen.PC, localidadActual,"if: jmp hacia el final");
 		UtGen.restaurarRespaldo();
 		if (UtGen.debug)
 			UtGen.emitirComentario("<- if");
@@ -307,55 +305,73 @@ public class Generador {
 			break;
 		case menor:
 			UtGen.emitirRO("SUB", UtGen.AC, UtGen.AC1, UtGen.AC, "op: <");
-			UtGen.emitirRM("JEQ", UtGen.AC, 2, UtGen.PC,"voy dos instrucciones mas alla if verdadero (AC<0)");
+			UtGen.emitirRM("JLT", UtGen.AC, 2, UtGen.PC,"voy dos instrucciones mas alla if verdadero (AC<0)");
 			UtGen.emitirRM("LDC", UtGen.AC, 0, UtGen.AC, "caso de falso (AC=0)");
 			UtGen.emitirRM("LDA", UtGen.PC, 1, UtGen.PC,"Salto incodicional a direccion: PC+1 (es falso evito colocarlo verdadero)");
 			UtGen.emitirRM("LDC", UtGen.AC, 1, UtGen.AC,"caso de verdadero (AC=1)");
 			break;
 		case mayor:
-			UtGen.emitirRO("ADD", UtGen.AC, UtGen.AC1, UtGen.AC, "op: >");
-			UtGen.emitirRM("JEQ", UtGen.AC, 2, UtGen.PC,"voy dos instrucciones mas alla if verdadero (AC<0)");
-			UtGen.emitirRM("LDC", UtGen.AC, 0, UtGen.AC, "caso de falso (AC=0)");
-			UtGen.emitirRM("LDA", UtGen.PC, 1, UtGen.PC,"Salto incodicional a direccion: PC+1 (es falso evito colocarlo verdadero)");
-			UtGen.emitirRM("LDC", UtGen.AC, 1, UtGen.AC,"caso de verdadero (AC=1)");
-			break;
-		case menor_igual:
 			UtGen.emitirRO("SUB", UtGen.AC, UtGen.AC1, UtGen.AC, "op: >");
 			UtGen.emitirRM("JGT", UtGen.AC, 2, UtGen.PC,"voy dos instrucciones mas alla if verdadero (AC<0)");
 			UtGen.emitirRM("LDC", UtGen.AC, 0, UtGen.AC, "caso de falso (AC=0)");
 			UtGen.emitirRM("LDA", UtGen.PC, 1, UtGen.PC,"Salto incodicional a direccion: PC+1 (es falso evito colocarlo verdadero)");
 			UtGen.emitirRM("LDC", UtGen.AC, 1, UtGen.AC,"caso de verdadero (AC=1)");
 			break;
+		case menor_igual:
+			UtGen.emitirRO("SUB", UtGen.AC, UtGen.AC1, UtGen.AC, "op: >");
+			UtGen.emitirRM("JLE", UtGen.AC, 2, UtGen.PC,"voy dos instrucciones mas alla if verdadero (AC<0)");
+			UtGen.emitirRM("LDC", UtGen.AC, 0, UtGen.AC, "caso de falso (AC=0)");
+			UtGen.emitirRM("LDA", UtGen.PC, 1, UtGen.PC,"Salto incodicional a direccion: PC+1 (es falso evito colocarlo verdadero)");
+			UtGen.emitirRM("LDC", UtGen.AC, 1, UtGen.AC,"caso de verdadero (AC=1)");
+			break;
 		case mayor_igual:
-			UtGen.emitirRO("ADD", UtGen.AC, UtGen.AC1, UtGen.AC, "op: >");
-			UtGen.emitirRM("JLT", UtGen.AC, 2, UtGen.PC,"voy dos instrucciones mas alla if verdadero (AC<0)");
+			UtGen.emitirRO("SUB", UtGen.AC, UtGen.AC1, UtGen.AC, "op: >");
+			UtGen.emitirRM("JGE", UtGen.AC, 2, UtGen.PC,"voy dos instrucciones mas alla if verdadero (AC<0)");
 			UtGen.emitirRM("LDC", UtGen.AC, 0, UtGen.AC, "caso de falso (AC=0)");
 			UtGen.emitirRM("LDA", UtGen.PC, 1, UtGen.PC,"Salto incodicional a direccion: PC+1 (es falso evito colocarlo verdadero)");
 			UtGen.emitirRM("LDC", UtGen.AC, 1, UtGen.AC,"caso de verdadero (AC=1)");
 			break;
 		case diferente:
 			UtGen.emitirRO("SUB", UtGen.AC, UtGen.AC1, UtGen.AC, "op: >");
-			UtGen.emitirRM("JEQ", UtGen.AC, 2, UtGen.PC,"voy dos instrucciones mas alla if verdadero (AC<0)");
+			UtGen.emitirRM("JNE", UtGen.AC, 2, UtGen.PC,"voy dos instrucciones mas alla if verdadero (AC<0)");
 			UtGen.emitirRM("LDC", UtGen.AC, 0, UtGen.AC, "caso de falso (AC=0)");
 			UtGen.emitirRM("LDA", UtGen.PC, 1, UtGen.PC,"Salto incodicional a direccion: PC+1 (es falso evito colocarlo verdadero)");
 			UtGen.emitirRM("LDC", UtGen.AC, 1, UtGen.AC,"caso de verdadero (AC=1)");
 			break;
 		case igual:
 			UtGen.emitirRO("SUB", UtGen.AC, UtGen.AC1, UtGen.AC, "op: ==");
-			UtGen.emitirRM("JNE", UtGen.AC, 2, UtGen.PC,"voy dos instrucciones mas alla if verdadero (AC==0)");
+			UtGen.emitirRM("JEQ", UtGen.AC, 2, UtGen.PC,"voy dos instrucciones mas alla if verdadero (AC==0)");
 			UtGen.emitirRM("LDC", UtGen.AC, 0, UtGen.AC, "caso de falso (AC=0)");
 			UtGen.emitirRM("LDA", UtGen.PC, 1, UtGen.PC,"Salto incodicional a direccion: PC+1 (es falso evito colocarlo verdadero)");
 			UtGen.emitirRM("LDC", UtGen.AC, 1, UtGen.AC,"caso de verdadero (AC=1)");
 			break;			
-		case and:
-			UtGen.emitirRO("SUB", UtGen.AC, UtGen.AC1, UtGen.AC, "op: ==");
+		case and:		
+			generarOperacion(((NodoOperacion)nodo).getOpIzquierdo(), ambito);
+			UtGen.emitirRM("LDC", UtGen.R4, 0, UtGen.AC,"Cargar 0");
+			UtGen.emitirRO("ADD", UtGen.R2, UtGen.R4, UtGen.AC, "Guarda EI");
+			generarOperacion(((NodoOperacion)nodo).getOpDerecho(), ambito);
+			UtGen.emitirRM("LDC", UtGen.R4, 0, UtGen.AC,"Cargar 0");
+			UtGen.emitirRO("ADD", UtGen.R3, UtGen.R4, UtGen.AC, "Guarda ED");
+			
+			UtGen.emitirRO("MUL", UtGen.AC, UtGen.R2, UtGen.R3, "AND");
+			
 			UtGen.emitirRM("JNE", UtGen.AC, 2, UtGen.PC,"voy dos instrucciones mas alla if verdadero (AC==0)");
 			UtGen.emitirRM("LDC", UtGen.AC, 0, UtGen.AC, "caso de falso (AC=0)");
 			UtGen.emitirRM("LDA", UtGen.PC, 1, UtGen.PC,"Salto incodicional a direccion: PC+1 (es falso evito colocarlo verdadero)");
 			UtGen.emitirRM("LDC", UtGen.AC, 1, UtGen.AC,"caso de verdadero (AC=1)");
+			
+			
 			break;
 		case or:
-			UtGen.emitirRO("SUB", UtGen.AC, UtGen.AC1, UtGen.AC, "op: ==");
+			generarOperacion(((NodoOperacion)nodo).getOpIzquierdo(), ambito);
+			UtGen.emitirRM("LDC", UtGen.R4, 0, UtGen.AC,"Cargar 0");
+			UtGen.emitirRO("ADD", UtGen.R2, UtGen.R4, UtGen.AC, "Guarda EI");
+			generarOperacion(((NodoOperacion)nodo).getOpDerecho(), ambito);
+			UtGen.emitirRM("LDC", UtGen.R4, 0, UtGen.AC,"Cargar 0");
+			UtGen.emitirRO("ADD", UtGen.R3, UtGen.R4, UtGen.AC, "Guarda ED");
+			
+			UtGen.emitirRO("ADD", UtGen.AC, UtGen.R2, UtGen.R3, "AND");
+			
 			UtGen.emitirRM("JNE", UtGen.AC, 2, UtGen.PC,"voy dos instrucciones mas alla if verdadero (AC==0)");
 			UtGen.emitirRM("LDC", UtGen.AC, 0, UtGen.AC, "caso de falso (AC=0)");
 			UtGen.emitirRM("LDA", UtGen.PC, 1, UtGen.PC,"Salto incodicional a direccion: PC+1 (es falso evito colocarlo verdadero)");

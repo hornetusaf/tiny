@@ -283,16 +283,10 @@ repeat_stmt ::= REPEAT stmt_seq:cuerpo UNTIL exp:prueba	{: if(modoDepuracion) Sy
 							RESULT = new NodoRepeat(cuerpo,prueba);
 							:}
 		;
-return_stmt ::= RETURN ID:id {: if(modoDepuracion) System.out.println("\t regla return_stmt id"); 
-			RESULT = new NodoReturn(id.toString(),false);
-		:}
-		| RETURN TRUE {: if(modoDepuracion) System.out.println("\t regla return_stmt true"); 
-			RESULT = new NodoReturn("",true);
-		:}
-		| RETURN FALSE {: if(modoDepuracion) System.out.println("\t regla return_stmt false"); 
-			RESULT = new NodoReturn("",false);
-		:}
-		| RETURN {: if(modoDepuracion) System.out.println("\t regla return_stmt vacio"); 
+return_stmt ::= RETURN factor:f {: if(modoDepuracion) System.out.println("\t regla return_stmt id"); 
+			RESULT = new NodoReturn(f);
+		:}		
+		|RETURN {: if(modoDepuracion) System.out.println("\t regla return_stmt id"); 
 			RESULT = new NodoReturn();
 		:}
 		;
@@ -358,10 +352,10 @@ write_stmt  ::= WRITE exp:ex	{: if(modoDepuracion) System.out.println("\t regla 
 					:}
 		;
 		
-exp_log    ::= exp_log:exI AND exp:exD	{: if(modoDepuracion) System.out.println("\t regla exp AND"); 
+exp_log    ::= exp:exI AND exp_log:exD	{: if(modoDepuracion) System.out.println("\t regla exp AND"); 
 							RESULT = new NodoOperacion(exI,tipoOp.and,exD);
 							:}
-		| exp_log:exI OR exp:exD	{: if(modoDepuracion) System.out.println("\t regla exp OR"); 
+		|  exp:exI OR exp_log:exD	{: if(modoDepuracion) System.out.println("\t regla exp OR"); 
 							RESULT = new NodoOperacion(exI,tipoOp.or,exD);
 							:}
 		| exp:exI   {: if(modoDepuracion) System.out.println("\t regla exp"); 
@@ -416,7 +410,7 @@ term        ::= term:exI TIMES factor:exD	{: if(modoDepuracion) System.out.print
 					:}
 		;
 
-factor      ::= LPAREN exp:ex RPAREN	{: if(modoDepuracion) System.out.println("\t regla factor LPAREN exp RPAREN"); 
+factor      ::= LPAREN exp_log:ex RPAREN	{: if(modoDepuracion) System.out.println("\t regla factor LPAREN exp RPAREN"); 
 							RESULT = ex;
 							:}
 		| NUM:valor	{: if(modoDepuracion) System.out.println("\t regla factor NUM"); 
