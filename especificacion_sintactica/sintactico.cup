@@ -448,7 +448,7 @@ factor      ::= LPAREN exp_log:ex RPAREN	{: if(modoDepuracion) System.out.printl
 				:}
 		;
 		
-for_stmt     ::= FOR LPAREN assign_stmt:asi SEMI exp:ex SEMI assign_stmt:asf RPAREN stmt_seq:cuerpo END {: if(modoDepuracion) System.out.println("\t regla for_stmt"); 
+for_stmt     ::= FOR LPAREN assign_stmt:asi SEMI exp_log:ex SEMI assign_stmt:asf RPAREN stmt_seq:cuerpo END {: if(modoDepuracion) System.out.println("\t regla for_stmt"); 
 			RESULT = new NodoFor(asi,ex,asf,cuerpo);
 		:}
 		;

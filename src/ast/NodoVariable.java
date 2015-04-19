@@ -28,6 +28,7 @@ public class NodoVariable extends NodoBase{
 		this.tipo= td;
 		this.id = id;
 		this.tam=0;
+		this.setHermanoDerecha(null);
 	}
 	public NodoVariable(String id,Integer tam,tipoOp to,NodoBase partev) {
 		super();//si

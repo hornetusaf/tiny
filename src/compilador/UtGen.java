@@ -41,6 +41,7 @@ public class UtGen {
 	public static void emitirComentario(String c){
 		if(debug) System.out.println("*      "+c);
 	}
+	
 
 	/* Este procedimiento emite sentencias RO (Solo Registro)
 	 * de la TM    opcode r,s,t 
@@ -89,6 +90,10 @@ public class UtGen {
 		instruccionActual += cantidad;
 		if(instruccionMasAlta < instruccionActual) 
 			instruccionMasAlta = instruccionActual;	
+		return anterior;
+	}
+	public static int Linea(){
+		int anterior = instruccionActual;
 		return anterior;
 	}
 	/* La funcion cargar respaldo, cambia la direccion de emision de codigo actual, 
