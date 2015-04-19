@@ -1,8 +1,6 @@
-void f() begin boolean b; int a; a:=true; b:=true; b:=4; end
-int a1(int a) begin int a;int b; a:=4; b:=a; end
+int f(int b,int c) begin int a; end
 begin
-	int a,c;
-	if (a=true) then
-		a:=5;
-	end;
+	int b;
+	boolean bool;
+	b=f(b,bool);
 end

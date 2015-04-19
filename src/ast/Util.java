@@ -31,7 +31,7 @@ public class Util {
 		    else if (raiz instanceof NodoCall)
 		    		    	{	
 		    			    		System.out.println("Llamada a Funcion: "+((NodoCall)raiz).getNombreFuncion());
-		    			    		imprimirAST(((NodoCall)raiz).getExI());
+		    			    		imprimirAST(((NodoCall)raiz).getEx());
 		    			    
 		    			    	
 		    		    	}
