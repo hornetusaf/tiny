@@ -34,11 +34,11 @@ public class Compilador {
 		TablaSimbolos ts = new TablaSimbolos();
 		ts.cargarTabla(root,"@");
 		ts.ImprimirClaves();
-		if(ts.ValidarFunciones()){
+		/*if(ts.ValidarFunciones()){
 			System.out.println("Se encontraron 0 errores");
 			Generador.setTablaSimbolos(ts);
 			Generador.generarCodigoObjeto(root);
-		}
+		}*/
 	    //REALIZAR ACA ANALISIS SEMANTICO
 	}
 

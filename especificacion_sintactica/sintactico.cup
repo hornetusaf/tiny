@@ -283,17 +283,8 @@ repeat_stmt ::= REPEAT stmt_seq:cuerpo UNTIL exp:prueba	{: if(modoDepuracion) Sy
 							RESULT = new NodoRepeat(cuerpo,prueba);
 							:}
 		;
-return_stmt ::= RETURN ID:id {: if(modoDepuracion) System.out.println("\t regla return_stmt id"); 
-			RESULT = new NodoReturn(id.toString());
-		:}
-		| RETURN TRUE {: if(modoDepuracion) System.out.println("\t regla return_stmt true");
-			RESULT = new NodoReturn(true); 
-		:}
-		| RETURN FALSE {: if(modoDepuracion) System.out.println("\t regla return_stmt false");
-			RESULT = new NodoReturn(false); 
-		:}
-		| RETURN NUM:nm {: if(modoDepuracion) System.out.println("\t regla return_stmt false");
-			RESULT = new NodoReturn(nm); 
+return_stmt ::= RETURN factor:f {: if(modoDepuracion) System.out.println("\t regla return_stmt id"); 
+			RESULT = new NodoReturn(f);
 		:}
 		| RETURN {: if(modoDepuracion) System.out.println("\t regla return_stmt vacio"); 
 		:}
@@ -418,7 +409,7 @@ term        ::= term:exI TIMES factor:exD	{: if(modoDepuracion) System.out.print
 					:}
 		;
 
-factor      ::= LPAREN exp:ex RPAREN	{: if(modoDepuracion) System.out.println("\t regla factor LPAREN exp RPAREN"); 
+factor      ::= LPAREN exp_log:ex RPAREN	{: if(modoDepuracion) System.out.println("\t regla factor LPAREN exp RPAREN"); 
 							RESULT = ex;
 							:}
 		| NUM:valor	{: if(modoDepuracion) System.out.println("\t regla factor NUM"); 

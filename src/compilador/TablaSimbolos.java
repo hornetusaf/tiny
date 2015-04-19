@@ -62,15 +62,27 @@ public class TablaSimbolos {
 			else if (raiz instanceof NodoAsignacion)
 			{
 				RegistroSimbolo s=BuscarSimbolo(id+"."+((NodoAsignacion)raiz).getIdentificador());
-				if(s!=null ){
+				RegistroSimbolo s2=BuscarSimbolo(id+".@"+((NodoAsignacion)raiz).getIdentificador());
+				//System.out.println("aquiii "+id+".@"+((NodoAsignacion)raiz).getIdentificador()+" s: "+s);
+				
+				if(s!=null){
 					boolean x= ValidarInicializacion(((NodoAsignacion)raiz).getExpresion(),id);
 					if(s.isInicializado()!=true && x==true){
-						s.setInicializado(x);						
+						s.setInicializado(x);
+						//System.out.println("aquiii cambia a true");
+					}
+				}
+				else if(s2!=null){
+					boolean x= ValidarInicializacion(((NodoAsignacion)raiz).getExpresion(),id);
+					if(s2.isInicializado()!=true && x==true){
+						s2.setInicializado(x);
+						//System.out.println("aquiii cambia a true");
 					}
 				}
 				else{
 					RegistroSimbolo sb=BuscarSimbolo(id+".@"+((NodoAsignacion)raiz).getIdentificador());
-					if(sb!=null ){
+					RegistroSimbolo sb2=BuscarSimbolo(id+"."+((NodoAsignacion)raiz).getIdentificador());
+					if(sb!=null){
 						//sb.setInicializado(true);
 					}else
 						System.out.println("Variable no declarada "+id+"."+((NodoAsignacion)raiz).getIdentificador());
@@ -190,7 +202,7 @@ public class TablaSimbolos {
 							+ BuscarSimbolo(s).getTamano()
 							+ " Inicializado "
 							+ BuscarSimbolo(s).isInicializado()
-							+ "retorno activo "
+							+ " retorno activo "
 							+ BuscarSimbolo(s).isVarReturn());
 						
 		}
@@ -285,99 +297,133 @@ public boolean ValidarRetorno (NodoBase funcion, String id ){
 */
 	
 
-	public boolean ValidarInicializacion (NodoBase raiz,String id){
-		boolean retornar=false,retornar2=false;
-		while(raiz!=null){
-			if(raiz instanceof NodoOperacion){
-				//System.out.println("validando");
-				retornar=ValidarInicializacion(((NodoOperacion)raiz).getOpIzquierdo(), id);
-				if(((NodoOperacion)raiz).getOpDerecho()!=null)
-					retornar2=ValidarInicializacion(((NodoOperacion)raiz).getOpDerecho(), id);
-				else
-					retornar2=true;
-				
-			}
-			if(raiz instanceof NodoValor){
-				//System.out.println("entro a nodovalor");
+
+public boolean ValidarInicializacion (NodoBase raiz,String id){
+	boolean retornar=false,retornar2=false;
+	while(raiz!=null){
+		if(raiz instanceof NodoProcedimiento){
+			System.out.println("validando proc");
+			retornar=ValidarInicializacion(((NodoProcedimiento)raiz).getCuerpo(),((NodoProcedimiento)raiz).getId());
+		}
+		else if(raiz instanceof NodoOperacion){
+			//System.out.println("validando");
+			retornar=ValidarInicializacion(((NodoOperacion)raiz).getOpIzquierdo(), id);
+			if(((NodoOperacion)raiz).getOpDerecho()!=null)
+				retornar2=ValidarInicializacion(((NodoOperacion)raiz).getOpDerecho(), id);
+			else
+				retornar2=true;
+		}
+		else if(raiz instanceof NodoValor){
+			
+			System.out.println(id);
 				return true;
-			}
-			if(raiz instanceof NodoIdentificador){
-					String s = ((NodoIdentificador)raiz).getNombre();
-					//System.out.println("ID"+((NodoIdentificador)raiz).getNombre()+" es: "+BuscarSimbolo("@."+s).isInicializado());
+				
+			
+		}
+		else if(raiz instanceof NodoIdentificador){
+			String s;
+			//if(id==null)
+				s = ((NodoIdentificador)raiz).getNombre();
+				//System.out.println("ID"+((NodoIdentificador)raiz).getNombre()+" es: "+BuscarSimbolo("@."+s).isInicializado());
+				//System.out.println(id);
+				if(id=="@"){
 					return BuscarSimbolo("@."+s).isInicializado();
+				}
+				else{
+						//System.out.println("buscarr "+id+".@"+s);
+					RegistroSimbolo simb2 = BuscarSimbolo(id+"."+s);
+					
+					if (simb2!=null){
+						System.out.println("aquiii"+simb2.getIdentificador());
+						return simb2.isInicializado();
+						}
+					else
+						return false;		
+				}
+		}
+		
+		raiz = raiz.getHermanoDerecha();
+	}	
+		return (retornar && retornar2);
+}
+			
+	
+private void RecorrerOperacion(NodoBase operador,String id_asignacion,String id_funcion) {			
+	
+	while(operador != null)
+	{
+		if(operador instanceof NodoProcedimiento){
+			RecorrerOperacion(((NodoProcedimiento)operador).getPartev(), id_asignacion, ((NodoProcedimiento)operador).getId());	
+			RecorrerOperacion(((NodoProcedimiento)operador).getCuerpo(), id_asignacion, ((NodoProcedimiento)operador).getId());
+		}
+		else if(operador instanceof NodoAsignacion){
+			//System.out.println("entro con "+ id_funcion );
+			RecorrerOperacion(((NodoAsignacion)operador).getExpresion(), ((NodoAsignacion)operador).getIdentificador(), id_funcion);	
+		}
+		else if(operador instanceof NodoOperacion)
+		{
+			
+			RecorrerOperacion(((NodoOperacion)operador).getOpIzquierdo(),id_asignacion,id_funcion);				
+			if(((NodoOperacion)operador).getOpDerecho()!=null)
+				RecorrerOperacion(((NodoOperacion)operador).getOpDerecho(),id_asignacion,id_funcion);
+		}
+		else if(operador instanceof NodoIdentificador)
+		{
+			if(id_funcion==null){
+				RegistroSimbolo s = BuscarSimbolo("@."+id_asignacion);
+				NodoIdentificador a = (NodoIdentificador)operador;
+				RegistroSimbolo s2 = BuscarSimbolo("@."+a.getNombre());
+				if(s!=null && s2!=null){	
+					if(s.getTipo()!=s2.getTipo()){
+						System.out.println("tipo de variable invalido: "+id_asignacion+" es de tipo "+s.getTipo()+" "+ a.getNombre()+" es de tipo "+s2.getTipo());	
+					}
+				}
+			}else{
+				RegistroSimbolo s = BuscarSimbolo(id_funcion+"."+id_asignacion);
+				NodoIdentificador a = (NodoIdentificador)operador;
+				RegistroSimbolo s2 = BuscarSimbolo(id_funcion+"."+a.getNombre());
+				if(s!=null && s2!=null){	
+					if(s.getTipo()!=s2.getTipo()){
+						System.out.println("tipo de variable invalido: "+id_asignacion+" es de tipo "+s.getTipo()+" "+ a.getNombre()+" es de tipo "+s2.getTipo());	
+					}
+				}
 			}
 			
-			raiz = raiz.getHermanoDerecha();
+			
 		}
-		
-		return (retornar && retornar2);
-		
-		
-	}
-	
-	
-	private void RecorrerOperacion(NodoBase operador,String id_asignacion,String id_funcion) {			
-				
-		while(operador != null)
-		{
-			/*if(operador instanceof NodoProcedimiento){
-				RecorrerOperacion(operador, id_asignacion, id_funcion);				
-			}
-			else if(operador instanceof NodoAsignacion){
-				RecorrerOperacion(operador, id_asignacion, id_funcion);	
-			}
-			else*/ if(operador instanceof NodoOperacion)
-			{
-				
-				RecorrerOperacion(((NodoOperacion)operador).getOpIzquierdo(),id_asignacion,id_funcion);		
-				if(((NodoOperacion)operador).getOpDerecho()!=null)
-					RecorrerOperacion(((NodoOperacion)operador).getOpDerecho(),id_asignacion,id_funcion);
-			}
-			else if(operador instanceof NodoIdentificador)
-			{
-				if(id_funcion==null){
-					RegistroSimbolo s = BuscarSimbolo("@."+id_asignacion);
-					NodoIdentificador a = (NodoIdentificador)operador;
-					RegistroSimbolo s2 = BuscarSimbolo("@."+a.getNombre());
-					if(s!=null && s2!=null){	
-						if(s.getTipo()!=s2.getTipo()){
-							System.out.println("tipo de variable invalido: "+id_asignacion+" es de tipo "+s.getTipo()+" "+ a.getNombre()+" es de tipo "+s2.getTipo());	
+		else if (operador instanceof NodoValor){
+			RegistroSimbolo s = BuscarSimbolo("@."+id_asignacion);
+			if (id_funcion!=null){
+				RegistroSimbolo s1 = BuscarSimbolo(id_funcion+"."+id_asignacion);
+				if(s1!=null)
+					if(s1.getTipo()==tipoDato.INT)
+					{
+						if(!(((NodoValor)operador).getValor() instanceof Integer)){					
+							System.out.println("variable "+id_asignacion+" debe ser de tipo ENTERO");											
 						}
 					}
-				}else{
-					RegistroSimbolo s = BuscarSimbolo(id_funcion+"."+id_asignacion);
-					NodoIdentificador a = (NodoIdentificador)operador;
-					RegistroSimbolo s2 = BuscarSimbolo(id_funcion+"."+a.getNombre());
-					RegistroSimbolo s3 = BuscarSimbolo(id_funcion+".@"+a.getNombre());
-					if(s!=null && s2!=null){	
-						if(s.getTipo()!=s2.getTipo()){
-							System.out.println("tipo de variable invalido: "+id_asignacion+" es de tipo "+s.getTipo()+" "+ a.getNombre()+" es de tipo "+s2.getTipo());	
-						}
+					else {
+						if(!(((NodoValor)operador).get_Valor() instanceof Boolean))
+							System.out.println("variable "+id_asignacion+" debe ser de tipo BOOLEAN");
 					}
-				}
-				
-				
 			}
-			else if (operador instanceof NodoValor){
-				RegistroSimbolo s = BuscarSimbolo("@."+id_asignacion);
-				if(s!=null)
-				if(s.getTipo()==tipoDato.INT)
-				{
-					if(!(((NodoValor)operador).getValor() instanceof Integer)){					
-						System.out.println("variable "+id_asignacion+" debe ser de tipo ENTERO");											
-					}
+			if(s!=null)
+			if(s.getTipo()==tipoDato.INT)
+			{
+				if(!(((NodoValor)operador).getValor() instanceof Integer)){					
+					System.out.println("variable "+id_asignacion+" debe ser de tipo ENTERO");											
 				}
-				else {
-					if(!(((NodoValor)operador).get_Valor() instanceof Boolean))
-						System.out.println("variable "+id_asignacion+" debe ser de tipo BOOLEAN");
-				
-				}
-				
 			}
-			operador = operador.getHermanoDerecha();								
+			else {
+				if(!(((NodoValor)operador).get_Valor() instanceof Boolean))
+					System.out.println("variable "+id_asignacion+" debe ser de tipo BOOLEAN");
+			}
+			
 		}
-		
+		operador = operador.getHermanoDerecha();								
 	}
+	
+}
 		 				
 	
 	
