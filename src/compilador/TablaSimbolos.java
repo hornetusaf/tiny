@@ -206,8 +206,10 @@ public boolean ValidarOperacion (NodoBase operando_1, NodoBase operando_2 ){
 		}
 	}
 public boolean ValidarFunciones (){
+	System.out.println("********ERRORES************");
 	List<String> listadof =  new ArrayList<>();
 	List<String> listadov =  new ArrayList<>();
+	boolean retornare=false;
 	int pos=0;
 	for (Iterator<String> it = tabla.keySet().iterator(); it.hasNext();) {
 		String s = (String) it.next();
@@ -216,28 +218,41 @@ public boolean ValidarFunciones (){
 			listadof.add(s);
 		if(parts.length==2)
 			if(!parts[0].contains("@"))
-				if(BuscarSimbolo(s).isVarReturn())
 					listadov.add(s);
 				
 	}
-	System.out.println("listado de variables a verificar");
-	for (String v : listadov) {
-		String[] parts = v.split("[.]");
-		for(String f : listadof){
-			if(parts[0].equals(f))
-				if(BuscarSimbolo(v).getTipo().toString()!= BuscarSimbolo(f).getRetorno().toString()){
-					System.out.println("la variable " +v +" es de tipo " + BuscarSimbolo(v).getTipo().toString() + " y la funcion " +f +" es de tipo"+ BuscarSimbolo(f).getRetorno().toString()+" NO SE PUEDE RETORNAR");
-					return false;
-				}
-				else
+	boolean tiene_retorno=false;
+	boolean retorno_correcto=false;
+	for(String f : listadof){
+		tiene_retorno=false;
+		retorno_correcto=false;
+		for (String v : listadov) {
+			String[] parts = v.split("[.]");
+			if(parts[0].equals(f)) //reviso que correspondaa la funcion
+				if(BuscarSimbolo(v).isVarReturn()) //que tenga retorno
 				{
-					System.out.println("la variable " +v +" es de tipo " + BuscarSimbolo(v).getTipo().toString() + " y la funcion " +f +" es de tipo"+ BuscarSimbolo(f).getRetorno().toString()+"SE PUEDE RETORNAR");
+					tiene_retorno=true;
+					if(BuscarSimbolo(v).getTipo().toString()== BuscarSimbolo(f).getRetorno().toString()){
+						retorno_correcto = true;
+					//	System.out.println("funcion: "+f +" tipo: "+BuscarSimbolo(f).getRetorno());
+					//	System.out.println("variable retornada: "+v+ " tipo "+BuscarSimbolo(v).getTipo() );
+						break;
+					}
 				}
-					
-
+		}
+		if(!tiene_retorno){
+			System.out.println("ERROR la funcion "+f +" es de tipo "+BuscarSimbolo(f).getRetorno().toString()+" y no tiene retorno"); 
+			return false;
+		}
+		if(!retorno_correcto){
+			System.out.println("ERROR la funcion  "+ f+" es de tipo "+BuscarSimbolo(f).getRetorno().toString()+" y no retorna el tipo de dato correcto");
+			return false;
 		}
 	}
-	return true;
+	if(tiene_retorno && retorno_correcto)
+		return true;
+	else
+		return false;
 }
 public boolean ValidarRetorno (NodoBase funcion, NodoBase var ){
 	String fun=((NodoProcedimiento)funcion).getId();		
@@ -245,7 +260,7 @@ public boolean ValidarRetorno (NodoBase funcion, NodoBase var ){
 		return true;
 	else
 	{
-		System.out.println("Incompativilidad de tipos con la funcion, nose puede resolver");
+		System.out.println("Incompatibilidad de tipos con la funcion, nose puede resolver");
 		return false;
 	}
 }

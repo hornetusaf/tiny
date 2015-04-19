@@ -35,11 +35,10 @@ public class Compilador {
 		ts.cargarTabla(root,"@");
 		//ts.ImprimirClaves();
 		if(ts.ValidarFunciones()){
+			System.out.println("Se encontraron 0 errores");
 			Generador.setTablaSimbolos(ts);
 			Generador.generarCodigoObjeto(root);
 		}
-		else
-			System.out.println("Hay errores");
 	    //REALIZAR ACA ANALISIS SEMANTICO
 	}
 
