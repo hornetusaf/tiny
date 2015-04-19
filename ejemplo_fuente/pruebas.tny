@@ -1,4 +1,11 @@
-void a(int a,int b) begin 
+void a(int a,int b,int d) begin 
+	int c;
+	if(a<c) then
+		write b;
+	end;
+	 
+end
+void f(int a,int b,int d) begin 
 	int c;
 	if(a<c) then
 		write b;

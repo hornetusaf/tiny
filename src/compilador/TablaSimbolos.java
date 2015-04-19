@@ -126,11 +126,15 @@ public class TablaSimbolos {
 	}	
 	public void RecorrerFuncion(String id,NodoProcedimiento proc){
 		NodoVariable a=(NodoVariable)proc.getPartev();
+		int cont=0;
 		while(a!=null)
 		{
+			cont++;
 			InsertarVariable(id,a.getTipo(),a.getId(),a.getTam());
-			a=(NodoVariable)a.getPartev();		
-		}		
+			a=(NodoVariable)a.getPartev();					
+		}
+		RegistroSimbolo s=BuscarSimbolo(id);
+		s.setTamano(cont);
 		NodoBase raiz = proc.getCuerpo();	
 		cargarTabla(raiz, id);	
 	}

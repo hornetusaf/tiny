@@ -9,7 +9,9 @@ public class RegistroSimbolo {
 	private tipoDato tipo;
 	private String identificador;	
 	private int DireccionMemoria;	
-	private int tamano;
+	private int tamano;/*
+	
+	*/
 	private tipoFuncion Retorno;
 	private boolean Inicializado;
 		
