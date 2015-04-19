@@ -41,9 +41,12 @@ public class Generador {
 		System.out.println();
 		System.out.println();
 		generarPreludioEstandar();
+		UtGen.Inicio();		
 		generar(raiz, "@");
 		/* Genero el codigo de finalizacion de ejecucion del codigo */
-		UtGen.emitirComentario("Fin de la ejecucion.");
+		UtGen.emitirInicio(inicio);
+
+		UtGen.emitirComentario("Fin de la ejecucion.");		
 		UtGen.emitirRO("HALT", 0, 0, 0, "");		
 		System.out.println("Inciio de linea "+inicio);
 		System.out.println();
@@ -56,8 +59,6 @@ public class Generador {
 	// objeto
 	private static void generar(NodoBase nodo, String ambito) {
 		if (tablaSimbolos != null) {			
-			if(inicio==-1 && ambito.compareTo("@")==0)
-				inicio=UtGen.Linea();
 			
 			if (nodo instanceof NodoIf) {
 				generarIf(nodo, ambito);
@@ -89,6 +90,11 @@ public class Generador {
 			else {
 
 				System.out.println("BUG: Tipo de nodo a generar desconocido "+ nodo.toString());
+			}
+			
+			if(inicio==-1 && ambito.compareTo("@")==0)
+			{
+				inicio=UtGen.Linea();				
 			}
 			/*
 			 * Si el hijo de extrema izquierda tiene hermano a la derecha lo
@@ -406,6 +412,8 @@ public class Generador {
 				"cargar la maxima direccion desde la localidad 0");
 		UtGen.emitirRM("ST", UtGen.AC, 0, UtGen.AC,
 				"limpio el registro de la localidad 0");
+		
+		
 	}
 
 }
