@@ -1,14 +1,11 @@
 void a(int a,int b,int d) begin 
-	int c;
-	if(a<c) then
-		write b;
-	end;	 
+		write 20; 
 end
-void f(int c) begin 	
-	if(1<c) then
-		write c;
-	end;	
+
+void funcion(int a,int b,int d) begin 	
+		write 10;	 
 end
+
 begin
 	int a;
 	a:=54;
@@ -18,4 +15,5 @@ begin
 		int e;		
 	end;
 	e:=a(10);
+	a:=funcion(15);
 end

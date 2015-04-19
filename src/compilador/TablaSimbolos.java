@@ -11,7 +11,7 @@ public class TablaSimbolos {
 	public TablaSimbolos() {
 		super();
 		tabla = new HashMap<String, RegistroSimbolo>();
-		direccion = 0;		
+		direccion = 1;		
 	}
 
 	public void cargarTabla(NodoBase raiz,String id) {

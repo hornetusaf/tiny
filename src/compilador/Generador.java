@@ -81,15 +81,31 @@ public class Generador {
 			}else if (nodo instanceof NodoCall) {
 				generarCall(nodo, ambito);
 			}else if (nodo instanceof NodoProcedimiento) {
-				inicio=-1;
-				int linea=UtGen.Linea()+3;
+				inicio=-1;				
+				int localidadSaltoElse, localidadSaltoEnd, localidadActual;
+				UtGen.emitirRM("LDC", UtGen.AC1, 0, 0,"cargar 0 en registro AC1");
+				UtGen.emitirRM("LD", UtGen.AC, 0, UtGen.AC1,"cargar la maxima direccion desde la localidad 0");
+				localidadSaltoElse = UtGen.emitirSalto(1);
 				
-				UtGen.emitirRM("LDC", UtGen.AC, linea, 0, "Cargar linea");
-				UtGen.emitirRM("LDC", UtGen.AC1, 0, 0, "Cargar constante 0");
+				int linea=UtGen.Linea()+3;				
+				UtGen.emitirRM("LDC", UtGen.AC, linea, 0, "Cargar linea");				
+				UtGen.emitirRM("ST", UtGen.AC, tablaSimbolos.getDireccion(((NodoProcedimiento)nodo).getId()), UtGen.AC1,"subiendo posicion de memoria");				
+				UtGen.cargarRespaldo(localidadSaltoElse);
+				UtGen.emitirRM("JNE", UtGen.AC, 4, UtGen.PC,"voy 4 instrucciones mas alla if verdadero (AC==0)");
+				UtGen.restaurarRespaldo();
 				
-				UtGen.emitirRM("ST", UtGen.AC, tablaSimbolos.getDireccion(((NodoProcedimiento)nodo).getId()), UtGen.AC1,
-						"subiendo posicion de memoria");
+				localidadSaltoElse = UtGen.emitirSalto(1);
+				
 				generar(((NodoProcedimiento) nodo).getCuerpo(),((NodoProcedimiento) nodo).getId());
+				
+			    linea=UtGen.Linea()+1;
+			    
+				UtGen.cargarRespaldo(localidadSaltoElse);
+				UtGen.emitirRM("LDC", UtGen.PC, linea, 0, "Cargar linea");
+				UtGen.restaurarRespaldo();
+				
+				UtGen.emitirRM("LDA", UtGen.PC, 0, UtGen.R3, "Devolver Direccion de retorno");
+				
 			}else if (nodo instanceof NodoFor) {
 				generarFor(nodo, ambito);
 			}
@@ -116,7 +132,7 @@ public class Generador {
 	
 	private static void generarCall(NodoBase nodo, String ambito) {			
 		UtGen.emitirRM("LDC", UtGen.R4, 0, 0, "cargar constante: 0");
-		UtGen.emitirRM("LDA", UtGen.R3, 2, 7, "cargar Direccion de retorno");
+		UtGen.emitirRM("LDA", UtGen.R3, 1, 7, "cargar Direccion de retorno");
 		UtGen.emitirRM("LD", UtGen.PC,tablaSimbolos.getDireccion(((NodoCall)nodo).getNombreFuncion()), UtGen.R4, "Salto a la funcion");
 	}
 
@@ -413,11 +429,10 @@ public class Generador {
 		/* Genero inicializaciones del preludio estandar */
 		/* Todos los registros en tiny comienzan en cero */
 		UtGen.emitirComentario("Preludio estandar:");
-		UtGen.emitirRM("LD", UtGen.MP, 0, UtGen.AC,
-				"cargar la maxima direccion desde la localidad 0");
-		UtGen.emitirRM("ST", UtGen.AC, 0, UtGen.AC,
-				"limpio el registro de la localidad 0");
-		
+		UtGen.emitirRM("LD", UtGen.MP, 0, UtGen.AC,"cargar la maxima direccion desde la localidad 0");
+		UtGen.emitirRM("ST", UtGen.AC, 0, UtGen.AC,"limpio el registro de la localidad 0");
+		UtGen.emitirRM("LDC", UtGen.AC, 0, 0,"cargar 0 en registro AC");
+		UtGen.emitirRM("ST", UtGen.AC, 0, 0,"cargar 0 en DMEM 0");	
 		
 	}
 
