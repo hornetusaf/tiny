@@ -41,14 +41,14 @@ public class Generador {
 		System.out.println();
 		System.out.println();
 		generarPreludioEstandar();
-		UtGen.Inicio();		
+		//UtGen.Inicio();		
 		generar(raiz, "@");
 		/* Genero el codigo de finalizacion de ejecucion del codigo */
-		UtGen.emitirInicio(inicio);
+		//UtGen.emitirInicio(inicio);
 
 		UtGen.emitirComentario("Fin de la ejecucion.");		
 		UtGen.emitirRO("HALT", 0, 0, 0, "");		
-		System.out.println("Inciio de linea "+inicio);
+		//System.out.println("Inciio de linea "+inicio);
 		System.out.println();
 		System.out
 				.println("------ FIN DEL CODIGO OBJETO DEL LENGUAJE TINY GENERADO PARA LA TM ------");
@@ -82,6 +82,13 @@ public class Generador {
 				generarCall(nodo, ambito);
 			}else if (nodo instanceof NodoProcedimiento) {
 				inicio=-1;
+				int linea=UtGen.Linea()+3;
+				
+				UtGen.emitirRM("LDC", UtGen.AC, linea, 0, "Cargar linea");
+				UtGen.emitirRM("LDC", UtGen.AC1, 0, 0, "Cargar constante 0");
+				
+				UtGen.emitirRM("ST", UtGen.AC, tablaSimbolos.getDireccion(((NodoProcedimiento)nodo).getId()), UtGen.AC1,
+						"subiendo posicion de memoria");
 				generar(((NodoProcedimiento) nodo).getCuerpo(),((NodoProcedimiento) nodo).getId());
 			}else if (nodo instanceof NodoFor) {
 				generarFor(nodo, ambito);
@@ -107,11 +114,9 @@ public class Generador {
 					.println("ERROR: por favor fije la tabla de simbolos a usar antes de generar codigo objeto!!!");
 	}
 	
-	private static void generarCall(NodoBase nodo, String ambito) {
-		
-		
+	private static void generarCall(NodoBase nodo, String ambito) {			
 		UtGen.emitirRM("LDC", UtGen.R4, 0, 0, "cargar constante: 0");
-		UtGen.emitirRM("LDA", UtGen.R3, 1, 7, "cargar Direccion de retorno");
+		UtGen.emitirRM("LDA", UtGen.R3, 2, 7, "cargar Direccion de retorno");
 		UtGen.emitirRM("LD", UtGen.PC,tablaSimbolos.getDireccion(((NodoCall)nodo).getNombreFuncion()), UtGen.R4, "Salto a la funcion");
 	}
 

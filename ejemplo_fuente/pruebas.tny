@@ -10,9 +10,12 @@ void f(int c) begin
 	end;	
 end
 begin
+	int a;
+	a:=54;
+	write a;
 	if(2<3) then
 		boolean d;
 		int e;		
 	end;
-	e:=f(10);
+	e:=a(10);
 end
