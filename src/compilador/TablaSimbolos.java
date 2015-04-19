@@ -120,8 +120,15 @@ public class TablaSimbolos {
 				}
 			}
 			if(raiz instanceof NodoReturn){
-				RegistroSimbolo s=BuscarSimbolo(id+"."+(((NodoReturn)raiz).getId()));
+				RegistroSimbolo s;
 				
+					s=BuscarSimbolo(id+"."+(((NodoReturn)raiz).getId()));
+				
+				
+				 
+					
+				//RegistroSimbolo s=BuscarSimbolo(id+"."+(((NodoReturn)raiz).getId().toString()));
+			//	RegistroSimbolo s=BuscarSimbolo(id+"."+(((NodoReturn)raiz).getId().toString()));
 				//System.out.println("aquiii "+id+".@"+((NodoAsignacion)raiz).getIdentificador());
 				if(s!=null ){
 					//s.setInicializado(true);
@@ -129,10 +136,10 @@ public class TablaSimbolos {
 					//simbolo = new RegistroSimbolo(tipo,direccion++,tam);
 					s.setVarReturn(true);
 				}
-				else{
-						System.out.println("Variable no declarada "+id+"."+(((NodoReturn)raiz).getId()));
+				else if (((NodoReturn)raiz).getValor() instanceof Integer){
+						
 				}
-				
+			
 			}
 			
 			
@@ -183,7 +190,7 @@ public class TablaSimbolos {
 							+ BuscarSimbolo(s).getTamano()
 							+ " Inicializado "
 							+ BuscarSimbolo(s).isInicializado()
-							+ " Es variable de retorno"
+							+ "retorno activo "
 							+ BuscarSimbolo(s).isVarReturn());
 						
 		}
@@ -205,12 +212,10 @@ public boolean ValidarOperacion (NodoBase operando_1, NodoBase operando_2 ){
 			return false;
 		}
 	}
-public boolean ValidarFunciones (){
+public boolean ValidarFunciones (boolean externo, String tipoe){
 	System.out.println("********ERRORES************");
 	List<String> listadof =  new ArrayList<>();
 	List<String> listadov =  new ArrayList<>();
-	boolean retornare=false;
-	int pos=0;
 	for (Iterator<String> it = tabla.keySet().iterator(); it.hasNext();) {
 		String s = (String) it.next();
 		String[] parts = s.split("[.]");
@@ -221,6 +226,17 @@ public boolean ValidarFunciones (){
 					listadov.add(s);
 				
 	}
+	
+	if(externo){
+		String tipo;
+		for(String f : listadof){
+			tipo=BuscarSimbolo(f).getRetorno().toString();
+			if(tipo==tipoe)
+				return true;
+		}
+		return false;
+	}
+	else { 
 	boolean tiene_retorno=false;
 	boolean retorno_correcto=false;
 	for(String f : listadof){
@@ -253,18 +269,20 @@ public boolean ValidarFunciones (){
 		return true;
 	else
 		return false;
+	}
 }
-public boolean ValidarRetorno (NodoBase funcion, NodoBase var ){
+/*
+public boolean ValidarRetorno (NodoBase funcion, String id ){
 	String fun=((NodoProcedimiento)funcion).getId();		
-	if ( ((NodoProcedimiento)funcion).getTipo() == ((NodoProcedimiento)var).getTipo())
+	if ( ((NodoProcedimiento)funcion).getTipo() == ((NodoIdentificador)var).ge() )
 		return true;
 	else
 	{
-		System.out.println("Incompatibilidad de tipos con la funcion, nose puede resolver");
+		System.out.println("Incompatibilidad de tipos con la funcion, no se puede resolver");
 		return false;
 	}
 }
-
+*/
 	
 
 	public boolean ValidarInicializacion (NodoBase raiz,String id){

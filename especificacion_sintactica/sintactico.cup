@@ -284,16 +284,18 @@ repeat_stmt ::= REPEAT stmt_seq:cuerpo UNTIL exp:prueba	{: if(modoDepuracion) Sy
 							:}
 		;
 return_stmt ::= RETURN ID:id {: if(modoDepuracion) System.out.println("\t regla return_stmt id"); 
-			RESULT = new NodoReturn(id.toString(),false);
+			RESULT = new NodoReturn(id.toString());
 		:}
-		| RETURN TRUE {: if(modoDepuracion) System.out.println("\t regla return_stmt true"); 
-			RESULT = new NodoReturn("",true);
+		| RETURN TRUE {: if(modoDepuracion) System.out.println("\t regla return_stmt true");
+			RESULT = new NodoReturn(true); 
 		:}
-		| RETURN FALSE {: if(modoDepuracion) System.out.println("\t regla return_stmt false"); 
-			RESULT = new NodoReturn("",false);
+		| RETURN FALSE {: if(modoDepuracion) System.out.println("\t regla return_stmt false");
+			RESULT = new NodoReturn(false); 
+		:}
+		| RETURN NUM:nm {: if(modoDepuracion) System.out.println("\t regla return_stmt false");
+			RESULT = new NodoReturn(nm); 
 		:}
 		| RETURN {: if(modoDepuracion) System.out.println("\t regla return_stmt vacio"); 
-			RESULT = new NodoReturn();
 		:}
 		;
 

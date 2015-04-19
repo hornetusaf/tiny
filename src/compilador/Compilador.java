@@ -30,10 +30,10 @@ public class Compilador {
 		System.out.println();
 		//System.out.println("IMPRESION DEL AST GENERADO");
 		System.out.println();
-		//ast.Util.imprimirAST(root);
+		ast.Util.imprimirAST(root);
 		TablaSimbolos ts = new TablaSimbolos();
 		ts.cargarTabla(root,"@");
-		//ts.ImprimirClaves();
+		ts.ImprimirClaves();
 		if(ts.ValidarFunciones()){
 			System.out.println("Se encontraron 0 errores");
 			Generador.setTablaSimbolos(ts);

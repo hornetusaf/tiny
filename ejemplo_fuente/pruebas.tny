@@ -1,6 +1,4 @@
-int funcion1() begin int a, b; a:=5; return 2; return b; end
-boolean funcion2() begin boolean d; return d;  end
-boolean funcion3() begin int c, b; boolean d; a:=5; return d; end
+int funcion1() begin int c;  return 6;  end
 
 begin
 	int t,b;
