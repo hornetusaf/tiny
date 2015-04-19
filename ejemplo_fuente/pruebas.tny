@@ -1,19 +1,14 @@
-void a(int a,int b,int d) begin 
-		write 20; 
+void funciona(int a,int b,int c) begin 
+		write a;
+		write b;
+		write c; 
 end
-
-void funcion(int a,int b,int d) begin 	
-		write 10;	 
+void funcionb(int a,int b) begin 	
+		write a;
+		write b;	 
 end
-
 begin
-	int a;
-	a:=54;
-	write a;
-	if(2<3) then
-		boolean d;
-		int e;		
-	end;
-	e:=a(10);
-	a:=funcion(15);
+int a,b;
+	a:=funciona(10,20,30);
+	b:=funcionb(40,50);
 end

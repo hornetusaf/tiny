@@ -216,24 +216,39 @@ if_stmt     ::= IF exp_log:ex THEN stmt_seq:pthen END {: if(modoDepuracion) Syst
 		:}		
 		;
 		
-call_stmt   ::= ID:nombre LPAREN par_stmt:parIzquierdo RPAREN  {: if(modoDepuracion) System.out.println("\t regla call_stmt funcion con parametros"); 
-			RESULT=new NodoCall(parIzquierdo,null,nombre.toString());
+call_stmt   ::= ID:nombre LPAREN par_stmt:p RPAREN  {: if(modoDepuracion) System.out.println("\t regla call_stmt funcion con parametros"); 
+			
+			((NodoCall)p).setNombreFuncion(nombre.toString());
+			NodoCall a=(NodoCall)((NodoCall)p).getExI();			
+			while(a!=null)
+			{
+				a.setNombreFuncion(nombre.toString());
+				 
+				a=(NodoCall)a.getExI();
+			}										
+			RESULT = p;			
 		:}
 		| ID:nombre LPAREN  RPAREN  {: if(modoDepuracion) System.out.println("\t regla call_stmt funcion sin parametros"); 
 			RESULT=new NodoCall(null,null,nombre.toString());
-		:}
-		
+		:}		
 		;
 
 par_stmt ::=  simple_exp:ex  COMA par_stmt:v {: if(modoDepuracion) System.out.println("\t regla par_stmt con coma"); 
-				RESULT = new NodoCall(ex,v);
+				RESULT=new NodoCall(v,ex);
+				System.out.println("\t ENTROO22");
 		:}
 		|  simple_exp:ex {: if(modoDepuracion) System.out.println("\t regla par_stmt_log con coma"); 
-				RESULT = new NodoCall (ex,null);
-				:}			
-		; 
-
-variable_stmt      ::= INT var_stmt:v {: if(modoDepuracion) System.out.println("\t regla variable_stmt int");				
+				RESULT = new NodoCall(null,ex);
+				:}	
+		| call_stmt:ex {: if(modoDepuracion) System.out.println("\t regla par_stmt_log con coma"); 
+				RESULT =  new NodoCall(ex,null);
+				:}		
+		| call_stmt:ex COMA par_stmt:v {: if(modoDepuracion) System.out.println("\t regla par_stmt_log con coma"); 
+				RESULT = new NodoCall(v,ex);
+				:} 
+				;
+			
+variable_stmt    ::= INT var_stmt:v {: if(modoDepuracion) System.out.println("\t regla variable_stmt int");				
 			((NodoVariable)v).setTipo(tipoDato.INT);
 			NodoVariable a=(NodoVariable)((NodoVariable)v).getPartev();			
 			while(a!=null)
@@ -344,7 +359,7 @@ read_stmt   ::= READ ID:variable	{: if(modoDepuracion) System.out.println("\t re
 					:}
 		;
 
-write_stmt  ::= WRITE exp:ex	{: if(modoDepuracion) System.out.println("\t regla write_stmt write"); 
+write_stmt  ::= WRITE exp:ex {: if(modoDepuracion) System.out.println("\t regla write_stmt write"); 
 					RESULT= new NodoEscribir(ex);
 					:}
 		;

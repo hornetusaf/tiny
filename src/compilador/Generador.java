@@ -1,5 +1,7 @@
 package compilador;
 
+import java.io.ObjectInputStream.GetField;
+
 import ast.*;
 
 public class Generador {
@@ -80,7 +82,10 @@ public class Generador {
 				generarOperacion(nodo, ambito);
 			}else if (nodo instanceof NodoCall) {
 				generarCall(nodo, ambito);
-			}else if (nodo instanceof NodoProcedimiento) {
+			}else if (nodo instanceof NodoReturn) {
+				UtGen.emitirRM("LDA", UtGen.PC, 0, UtGen.R3, "Devolver Direccion de retorno");
+			}			
+			else if (nodo instanceof NodoProcedimiento) {
 				inicio=-1;				
 				int localidadSaltoElse, localidadSaltoEnd, localidadActual;
 				UtGen.emitirRM("LDC", UtGen.AC1, 0, 0,"cargar 0 en registro AC1");
@@ -130,7 +135,28 @@ public class Generador {
 					.println("ERROR: por favor fije la tabla de simbolos a usar antes de generar codigo objeto!!!");
 	}
 	
-	private static void generarCall(NodoBase nodo, String ambito) {			
+	private static void generarCall(NodoBase nodo, String ambito) {
+		
+		RegistroSimbolo s=tablaSimbolos.BuscarSimbolo(((NodoCall)nodo).getNombreFuncion());
+		NodoBase a = ((NodoCall)nodo);
+		int cont=s.getTamano();
+		while(a!=null)
+		{
+			if(((NodoCall)a).getExD() instanceof NodoValor)
+			{
+				UtGen.emitirRM("LDC", UtGen.AC,((NodoValor)((NodoCall)a).getExD()).getValor() , 0, "cargar Valor INT: "+((NodoValor)((NodoCall)a).getExD()).getValor());
+				UtGen.emitirRM("LDC", UtGen.AC1,0 , 0, "cargar Valor 0");
+				UtGen.emitirRM("ST", UtGen.AC, tablaSimbolos.getDireccion(((NodoCall)nodo).getNombreFuncion())+cont, UtGen.AC1,"subiendo posicion de memoria");
+			}				
+			else
+			{
+				
+			}
+			
+			cont--;
+			a=a.getHermanoDerecha();
+		}
+							
 		UtGen.emitirRM("LDC", UtGen.R4, 0, 0, "cargar constante: 0");
 		UtGen.emitirRM("LDA", UtGen.R3, 1, 7, "cargar Direccion de retorno");
 		UtGen.emitirRM("LD", UtGen.PC,tablaSimbolos.getDireccion(((NodoCall)nodo).getNombreFuncion()), UtGen.R4, "Salto a la funcion");

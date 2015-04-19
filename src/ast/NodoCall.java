@@ -15,9 +15,9 @@ public class NodoCall extends NodoBase {
 	
 	public NodoCall(NodoBase exI, NodoBase exD) {
 		super();
-		this.ExI = exI;
+		this.setHermanoDerecha(exI);
 		this.ExD = exD;
-		this.nombre="";
+		this.nombre=null;
 	}	
 	
 	public NodoCall(String nombreFuncion) {
@@ -35,12 +35,12 @@ public class NodoCall extends NodoBase {
  	}
 	
  	public NodoBase getExI() {
- 		return ExI;
- 	}
+		return getHermanoDerecha();
+	}
 	
- 	public void setExI(NodoBase exI) {
-		this.ExI = exI;
- 	}
+	public void setExI(NodoBase partev) {
+		this.setHermanoDerecha(partev);
+	}
 	
  	public NodoBase getExD() {
  		return ExD;
