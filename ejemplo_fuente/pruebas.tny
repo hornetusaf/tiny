@@ -2,19 +2,18 @@ void a(int a,int b,int d) begin
 	int c;
 	if(a<c) then
 		write b;
-	end;
-	 
+	end;	 
 end
-void f(int a,int b,int d) begin 
-	int c;
-	if(a<c) then
-		write b;
+void f(int c) begin 	
+	if(1<c) then
+		write c;
 	end;
-	 
+	return  c+10;
 end
 begin
 	if(2<3) then
 		boolean d;
-		int e;
-	end;	
+		int e;		
+	end;
+	e:=f(10);
 end

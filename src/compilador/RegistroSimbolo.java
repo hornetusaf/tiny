@@ -1,25 +1,20 @@
 package compilador;
 
-import ast.NodoProcedimiento;
 import ast.tipoDato;
 import ast.tipoFuncion;
 
 public class RegistroSimbolo {
 	
-	private tipoDato tipo;
-	private String identificador;	
+	private tipoDato tipo;	
 	private int DireccionMemoria;	
-	private int tamano;/*
-	
-	*/
+	private int tamano;
 	private tipoFuncion Retorno;
 	private boolean Inicializado;
 		
 	
 	public RegistroSimbolo(tipoDato tipo,int direccionMemoria,int tam) {
 		super();
-		this.tipo = tipo;
-		this.identificador = identificador;
+		this.tipo = tipo;		
 		this.DireccionMemoria = direccionMemoria;
 		this.tamano=tam;
 		this.setInicializado(false);
@@ -29,18 +24,13 @@ public class RegistroSimbolo {
 	}
 	public RegistroSimbolo(tipoFuncion retorno,int direccionMemoria) {
 			super();
-			this.setRetorno(retorno);
-			this.identificador = identificador;
+			this.setRetorno(retorno);			
 			this.DireccionMemoria = direccionMemoria;
 			this.setInicializado(true);
 			/*0-n cantidad parametros
 			 *-1 variables
 			 * */
-		}
-		
-	public String getIdentificador() {
-		return identificador;
-	}
+		}		
 	
 	public int getDireccionMemoria() {
 		return DireccionMemoria;

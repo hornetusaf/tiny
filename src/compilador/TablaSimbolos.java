@@ -242,9 +242,7 @@ public boolean ValidarInicializacion (NodoBase raiz,String id){
 						//System.out.println("buscarr "+id+".@"+s);
 					RegistroSimbolo simb2 = BuscarSimbolo(id+"."+s);
 					
-					if (simb2!=null){
-						System.out.println("aquiii"+simb2.getIdentificador());
-						return simb2.isInicializado();
+					if (simb2!=null){						
 						}
 					else
 						return false;		

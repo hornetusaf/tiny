@@ -77,6 +77,8 @@ public class Generador {
 				generarIdentificador(nodo, ambito);
 			} else if (nodo instanceof NodoOperacion) {
 				generarOperacion(nodo, ambito);
+			}else if (nodo instanceof NodoCall) {
+				generarCall(nodo, ambito);
 			}else if (nodo instanceof NodoProcedimiento) {
 				inicio=-1;
 				generar(((NodoProcedimiento) nodo).getCuerpo(),((NodoProcedimiento) nodo).getId());
@@ -99,6 +101,14 @@ public class Generador {
 					.println("ERROR: por favor fije la tabla de simbolos a usar antes de generar codigo objeto!!!");
 	}
 	
+	private static void generarCall(NodoBase nodo, String ambito) {
+		
+		
+		UtGen.emitirRM("LDC", UtGen.R4, 0, 0, "cargar constante: 0");
+		UtGen.emitirRM("LDA", UtGen.R3, 1, 7, "cargar Direccion de retorno");
+		UtGen.emitirRM("LD", UtGen.PC,tablaSimbolos.getDireccion(((NodoCall)nodo).getNombreFuncion()), UtGen.R4, "Salto a la funcion");
+	}
+
 	private static void generarIf(NodoBase nodo, String ambito) {
 		NodoIf n = (NodoIf) nodo;
 		int localidadSaltoElse, localidadSaltoEnd, localidadActual;
@@ -146,6 +156,8 @@ public class Generador {
 		if (UtGen.debug)
 			UtGen.emitirComentario("<- repeat");
 	}
+	
+	
 	private static void generarFor(NodoBase nodo, String ambito) {
 		NodoFor n = (NodoFor) nodo;
 		int localidadSaltoInicio;
@@ -351,10 +363,9 @@ public class Generador {
 			UtGen.emitirRM("LDC", UtGen.R4, 0, UtGen.AC,"Cargar 0");
 			UtGen.emitirRO("ADD", UtGen.R2, UtGen.R4, UtGen.AC, "Guarda EI");
 			generarOperacion(((NodoOperacion)nodo).getOpDerecho(), ambito);
-			UtGen.emitirRM("LDC", UtGen.R4, 0, UtGen.AC,"Cargar 0");
-			UtGen.emitirRO("ADD", UtGen.R3, UtGen.R4, UtGen.AC, "Guarda ED");
+			UtGen.emitirRM("LDC", UtGen.R4, 0, UtGen.AC,"Cargar 0");			
 			
-			UtGen.emitirRO("MUL", UtGen.AC, UtGen.R2, UtGen.R3, "AND");
+			UtGen.emitirRO("MUL", UtGen.AC, UtGen.R2, UtGen.AC, "AND");
 			
 			UtGen.emitirRM("JNE", UtGen.AC, 2, UtGen.PC,"voy dos instrucciones mas alla if verdadero (AC==0)");
 			UtGen.emitirRM("LDC", UtGen.AC, 0, UtGen.AC, "caso de falso (AC=0)");
@@ -368,10 +379,9 @@ public class Generador {
 			UtGen.emitirRM("LDC", UtGen.R4, 0, UtGen.AC,"Cargar 0");
 			UtGen.emitirRO("ADD", UtGen.R2, UtGen.R4, UtGen.AC, "Guarda EI");
 			generarOperacion(((NodoOperacion)nodo).getOpDerecho(), ambito);
-			UtGen.emitirRM("LDC", UtGen.R4, 0, UtGen.AC,"Cargar 0");
-			UtGen.emitirRO("ADD", UtGen.R3, UtGen.R4, UtGen.AC, "Guarda ED");
+			UtGen.emitirRM("LDC", UtGen.R4, 0, UtGen.AC,"Cargar 0");			
 			
-			UtGen.emitirRO("ADD", UtGen.AC, UtGen.R2, UtGen.R3, "AND");
+			UtGen.emitirRO("ADD", UtGen.AC, UtGen.R2, UtGen.AC, "OR");
 			
 			UtGen.emitirRM("JNE", UtGen.AC, 2, UtGen.PC,"voy dos instrucciones mas alla if verdadero (AC==0)");
 			UtGen.emitirRM("LDC", UtGen.AC, 0, UtGen.AC, "caso de falso (AC=0)");

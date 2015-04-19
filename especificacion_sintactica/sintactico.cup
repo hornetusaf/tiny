@@ -196,6 +196,9 @@ stmt     ::= if_stmt:sif	{: if(modoDepuracion) System.out.println("\t regla stmt
 			|  for_stmt:sfor	{: if(modoDepuracion) System.out.println("\t regla stmt for_stmt"); 
 					RESULT=sfor;
 					:}
+			|  call_stmt:call	{: if(modoDepuracion) System.out.println("\t regla stmt call_stmt"); 
+					RESULT=call;
+					:}
 			| return_stmt:sret	{: if(modoDepuracion) System.out.println("\t regla stmt return_stmt"); 
 					RESULT=sret;
 					:}    			
@@ -222,18 +225,12 @@ call_stmt   ::= ID:nombre LPAREN par_stmt:parIzquierdo RPAREN  {: if(modoDepurac
 		
 		;
 
-par_stmt ::=  exp_log:ex  COMA par_stmt:v {: if(modoDepuracion) System.out.println("\t regla par_stmt con coma"); 
+par_stmt ::=  simple_exp:ex  COMA par_stmt:v {: if(modoDepuracion) System.out.println("\t regla par_stmt con coma"); 
 				RESULT = new NodoCall(ex,v);
 		:}
-		|  exp_log:ex {: if(modoDepuracion) System.out.println("\t regla par_stmt_log con coma"); 
+		|  simple_exp:ex {: if(modoDepuracion) System.out.println("\t regla par_stmt_log con coma"); 
 				RESULT = new NodoCall (ex,null);
-				:}	
-		| call_stmt:ex {: if(modoDepuracion) System.out.println("\t regla par_stmt_log con coma"); 
-				RESULT = new NodoCall (ex,null);
-				:}		
-		| call_stmt:ex COMA par_stmt:v {: if(modoDepuracion) System.out.println("\t regla par_stmt_log con coma"); 
-				RESULT = new NodoCall (ex,null);
-				:}
+				:}			
 		; 
 
 variable_stmt      ::= INT var_stmt:v {: if(modoDepuracion) System.out.println("\t regla variable_stmt int");				
@@ -385,7 +382,8 @@ exp         ::= simple_exp:exI GT simple_exp:exD	{: if(modoDepuracion) System.ou
 							:}	
 		| simple_exp:ex	{: if(modoDepuracion) System.out.println("\t regla exp"); 
 							RESULT = ex;
-							:}			
+							:}
+										
 		;
 simple_exp  ::= simple_exp:exI PLUS term:exD	{: if(modoDepuracion) System.out.println("\t regla simple_exp PLUS"); 
 							RESULT = new NodoOperacion(exI,tipoOp.mas,exD);
@@ -412,7 +410,7 @@ term        ::= term:exI TIMES factor:exD	{: if(modoDepuracion) System.out.print
 
 factor      ::= LPAREN exp_log:ex RPAREN	{: if(modoDepuracion) System.out.println("\t regla factor LPAREN exp RPAREN"); 
 							RESULT = ex;
-							:}
+							:}				
 		| NUM:valor	{: if(modoDepuracion) System.out.println("\t regla factor NUM"); 
 					System.out.println("Devolvi nodo numero entero");
 					if(valor!=null){
