@@ -1,14 +1,26 @@
-void funciona(int a,int b,int c) begin 
+void funciona(int a,int b,int c,int d) begin 
 		write a;
 		write b;
 		write c; 
+		write d;
 end
-void funcionb(int a,int b) begin 	
+
+void funcionb(int a,int b,int c) begin 	
 		write a;
-		write b;	 
+		write b;
+		write c;	 
 end
+
+void funcionc(int a,int b) begin 	
+		write a;
+		write b;			
+end
+
+void funciond(int a) begin 	
+		write a;				
+end
+
 begin
-int a,b;
-	a:=funciona(10,20,30);
-	b:=funcionb(40,50);
+	int a;
+	funciona(10,20,30,40);	
 end

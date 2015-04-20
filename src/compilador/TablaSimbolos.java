@@ -20,15 +20,13 @@ public class TablaSimbolos {
 			//System.out.println(raiz);
 			if (raiz instanceof NodoCall){
 				RegistroSimbolo s=BuscarSimbolo((((NodoCall)raiz).getNombreFuncion()));
-				//System.out.println("aquiii "+id+".@"+((NodoAsignacion)raiz).getIdentificador());
+				
 				if(s!=null ){
-					
+					//cargarTabla(((NodoCall)raiz).getExI(), id);
 				}
 				else{
-						System.out.println("funcion no declarada "+(((NodoCall)raiz).getNombreFuncion()));
-				}
-				cargarTabla(((NodoCall)raiz).getExD(), id);
-				
+					System.out.println("funcion no declarada "+(((NodoCall)raiz).getNombreFuncion()));
+				}								
 			}
 			else if (raiz instanceof NodoProcedimiento) {
 															
@@ -264,7 +262,7 @@ private void RecorrerOperacion(NodoBase operador,String id_asignacion,String id_
 			RecorrerOperacion(((NodoProcedimiento)operador).getCuerpo(), id_asignacion, ((NodoProcedimiento)operador).getId(),llamado,to);
 		}
 		else if(operador instanceof NodoCall){
-			RecorrerOperacion(((NodoCall)operador).getExD(), null, id_funcion,true,to);
+			RecorrerOperacion(((NodoCall)operador).getExI(), null, id_funcion,true,to);
 		}
 		else if(operador instanceof NodoAsignacion){
 			//System.out.println("entro con "+ id_funcion );

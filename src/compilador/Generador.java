@@ -142,9 +142,9 @@ public class Generador {
 		int cont=s.getTamano();
 		while(a!=null)
 		{
-			if(((NodoCall)a).getExD() instanceof NodoValor)
+			if(((NodoCall)a).getHermanoDerecha() instanceof NodoValor)							
 			{
-				UtGen.emitirRM("LDC", UtGen.AC,((NodoValor)((NodoCall)a).getExD()).getValor() , 0, "cargar Valor INT: "+((NodoValor)((NodoCall)a).getExD()).getValor());
+				UtGen.emitirRM("LDC", UtGen.AC,((NodoValor)((NodoCall)a).getHermanoDerecha()).getValor() , 0, "cargar Valor INT: "+((NodoValor)((NodoCall)a).getHermanoDerecha()).getValor());
 				UtGen.emitirRM("LDC", UtGen.AC1,0 , 0, "cargar Valor 0");
 				UtGen.emitirRM("ST", UtGen.AC, tablaSimbolos.getDireccion(((NodoCall)nodo).getNombreFuncion())+cont, UtGen.AC1,"subiendo posicion de memoria");
 			}				
@@ -154,7 +154,7 @@ public class Generador {
 			}
 			
 			cont--;
-			a=a.getHermanoDerecha();
+			a=((NodoCall)a).getExI();
 		}
 							
 		UtGen.emitirRM("LDC", UtGen.R4, 0, 0, "cargar constante: 0");
