@@ -22,8 +22,8 @@ end
 
 begin	
 	int a;
-	a:=99;
-	funciona(a,2,3,4);
+	a:=20;
+	funciona(a+2,a*2,a - 2,a/2);
 	funcionb(5,6,7);
 	funcionc(8,9);
 	funciond(10);	
