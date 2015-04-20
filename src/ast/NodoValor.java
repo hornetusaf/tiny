@@ -6,11 +6,13 @@ public class NodoValor extends NodoBase {
 
 	public NodoValor(Integer valor) {
 		super();
-		this.valor = valor;		
+		this.valor = valor;
+		this._valor=null;
 	}
 	public NodoValor(Boolean valor) {
 		super();
-		this._valor = valor;		
+		this._valor = valor;
+		this.valor=null;
 	}
 
 	public NodoValor() {
@@ -22,6 +24,11 @@ public class NodoValor extends NodoBase {
 	}	
 	public Integer getValor() {
 		return valor;
+	}
+	public Integer getValorB() {
+		if(_valor)
+			return 1;
+		return 0;
 	}
 
 }

@@ -144,7 +144,11 @@ public class Generador {
 		{
 			if(((NodoCall)a).getExI() instanceof NodoValor)							
 			{
-				UtGen.emitirRM("LDC", UtGen.AC,((NodoValor)((NodoCall)a).getExI()).getValor() , 0, "cargar Valor INT: "+((NodoValor)((NodoCall)a).getExI()).getValor());
+				if(((NodoValor)((NodoCall)a).getExI()).getValor()!=null)				
+					UtGen.emitirRM("LDC", UtGen.AC,((NodoValor)((NodoCall)a).getExI()).getValor() , 0, "cargar Valor INT: "+((NodoValor)((NodoCall)a).getExI()).getValor());
+				else
+					UtGen.emitirRM("LDC", UtGen.AC,((NodoValor)((NodoCall)a).getExI()).getValorB() , 0, "cargar Valor Boolean: "+((NodoValor)((NodoCall)a).getExI()).get_Valor());
+				
 				UtGen.emitirRM("LDC", UtGen.AC1,0 , 0, "cargar Valor 0");
 				UtGen.emitirRM("ST", UtGen.AC, tablaSimbolos.getDireccion(((NodoCall)nodo).getNombreFuncion())+cont, UtGen.AC1,"subiendo posicion de memoria");
 			}				
@@ -306,8 +310,12 @@ public class Generador {
 		NodoValor n = (NodoValor) nodo;
 		if (UtGen.debug)
 			UtGen.emitirComentario("-> constante");
-		UtGen.emitirRM("LDC", UtGen.AC, n.getValor(), 0, "cargar constante: "
-				+ n.getValor().toString());
+		
+		if(n.getValor()!=null)
+			UtGen.emitirRM("LDC", UtGen.AC, n.getValor(), 0, "cargar constante: "+ n.getValor().toString());
+		else
+			UtGen.emitirRM("LDC", UtGen.AC, n.getValorB(), 0, "cargar constante: "+ n.get_Valor().toString());
+		
 		if (UtGen.debug)
 			UtGen.emitirComentario("<- constante");
 	}
