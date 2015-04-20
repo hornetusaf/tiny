@@ -148,9 +148,12 @@ public class Generador {
 				UtGen.emitirRM("LDC", UtGen.AC1,0 , 0, "cargar Valor 0");
 				UtGen.emitirRM("ST", UtGen.AC, tablaSimbolos.getDireccion(((NodoCall)nodo).getNombreFuncion())+cont, UtGen.AC1,"subiendo posicion de memoria");
 			}				
-			else
+			else if(((NodoCall)a).getExI() instanceof NodoIdentificador)
 			{
-				
+				RegistroSimbolo var=tablaSimbolos.BuscarSimbolo(ambito+"."+((NodoIdentificador)((NodoCall)a).getExI()).getNombre());
+				UtGen.emitirRM("LDC", UtGen.AC1,0 , 0, "cargar Valor 0");				
+				UtGen.emitirRM("LDA", UtGen.AC, var.getDireccionMemoria(),UtGen.AC1, "Descargando Valor de: "+ambito+"."+((NodoIdentificador)((NodoCall)a).getExI()).getNombre());
+				UtGen.emitirRM("ST", UtGen.AC, tablaSimbolos.getDireccion(((NodoCall)nodo).getNombreFuncion())+cont, UtGen.AC1,"subiendo posicion de memoria identificador");							
 			}			
 			cont--;
 			a=((NodoCall)a).getExD();
