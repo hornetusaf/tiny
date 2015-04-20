@@ -1,13 +1,21 @@
-int funciona(int a) begin 
-	a:=a*2;
-	boolean b;
-	b:=true;
-	return b;		
+void fb() 
+begin
+int n, first, second, next, c;
+   first:=0;
+   second:=1;
+ 
+   read n;
+   for ( c := 0 ; c < n ; c:=c+1 )
+      if (c <= 1) then 
+         next := c;
+      else
+         next := first + second;
+         first := second;
+         second := next;
+       end;
+      write next;
+   end;
 end
-begin	
-	int a,b;
-	a:=2;
-	b:=1;
-	b:=funciona(a);
-	write b;
+begin
+   fb();
 end
