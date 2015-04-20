@@ -35,11 +35,7 @@ public class Compilador {
 		
 		ts.cargarTabla(root,"@");
 		Semantico s = new Semantico(ts.getabla());
-		s.RecorrerOperacion(root, null, "@", false, null,false);
-		for (String item : s.envio) {
-			System.out.println("aqui "+item);
-		}
-		
+		s.RecorrerOperacion(root, null, "@", false, null,false);		
 		ts.ImprimirClaves();
 		
 		

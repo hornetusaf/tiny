@@ -175,6 +175,7 @@ public class TablaSimbolos {
 		return simbolo;
 		
 	}
+	
 
 	// true es nuevo no existe se insertara, false ya existe NO se vuelve a
 	public void ImprimirClaves() {
@@ -215,7 +216,7 @@ public class TablaSimbolos {
 			}
 			else if(raiz instanceof NodoValor){
 				
-				System.out.println(id);
+			//	System.out.println(id);
 					return true;
 					
 				
