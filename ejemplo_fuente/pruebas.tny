@@ -4,30 +4,11 @@ void funciona(boolean a,boolean b,int c,int d) begin
 		write c; 
 		write d;
 end
-
-void funcionb(int a,int b,int c) begin 	
-		write a;
-		write b;
-		write c;	 
-end
-
-void funcionc(int a,int b) begin 	
-		write a;
-		write b;			
-end
-
-void funciond(int a) begin 
-		write a;				
-end
-
 begin	
 	int a;
 	a:=20;
 	boolean b,c;
 	b:=true;
 	c:=false;
-	funciona(true,b,c,a/2);
-	funcionb(5,6,7);
-	funcionc(8,9);
-	funciond(10);	
+	funciona((2<1 or 2<1),(4+2)/2,4+2/2,(2<4 or 2<4));		
 end

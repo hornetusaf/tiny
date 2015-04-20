@@ -161,7 +161,9 @@ public class Generador {
 			}
 			else if(((NodoCall)a).getExI() instanceof NodoOperacion)
 			{				
+				//System.out.println("Aqui---------------");
 				generarOperacion(((NodoCall)a).getExI(), ambito);
+				//System.out.println("---------------Aqui");
 				UtGen.emitirRM("LDC", UtGen.AC1,0 , 0, "cargar Valor 0");
 				UtGen.emitirRM("ST", UtGen.AC, tablaSimbolos.getDireccion(((NodoCall)nodo).getNombreFuncion())+cont, UtGen.AC1,"subiendo posicion de memoria identificador");
 			}
