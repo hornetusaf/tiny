@@ -1,14 +1,13 @@
-void funciona(boolean a,boolean b,int c,int d) begin 
-		write a;
-		write b;
-		write c; 
-		write d;
+int funciona(int a) begin 
+	a:=a*2;
+	boolean b;
+	b:=true;
+	return b;		
 end
 begin	
-	int a;
-	a:=20;
-	boolean b,c;
-	b:=true;
-	c:=false;
-	funciona((2<1 or 2<1),(4+2)/2,4+2/2,(2<4 or 2<4));		
+	int a,b;
+	a:=2;
+	b:=1;
+	b:=funciona(a);
+	write b;
 end

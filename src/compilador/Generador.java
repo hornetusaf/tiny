@@ -82,8 +82,8 @@ public class Generador {
 				generarOperacion(nodo, ambito);
 			}else if (nodo instanceof NodoCall) {
 				generarCall(nodo, ambito);
-			}else if (nodo instanceof NodoReturn) {
-				UtGen.emitirRM("LDA", UtGen.PC, 0, UtGen.R3, "Devolver Direccion de retorno");
+			}else if (nodo instanceof NodoReturn) {				
+				generarReturn(nodo,ambito);							
 			}			
 			else if (nodo instanceof NodoProcedimiento) {
 				inicio=-1;				
@@ -135,6 +135,18 @@ public class Generador {
 					.println("ERROR: por favor fije la tabla de simbolos a usar antes de generar codigo objeto!!!");
 	}
 	
+	private static void generarReturn(NodoBase a, String ambito) {
+		
+		if(((NodoReturn)a).getId() instanceof NodoIdentificador)
+		{
+			RegistroSimbolo var=tablaSimbolos.BuscarSimbolo(ambito+"."+((NodoIdentificador)((NodoReturn)a).getId()).getNombre());
+			UtGen.emitirRM("LDC", UtGen.AC1,0 , 0, "cargar Valor 0");	
+			UtGen.emitirRM("LD", UtGen.AC, var.getDireccionMemoria(),UtGen.AC1, "Descargando Valor de: "+ambito+"."+((NodoIdentificador)((NodoReturn)a).getId()).getNombre());						
+			UtGen.emitirRM("LDA", UtGen.PC, 0, UtGen.R3, "Devolver Direccion de retorno");
+		}					
+				
+	}
+
 	private static void generarCall(NodoBase nodo, String ambito) {
 		
 		RegistroSimbolo s=tablaSimbolos.BuscarSimbolo(((NodoCall)nodo).getNombreFuncion());		
@@ -173,7 +185,7 @@ public class Generador {
 							
 		UtGen.emitirRM("LDC", UtGen.R4, 0, 0, "cargar constante: 0");
 		UtGen.emitirRM("LDA", UtGen.R3, 1, 7, "cargar Direccion de retorno");
-		UtGen.emitirRM("LD", UtGen.PC,tablaSimbolos.getDireccion(((NodoCall)nodo).getNombreFuncion()), UtGen.R4, "Salto a la funcion");
+		UtGen.emitirRM("LD", UtGen.PC,tablaSimbolos.getDireccion(((NodoCall)nodo).getNombreFuncion()), UtGen.R4, "Salto a la funcion");		
 	}
 
 	private static void generarIf(NodoBase nodo, String ambito) {
