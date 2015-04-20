@@ -16,11 +16,10 @@ void funcionc(int a,int b) begin
 		write b;			
 end
 
-void funciond(int a) begin 	
+void funciond(int a) begin 
 		write a;				
 end
 
-begin
-	int a;
-	funciona(10,20,30,40);	
+begin	
+	funciona(1,2,3,4);	
 end
