@@ -1,6 +1,5 @@
-int f(int b,int c) begin int a; end
+int prueba(int b,int x) begin int a; boolean c; return a; end
 begin
-	int b;
-	boolean bool;
-	b=f(b,bool);
+	int a,c,b;
+	c:=prueba(a,b,b,1);
 end

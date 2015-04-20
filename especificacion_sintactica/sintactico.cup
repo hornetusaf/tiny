@@ -198,7 +198,10 @@ stmt     ::= if_stmt:sif	{: if(modoDepuracion) System.out.println("\t regla stmt
 					:}
 			| return_stmt:sret	{: if(modoDepuracion) System.out.println("\t regla stmt return_stmt"); 
 					RESULT=sret;
-					:}    			
+					:}    		
+			| call_stmt:scall	{: if(modoDepuracion) System.out.println("\t regla stmt return_stmt"); 
+					RESULT=scall;
+					:} 
             | error	{: if(modoDepuracion) System.out.println("\t regla stmt error"); 
 				System.out.println("Ocurrio error en cup # 0004");
 				RESULT=null;
@@ -213,26 +216,36 @@ if_stmt     ::= IF exp_log:ex THEN stmt_seq:pthen END {: if(modoDepuracion) Syst
 		:}		
 		;
 		
-call_stmt   ::= ID:nombre LPAREN par_stmt:parIzquierdo RPAREN  {: if(modoDepuracion) System.out.println("\t regla call_stmt funcion con parametros"); 
-			RESULT=new NodoCall(parIzquierdo,nombre.toString());
+call_stmt   ::= ID:nombre LPAREN par_stmt:p RPAREN  {: if(modoDepuracion) System.out.println("\t regla call_stmt funcion con parametros"); 
+			
+			((NodoCall)p).setNombreFuncion(nombre.toString());
+			NodoCall a=(NodoCall)((NodoCall)p).getExI();			
+			while(a!=null)
+			{
+				a.setNombreFuncion(nombre.toString());
+				 
+				a=(NodoCall)a.getExI();
+			}										
+			RESULT = p;			
 		:}
 		| ID:nombre LPAREN  RPAREN  {: if(modoDepuracion) System.out.println("\t regla call_stmt funcion sin parametros"); 
-			RESULT=new NodoCall(null,nombre.toString());
+			RESULT=new NodoCall(null,null,nombre.toString());
 		:}
 		
 		;
 
-par_stmt ::=  exp_log:ex  COMA par_stmt:v {: if(modoDepuracion) System.out.println("\t regla par_stmt con coma"); 
-				RESULT =ex;
+par_stmt ::=  simple_exp:ex COMA par_stmt:v{: if(modoDepuracion) System.out.println("\t regla par_stmt con coma"); 
+				
+				RESULT=new NodoCall(v,ex);
 		:}
-		|  exp_log:ex {: if(modoDepuracion) System.out.println("\t regla par_stmt_log con coma"); 
-				RESULT = ex;
+		|  simple_exp:ex {: if(modoDepuracion) System.out.println("\t regla par_stmt_log con coma"); 
+				RESULT = new NodoCall(null,ex);
 				:}	
 		| call_stmt:ex {: if(modoDepuracion) System.out.println("\t regla par_stmt_log con coma"); 
-				RESULT = ex;
+				RESULT =  new NodoCall(ex,null);
 				:}		
 		| call_stmt:ex COMA par_stmt:v {: if(modoDepuracion) System.out.println("\t regla par_stmt_log con coma"); 
-				RESULT = ex;
+				RESULT = new NodoCall(v,ex);
 				:}
 		; 
 
@@ -299,8 +312,9 @@ assign_stmt ::= ID:variable ASSIGN exp_log:ex	{: if(modoDepuracion) System.out.p
 					}
 					:}
 		| ID:variable ASSIGN call_stmt:ex {: if(modoDepuracion) System.out.println("\t regla asignacion_stmt llamada de funcion"); 
-				if(variable!=null)
-				RESULT = new NodoAsignacion(variable.toString(),ex);
+				if(variable!=null){
+				RESULT = new NodoAsignacion(variable.toString(),ex);				
+				}
 			else{
 				RESULT = null;
 				System.out.println("Ocurrio error en cup # 0001");

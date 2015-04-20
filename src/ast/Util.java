@@ -7,8 +7,10 @@ public class Util {
 	//Imprimo en modo texto con sangrias el AST
 	public static void imprimirAST(NodoBase raiz){
 		  sangria+=2;
+		  
 		  while (raiz != null) {
-		    printSpaces();
+			  //System.out.println(raiz);
+			  printSpaces();
 		    if (raiz instanceof  NodoIf)
 		    	System.out.println("If");
 		    else if (raiz instanceof  NodoRepeat)
@@ -31,9 +33,11 @@ public class Util {
 		    else if (raiz instanceof NodoCall)
 		    		    	{	
 		    			    		System.out.println("Llamada a Funcion: "+((NodoCall)raiz).getNombreFuncion());
-		    			    		imprimirAST(((NodoCall)raiz).getEx());
-		    			    
-		    			    	
+		    			    		//imprimirAST(((NodoCall)raiz).getExI());
+		    			    		
+		    			    		//imprimirNodo(((NodoCall)raiz).getExD());
+		    			    		//imprimirAST(((NodoCall)raiz).getExI());
+		    			    		imprimirAST(((NodoCall)raiz).getExD());
 		    		    	}
 		    else if (raiz instanceof  NodoProcedimiento)
 		    	System.out.println("Declaracion funcion "+((NodoProcedimiento)raiz).getTipo() + " " + ((NodoProcedimiento)raiz).getId());
@@ -57,7 +61,7 @@ public class Util {
 		    
 		    else System.out.println("Tipo de nodo desconocido");;
 		    
-		    /* Hago el recorrido recursivo */
+		    // Hago el recorrido recursivo 
 		    if (raiz instanceof  NodoIf){
 		    	printSpaces();
 		    	System.out.println("**Prueba IF**");
@@ -111,7 +115,7 @@ public class Util {
 		    	
 		    	
 		    	imprimirAST(((NodoProcedimiento)raiz).getPartev());
-		    	imprimirNodo(((NodoProcedimiento)raiz).getPartev());
+		    	//imprimirNodo(((NodoProcedimiento)raiz).getPartev());
 		    	imprimirAST(((NodoProcedimiento)raiz).getCuerpo());
 		    }
 		    raiz = raiz.getHermanoDerecha();
@@ -188,6 +192,11 @@ static void imprimirNodo( NodoBase raiz )
     	{		    				    
     		imprimirNodo(((NodoProcedimiento)raiz).getPartev());	
     	}
+	}
+	if (raiz instanceof NodoCall)
+	{		
+		imprimirNodo(((NodoCall)raiz).getExI());
+		imprimirNodo(((NodoCall)raiz).getExD());
 	}
 	
 

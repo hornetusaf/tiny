@@ -32,8 +32,17 @@ public class Compilador {
 		System.out.println();
 		ast.Util.imprimirAST(root);
 		TablaSimbolos ts = new TablaSimbolos();
+		
 		ts.cargarTabla(root,"@");
+		Semantico s = new Semantico(ts.getabla());
+		s.RecorrerOperacion(root, null, "@", false, null,false);
+		for (String item : s.envio) {
+			System.out.println("aqui "+item);
+		}
+		
 		ts.ImprimirClaves();
+		
+		
 		/*if(ts.ValidarFunciones()){
 			System.out.println("Se encontraron 0 errores");
 			Generador.setTablaSimbolos(ts);

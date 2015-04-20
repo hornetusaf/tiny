@@ -2,28 +2,54 @@ package ast;
 public class NodoCall extends NodoBase {
  
 	private String nombre;
- 	private NodoBase Ex;
+ 	private NodoBase ExI;
+ 	private NodoBase ExD;
  	
 
-	public NodoCall(NodoBase ex, String nombreFuncion) {
+	public NodoCall(NodoBase exI, NodoBase exD, String nombreFuncion) {
  		super();
-		this.Ex = ex;
+		this.ExI = exI;
+		this.ExD = exD;
+		this.nombre=nombreFuncion;
+ 	}
+	
+	public NodoCall(NodoBase exI, NodoBase exD) {
+		super();
+		this.setHermanoDerecha(exI);
+		this.ExD = exD;
+		this.nombre=null;
+	}	
+	
+	public NodoCall(String nombreFuncion) {
+ 		super();
+		this.ExI = null;
+		this.ExD = null;
 		this.nombre=nombreFuncion;
  	}
 	
  	public NodoCall() {
  		super();
-		this.Ex = null;
-		this.nombre=null;
+		this.ExI = null;
+		this.ExD = null;
+		this.nombre="";
  	}
 	
- 	public NodoBase getEx() {
- 		return Ex;
+ 	public NodoBase getExI() {
+		return getHermanoDerecha();
+	}
+	
+	public void setExI(NodoBase partev) {
+		this.setHermanoDerecha(partev);
+	}
+	
+ 	public NodoBase getExD() {
+ 		return ExD;
  	}
 	
- 	public void setEx(NodoBase ex) {
-		this.Ex = ex;
+ 	public void setExD(NodoBase exD) {
+		this.ExD = exD;
  	}
+
 	public String getNombreFuncion() {
 		return nombre;
 	}

@@ -84,4 +84,6 @@ public class RegistroSimbolo {
 		this.varReturn = varReturn;
 	}
 	
+	
+	
 }
