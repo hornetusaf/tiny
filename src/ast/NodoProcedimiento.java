@@ -3,7 +3,7 @@ package ast;
 public class NodoProcedimiento extends NodoBase {
 	
 	private String id;	
-	private NodoBase cuerpo;
+	private NodoBase cuerpo;	
 	private NodoBase partev;
 	private tipoFuncion tipof;
 
@@ -60,6 +60,6 @@ public class NodoProcedimiento extends NodoBase {
 	}
 
 	public void setPartev(NodoBase partev) {
-		this.partev = partev;
+		this.partev=partev;
 	}
 }

@@ -1,19 +1,16 @@
 package compilador;
 
-import java.awt.peer.SystemTrayPeer;
 import java.util.*;
 
 import ast.*;
 public class TablaSimbolos {
 	private HashMap<String, RegistroSimbolo> tabla;
 	private int direccion; // Contador de las localidades de memoria asignadas a
+
 	public TablaSimbolos() {
 		super();
 		tabla = new HashMap<String, RegistroSimbolo>();
-		direccion = 0;		
-	}
-	public HashMap<String, RegistroSimbolo> getabla(){
-		return tabla;
+		direccion = 1;		
 	}
 
 	public void cargarTabla(NodoBase raiz,String id) {
@@ -21,14 +18,6 @@ public class TablaSimbolos {
 		while (raiz != null) {
 			//System.out.println(raiz);
 			if (raiz instanceof NodoCall){
-				RegistroSimbolo s=BuscarSimbolo((((NodoCall)raiz).getNombreFuncion()));
-				//System.out.println("aquiii "+id+".@"+((NodoAsignacion)raiz).getIdentificador());
-				if(s!=null ){
-				}
-				else{
-						System.out.println("funcion no declarada "+(((NodoCall)raiz).getNombreFuncion()));
-				}
-				cargarTabla(((NodoCall)raiz).getExI(), id);
 				
 			}
 			else if (raiz instanceof NodoProcedimiento) {
@@ -40,8 +29,7 @@ public class TablaSimbolos {
 						simbolo = new RegistroSimbolo(((NodoProcedimiento)raiz).getTipo(), direccion++);					
 						tabla.put(((NodoProcedimiento) raiz).getId(), simbolo);
 						RecorrerFuncion(((NodoProcedimiento) raiz).getId(),((NodoProcedimiento) raiz));
-					}									
-						//RecorrerOperacion(((NodoProcedimiento) raiz), null, ((NodoProcedimiento) raiz).getId(),false,null);
+					}														
 			}
 			else if (raiz instanceof NodoVariable) {
 				InsertarVariable(id,((NodoVariable) raiz).getTipo(),((NodoVariable) raiz).getId(),((NodoVariable) raiz).getTam());
@@ -54,8 +42,6 @@ public class TablaSimbolos {
 					cargarTabla(((NodoFor) raiz).getCuerpo(),id);
 				}else
 					System.out.println("ciclo infinito");
-				
-				
 			} else if (raiz instanceof NodoRepeat) {
 				cargarTabla(((NodoRepeat) raiz).getCuerpo(),id);
 				cargarTabla(((NodoRepeat) raiz).getPrueba(),id);
@@ -63,34 +49,18 @@ public class TablaSimbolos {
 			
 			else if (raiz instanceof NodoAsignacion)
 			{
-				RegistroSimbolo s=BuscarSimbolo(id+"."+((NodoAsignacion)raiz).getIdentificador());
-				RegistroSimbolo s2=BuscarSimbolo(id+".@"+((NodoAsignacion)raiz).getIdentificador());
-				//System.out.println("aquiii "+id+".@"+((NodoAsignacion)raiz).getIdentificador()+" s: "+s);
-				
+				RegistroSimbolo s=BuscarSimbolo(id+"."+((NodoAsignacion)raiz).getIdentificador());												
 				if(s!=null){
 					boolean x= ValidarInicializacion(((NodoAsignacion)raiz).getExpresion(),id);
 					if(s.isInicializado()!=true && x==true){
 						s.setInicializado(x);
 						//System.out.println("aquiii cambia a true");
 					}
+				}				
+				else{					
+					System.out.println("Variable no declarada "+id+"."+((NodoAsignacion)raiz).getIdentificador());
 				}
-				else if(s2!=null){
-					boolean x= ValidarInicializacion(((NodoAsignacion)raiz).getExpresion(),id);
-					if(s2.isInicializado()!=true && x==true){
-						s2.setInicializado(x);
-						//System.out.println("aquiii cambia a true");
-					}
-				}
-				else{
-					RegistroSimbolo sb=BuscarSimbolo(id+".@"+((NodoAsignacion)raiz).getIdentificador());
-					RegistroSimbolo sb2=BuscarSimbolo(id+"."+((NodoAsignacion)raiz).getIdentificador());
-					if(sb!=null){
-						//sb.setInicializado(true);
-					}else
-						System.out.println("Variable no declarada "+id+"."+((NodoAsignacion)raiz).getIdentificador());
-				}
-				cargarTabla(((NodoAsignacion) raiz).getExpresion(),id);
-				//RecorrerOperacion(((NodoAsignacion)raiz).getExpresion(),((NodoAsignacion)raiz).getIdentificador(),null,false,null);
+				cargarTabla(((NodoAsignacion) raiz).getExpresion(),id);			
 			}
 			
 			else if (raiz instanceof  NodoIf){
@@ -127,7 +97,7 @@ public class TablaSimbolos {
 				RegistroSimbolo s=BuscarSimbolo(id+"."+(((NodoLeer)raiz).getIdentificador()));
 				//System.out.println("aquiii "+id+".@"+((NodoAsignacion)raiz).getIdentificador());
 				if(s!=null ){
-					//s.setInicializado(true);
+					s.setInicializado(true);
 				}
 				else{
 						System.out.println("Variable no declarada "+id+"."+(((NodoLeer)raiz).getIdentificador()));
@@ -136,10 +106,7 @@ public class TablaSimbolos {
 			else if(raiz instanceof NodoReturn){
 				cargarTabla(((NodoReturn)raiz).getId(),id);
 			
-			}
-			
-			
-			
+			}							
 			raiz = raiz.getHermanoDerecha();
 		}
 	}	
@@ -190,63 +157,80 @@ public class TablaSimbolos {
 							+ BuscarSimbolo(s).getTamano()
 							+ " Inicializado "
 							+ BuscarSimbolo(s).isInicializado()
-							+ " retorno activo "
-							+ BuscarSimbolo(s).isVarReturn());
+							+ " retorno activo "	);
 						
 		}
 	}
 	public int getDireccion(String Clave) {
 		return BuscarSimbolo(Clave).getDireccionMemoria();
 	}
-	public boolean ValidarInicializacion (NodoBase raiz,String id){
-		boolean retornar=false,retornar2=false;
-		while(raiz!=null){
-			if(raiz instanceof NodoProcedimiento){
-				
-				retornar=ValidarInicializacion(((NodoProcedimiento)raiz).getCuerpo(),((NodoProcedimiento)raiz).getId());
-			}
-			else if(raiz instanceof NodoOperacion){
-				//System.out.println("validando");
-				retornar=ValidarInicializacion(((NodoOperacion)raiz).getOpIzquierdo(), id);
-				if(((NodoOperacion)raiz).getOpDerecho()!=null)
-					retornar2=ValidarInicializacion(((NodoOperacion)raiz).getOpDerecho(), id);
-				else
-					retornar2=true;
-			}
-			else if(raiz instanceof NodoValor){
-				
-				System.out.println(id);
-					return true;
-					
-				
-			}
-			else if(raiz instanceof NodoIdentificador){
-				String s;
-				//if(id==null)
-					s = ((NodoIdentificador)raiz).getNombre();
-					//System.out.println("ID"+((NodoIdentificador)raiz).getNombre()+" es: "+BuscarSimbolo("@."+s).isInicializado());
-					//System.out.println(id);
-					if(id=="@"){
-						return BuscarSimbolo("@."+s).isInicializado();
-					}
-					else{
-							//System.out.println("buscarr "+id+".@"+s);
-						RegistroSimbolo simb2 = BuscarSimbolo(id+"."+s);
-						
-						if (simb2!=null){
-							//System.out.println("aquiii"+simb2.getIdentificador());
-							return simb2.isInicializado();
-							}
-						else
-							return false;		
-					}
-			}
-			
-			raiz = raiz.getHermanoDerecha();
-		}	
-			return (retornar && retornar2);
-	}
+	
 
+
+
+public boolean ValidarInicializacion (NodoBase raiz,String id){
+	boolean retornar=false,retornar2=false;
+	while(raiz!=null){
+		if(raiz instanceof NodoProcedimiento){
+			//System.out.println("validando proc");
+			retornar=ValidarInicializacion(((NodoProcedimiento)raiz).getCuerpo(),((NodoProcedimiento)raiz).getId());
+		}
+		else if(raiz instanceof NodoCall){
+			RegistroSimbolo s =BuscarSimbolo(((NodoCall)raiz).getNombreFuncion());
+			if(s!=null){
+			retornar=true;
+			retornar2=true;
+			//System.out.println("entra ");
+			}
+			else{
+			retornar=false;
+			retornar2=false;
+			}
+		}
+		else if(raiz instanceof NodoOperacion){
+			//System.out.println("validando");
+			retornar=ValidarInicializacion(((NodoOperacion)raiz).getOpIzquierdo(), id);
+			if(((NodoOperacion)raiz).getOpDerecho()!=null)
+				retornar2=ValidarInicializacion(((NodoOperacion)raiz).getOpDerecho(), id);
+			else
+				retornar2=true;
+		}
+		else if(raiz instanceof NodoValor){
+			
+			//System.out.println(id);
+				return true;
+				
+			
+		}
+		else if(raiz instanceof NodoIdentificador){
+			String s;
+			//if(id==null)
+				s = ((NodoIdentificador)raiz).getNombre();
+				//System.out.println("ID"+((NodoIdentificador)raiz).getNombre()+" es: "+BuscarSimbolo("@."+s).isInicializado());
+				//System.out.println(id);
+				if(id=="@"){
+					return BuscarSimbolo("@."+s).isInicializado();
+				}
+				else{
+						//System.out.println("buscarr "+id+".@"+s);
+					RegistroSimbolo simb2 = BuscarSimbolo(id+"."+s);
+					
+					if (simb2!=null){						
+						}
+					else
+						return false;		
+				}
+		}
+		
+		raiz = raiz.getHermanoDerecha();
+	}	
+		return (retornar && retornar2);
+}
+
+public HashMap<String, RegistroSimbolo> getabla(){
+	//System.out.println(tabla.get("f").getTamano());
+	return tabla;
+}
 	/*
 	 * TODO: 1. Crear lista con las lineas de codigo donde la variable es usada.
 	 */

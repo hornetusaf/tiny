@@ -32,12 +32,11 @@ public class Util {
 		    	System.out.println("Return "+((NodoReturn)raiz).getId());
 		    else if (raiz instanceof NodoCall)
 		    		    	{	
+		    					//if(((NodoCall)raiz).getNombreFuncion() != null)
 		    			    		System.out.println("Llamada a Funcion: "+((NodoCall)raiz).getNombreFuncion());
-		    			    		//imprimirAST(((NodoCall)raiz).getExI());
-		    			    		
-		    			    		//imprimirNodo(((NodoCall)raiz).getExD());
-		    			    		//imprimirAST(((NodoCall)raiz).getExI());
+		    			    		if(((NodoCall)raiz).getExD()!=null)
 		    			    		imprimirAST(((NodoCall)raiz).getExD());
+		    			    		imprimirAST(((NodoCall)raiz).getExI());
 		    		    	}
 		    else if (raiz instanceof  NodoProcedimiento)
 		    	System.out.println("Declaracion funcion "+((NodoProcedimiento)raiz).getTipo() + " " + ((NodoProcedimiento)raiz).getId());
@@ -195,8 +194,8 @@ static void imprimirNodo( NodoBase raiz )
 	}
 	if (raiz instanceof NodoCall)
 	{		
-		imprimirNodo(((NodoCall)raiz).getExI());
-		imprimirNodo(((NodoCall)raiz).getExD());
+		//imprimirAST(((NodoCall)raiz).getExI());
+		//imprimirAST(((NodoCall)raiz).getExD());
 	}
 	
 

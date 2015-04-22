@@ -35,19 +35,19 @@ public class Compilador {
 		
 		ts.cargarTabla(root,"@");
 		Semantico s = new Semantico(ts.getabla());
+		s.ImprimirClaves2();
 		s.RecorrerOperacion(root, null, "@", false, null,false);
 		for (String item : s.envio) {
 			System.out.println("aqui "+item);
 		}
 		
-		ts.ImprimirClaves();
+		//ts.ImprimirClaves();
 		
+		/*
 		
-		/*if(ts.ValidarFunciones()){
-			System.out.println("Se encontraron 0 errores");
 			Generador.setTablaSimbolos(ts);
 			Generador.generarCodigoObjeto(root);
-		}*/
+		*/
 	    //REALIZAR ACA ANALISIS SEMANTICO
 	}
 

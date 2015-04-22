@@ -33,10 +33,15 @@ public class UtGen {
 	/* Defino al registro[1] como el acumulador 2 */
 	public static int  AC1=1;
 	
+	public static int  R2=2;
+	public static int  R3=3;
+	public static int  R4=4;
+	
 	
 	public static void emitirComentario(String c){
 		if(debug) System.out.println("*      "+c);
 	}
+	
 
 	/* Este procedimiento emite sentencias RO (Solo Registro)
 	 * de la TM    opcode r,s,t 
@@ -75,6 +80,9 @@ public class UtGen {
 		if(instruccionMasAlta < instruccionActual) 
 			instruccionMasAlta = instruccionActual;	
 	}
+	public static void emitirInicio(int d){
+		System.out.println("2: LDC 7,"+d+"(0)");		
+	}
 	
 	/* La funcion emitirSalto, salta "cantidad" de localidades de codigo
 	 * para el reajuste posterior. Tambien devuelve la posicion actual
@@ -86,6 +94,13 @@ public class UtGen {
 		if(instruccionMasAlta < instruccionActual) 
 			instruccionMasAlta = instruccionActual;	
 		return anterior;
+	}
+	public static int Linea(){
+		int anterior = instruccionActual;
+		return anterior;
+	}
+	public static void Inicio(){
+		instruccionActual++;		
 	}
 	/* La funcion cargar respaldo, cambia la direccion de emision de codigo actual, 
 	 * a una localidad que haya sido obviada (saltada) cuando se emitio un salto.  
