@@ -9,7 +9,8 @@ import ast.*;
 public class Semantico extends TablaSimbolos{
 	private HashMap<String, RegistroSimbolo> tabla;
 	public int cont=0;
-	List<String> envio = new ArrayList<String>();
+	String funcion_anterior="";
+	int par_ant=0;
 	public Semantico(HashMap<String, RegistroSimbolo> tab) {
 		super();
 		tabla = tab;	
@@ -22,8 +23,6 @@ public class Semantico extends TablaSimbolos{
 		//System.out.println("fln flkneklevn");
 	while(operador != null)
 	{
-		envio.clear();
-		System.out.println(operador);
 		if(operador instanceof NodoProcedimiento){
 			
 			RecorrerOperacion(((NodoProcedimiento)operador).getPartev(), id_asignacion, ((NodoProcedimiento)operador).getId(),llamado,to,true);	
@@ -49,7 +48,9 @@ public class Semantico extends TablaSimbolos{
 			
 			RecorrerOperacion(((NodoOperacion)operador).getOpIzquierdo(),id_asignacion,id_funcion,llamado,((NodoOperacion)operador).getOperacion(),func);
 			if(((NodoOperacion)operador).getOpDerecho()!=null)
+				{
 				RecorrerOperacion(((NodoOperacion)operador).getOpDerecho(),id_asignacion,id_funcion,llamado,((NodoOperacion)operador).getOperacion(),func);
+				}
 		}
 		else if(operador instanceof NodoReturn){
 			
@@ -143,73 +144,138 @@ public class Semantico extends TablaSimbolos{
 	
 	
 }
-		 				
-	public void ValidarCall(String NombreF,NodoBase call_exp,String funcion_actual){
-		//List<String> envio = new ArrayList<String>();	
-		List<String> param = new ArrayList<String>();
-		
-		//while(call_exp!=null){
-			
-			if(call_exp instanceof NodoOperacion){
-				System.out.println("entro nodo op");
-				//ValidarCall(NombreF,((NodoOperacion)call_exp).getOpIzquierdo());
-				//ValidarCall(NombreF,((NodoOperacion)call_exp).getOpDerecho());
-				
-			}else if(call_exp instanceof NodoIdentificador){
-				envio.add(((NodoIdentificador)call_exp).getNombre());
-				System.out.println("entro a nodo id"+((NodoIdentificador)call_exp).getNombre());
-				// s = BuscarSimbolo(NombreF+"."+(NodoIdentificador)call_exp).getNombre());
-				//RegistroSimbolo s ;
-				RegistroSimbolo s =BuscarSimbolo(funcion_actual+"."+((NodoIdentificador)call_exp).getNombre());
-				tipoDato td=null;
-				int dir=-1;
-				int tam = -1;
-				if (s!=null && NombreF!=null ) {
-						td= s.getTipo();					
-						dir=BuscarSimbolo(NombreF).getDireccionMemoria();
-						 tam=BuscarSimbolo(NombreF).getTamano();				
-				}
 
-
-				tipoDato comp=BuscarSimbolo(dir);
-				cont++;
-				int x=dir+cont;
-				if(x<tam){
-					if(BuscarSimbolo(x)!=comp)
-					{
-
-						System.out.println("variable "+((NodoIdentificador)call_exp).getNombre()+" de tipo "+s);
-						System.out.println("funcion "+NombreF+ "de tipo" +td);
-					}
-					else
-					{
-						System.out.println("variable "+((NodoIdentificador)call_exp).getNombre()+" de tipo "+s);
-						System.out.println("funcion "+NombreF+ "de tipo" +td);
-					}
-					
-				}
-				/*while((tam-dir)!=0){
-					dir=dir+cont;
-				}*/
-				if(comp==null){
-					System.out.println("tipo de dato invalido en la funcion "+NombreF);
-				}
-				
-				
-				
-				
-			}else if(call_exp instanceof NodoValor){
-				envio.add(((NodoValor)call_exp).getValor().toString());
-				System.out.println("entro a nodo id"+((NodoValor)call_exp).getValor());
-				
-				
-			}
-			//call_exp=call_exp.getHermanoDerecha();
-	//	}
-		
-		
+	public RegistroSimbolo BuscarSimbolo(String Identificador){
+		RegistroSimbolo simbolo=(RegistroSimbolo)tabla.get(Identificador);
+		return simbolo;	
 	}
 	
+	public String GetVariable_ts(int memoria) {
+		for (Iterator<String> it = tabla.keySet().iterator(); it.hasNext();) {
+			String s = (String) it.next();
+			if(memoria == BuscarSimbolo(s).getDireccionMemoria()){
+				return s;
+			}
+		}
+		return null;
+	}
+	public void ValidarCall(String NombreF,NodoBase call_exp,String funcion_actual){
+		int tam=BuscarSimbolo(NombreF).getTamano();
+		int dirf=BuscarSimbolo(NombreF).getDireccionMemoria();
+		if(funcion_anterior==""){
+			funcion_anterior = NombreF;
+			par_ant =tam;
+		}
+		else if( funcion_anterior!= NombreF)
+		{
+			funcion_anterior = NombreF;
+			cont = 0;
+		}
+		if(tam==0 && call_exp!=null)
+		{
+			System.out.println("la funcion "+NombreF +" no permite recibir parámetros" );
+			System.exit(1);
+		}
+		if(call_exp == null)
+			{
+			System.out.println("ERROR no se soportan parametros nulos en la funcion "+NombreF);
+			System.exit(1);
+			}
+		
+		//while(call_exp!=nul
+			 if(call_exp instanceof NodoIdentificador){				
+				RegistroSimbolo s = BuscarSimbolo(funcion_actual+"."+((NodoIdentificador)call_exp).getNombre().toString());
+				if(s==null){
+					System.out.println("Error Variable no existe "+((NodoIdentificador)call_exp).getNombre().toString());
+					System.exit(1);
+				}
+				String variable_main =  ((NodoIdentificador)call_exp).getNombre().toString();
+				if(!s.isInicializado()){
+					System.out.println("Error la variable "+variable_main + " no puede ser usada sin ser inicializada ");
+					System.exit(1);
+				}
+				
+				String tipo_dato_variable_main=null;
+				tipoFuncion tipo_dato_funcion  =null;
+				
+				if (s!=null && NombreF!=null ) {
+					tipo_dato_variable_main= s.getTipo().toString();					
+					cont++;
+					int x=dirf+cont;
+					if(cont>tam && ( funcion_anterior == NombreF))
+						{
+						System.out.println("ERROR cantidad de parametos superior a los soportados por la funcion "+NombreF);
+						System.exit(1);
+						}
+					String var_parm_id = GetVariable_ts(x);//aqui vamos bien
+					String tipo_dato_variable_param = BuscarSimbolo(var_parm_id).getTipo().toString();
+			
+							if(x<=(dirf+tam)){
+								if(tipo_dato_variable_main!=tipo_dato_variable_param){
+									System.out.println("*****ERROR******");
+									System.out.println("variable en el main "+variable_main+" de tipo "+tipo_dato_variable_main);
+									System.out.println("variable parametro "+cont+ var_parm_id+ "de tipo " +tipo_dato_variable_param);
+									System.exit(1);
+								}	
+							} //	if(x<=(dirf+tam))
+
+				}// (s!=null && NombreF!=null )
+				
+			} else if(call_exp instanceof NodoValor){			
+				String variable_main;
+				String tipo_dato_variable_main;
+				if(((NodoValor)call_exp).get_Valor() instanceof Boolean){
+					variable_main =  ((NodoValor)call_exp).get_Valor().toString();
+					tipo_dato_variable_main	= "BOOLEAN";
+				}
+				else{
+					variable_main =  ((NodoValor)call_exp).getValor().toString();
+					tipo_dato_variable_main	= "INT";
+					}
+				tipoFuncion tipo_dato_funcion  = null;				
+					cont++;
+					int x=dirf+cont;
+					if(cont>tam && ( funcion_anterior == NombreF))
+						{
+						System.out.println("ERROR cantidad de parametos superior a los soportados por la funcion "+NombreF);
+						System.exit(1);
+						}
+					String var_parm_id = GetVariable_ts(x);//aqui vamos bien
+					String tipo_dato_variable_param = BuscarSimbolo(var_parm_id).getTipo().toString();		
+					if(x<=(dirf+tam)){
+						if(tipo_dato_variable_main!=tipo_dato_variable_param){
+								System.out.println("Error");
+								System.out.println("Variable en el main "+variable_main+" de tipo "+tipo_dato_variable_main);
+								System.out.println("variable parametro "+cont+ var_parm_id+ "de tipo " +tipo_dato_variable_param);
+								System.exit(1);
+								}
+							} //x<=(dirf+tam)
+			} //call_exp instanceof NodoValor
+			 
+	 else if(call_exp instanceof NodoCall){			
+		String func_main =  ((NodoCall)call_exp).getNombreFuncion();
+		String tipo_func_main = BuscarSimbolo(func_main).getRetorno().toString();
+			cont++;
+			int x=dirf+cont;
+			if(cont>tam && ( funcion_anterior == NombreF))
+				{
+				System.out.println("ERROR cantidad de parametos superior a los soportados por la funcion "+NombreF);
+				System.exit(1);
+				}
+			String var_parm_id = GetVariable_ts(x);//aqui vamos bien
+			String tipo_dato_variable_param = BuscarSimbolo(var_parm_id).getTipo().toString();		
+			if(x<=(dirf+tam)){
+				if(tipo_func_main!=tipo_dato_variable_param){
+						System.out.println("Error");
+						System.out.println("La funcion  "+func_main+" es de tipo "+tipo_func_main);
+						System.out.println("variable parametro "+cont+ var_parm_id+ "de tipo " +tipo_dato_variable_param);
+						System.exit(1);
+						}
+					} //x<=(dirf+tam)
+	} //call_exp instanceof NodoValor
+			 
+		
+	}
 	public tipoDato BuscarSimbolo(int dir){
 		
 		for (Iterator<String> it = tabla.keySet().iterator(); it.hasNext();) {
@@ -224,8 +290,5 @@ public class Semantico extends TablaSimbolos{
 		return null;
 		
 	}
-	
-	
-	
 
 }

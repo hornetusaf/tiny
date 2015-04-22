@@ -1,7 +1,7 @@
-int prueba(boolean p1,int p2) begin int a; boolean c; return a; end
-int pruebaboo(boolean p3,int p4) begin int a; boolean c; return a; end
+int prueba(int p1) begin int a; boolean c; return a; end
+int prueba2(int p1, int p2) begin int a; boolean c; return a; end
+boolean pruebaboo(int x) begin boolean a; boolean c; return a; end
 begin
 	int a,c,b;
-	c:=prueba(a,b);
-	a:= pruebaboo(b,c);
+	a:=prueba(d,c);
 end

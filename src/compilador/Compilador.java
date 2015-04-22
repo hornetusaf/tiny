@@ -36,7 +36,7 @@ public class Compilador {
 		ts.cargarTabla(root,"@");
 		Semantico s = new Semantico(ts.getabla());
 		s.RecorrerOperacion(root, null, "@", false, null,false);		
-		ts.ImprimirClaves();
+		//ts.ImprimirClaves();
 		
 		
 		/*if(ts.ValidarFunciones()){
